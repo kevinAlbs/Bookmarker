@@ -1,0 +1,4 @@
+Notes:
+- PHP does not allow a child class to have more restrictive constructor visibility. Java allows this for constructors but not methods (because you can polymorphically call the method of a parent class, thus overriding the more restrictive visibility. Does this imply that you can call a constructor of a parent polymorphically?)
+http://stackoverflow.com/questions/22308000/java-inheritance-reducing-visibility-in-a-constructor-vs-inherited-method
+
