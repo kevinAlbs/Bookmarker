@@ -13,6 +13,6 @@ class API{
 		return $this->data[$p];
 	}
 	protected function optParam($p, $def=NULL){
-		return isset($this->data[$p]) ? $this->data[$p] || $def;
+		return isset($this->data[$p]) ? $this->data[$p] : $def;
 	}
 }

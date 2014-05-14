@@ -1,7 +1,7 @@
 <?php
 define('ROOT', 'localhost/bookmarks');
-define('DB_USER', 'root');
+define('DB_USER', '');
 define('DB_PASS', '');
-define('DB_HOST', 'localhost');
-define('DB_DB', 'bookmarker');
+define('DB_HOST', '');
+define('DB_DB', '');
 $API_CLASSES =  Array("bookmark", "user");

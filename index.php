@@ -1,5 +1,6 @@
 <?php
 require_once("config.php");
+
 function run(){
 	global $API_CLASSES;
 	
@@ -30,8 +31,13 @@ function run(){
 		//load class (singleton) and check if function exists
 		$className = ucfirst($class);
 		require_once("classes/" .  $className . ".class.php");
-		$obj = $className::getInstance($reqType, $data);
-		$obj->$fn();
+		try{
+			$obj = $className::getInstance($reqType, $data);
+			$obj->$fn();
+		}
+		catch(Exception $e){
+			echo "<b>".$e->getMessage()."</b>";
+		}
 	}
 }
 
