@@ -56,6 +56,20 @@ class DB{
 	}
 
 	public function getBookmarks($category=NULL){
+		$qStr = "SELECT * FROM bookmark";
+		if($category !== NULL){
+			$qStr .= " WHERE `category`='" . $this->esc($category) ."'";
+		}
+		$qStr .= " ORDER BY `date_added`";
+		if(!$results = mysqli_query($this->cxn, $qStr)){
+			$this->dbErr();
+		}
+		return $results;
+	}
 
+	public function getCategories(){
+		$results = mysqli_query($this->cxn, "SELECT DISTINCT(`category`) FROM bookmark");
+		if(!$results) $this->dbErr();
+		return $results;
 	}
 }
