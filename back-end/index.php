@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: text/plain");
 require_once("config.php");
 
 function run(){
@@ -13,7 +14,7 @@ function run(){
 	//first part is empty, second should be class, third should be fn
 	if(sizeof($parts) < 3){
 		//nothing provided
-		die("Send POST/GET request of form /&lt;class&gt;/&lt;function&gt;");
+		die("Send POST/GET request of form <class>/<function>");
 	}
 	else if(sizeof($parts) > 3){
 		//there is also data

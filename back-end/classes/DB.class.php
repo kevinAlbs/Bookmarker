@@ -110,10 +110,10 @@ class DB{
 	}
 	public function deleteCategory($id){
 		$id = intval($id);
-		//general category is -1
+		//queue category is -1, general category is 0
 
 		//change them over to the general category
-		if(!mysqli_query($this->cxn, "UPDATE bookmark SET `category`=-1 WHERE `category`=%d", $id)){
+		if(!mysqli_query($this->cxn, "UPDATE bookmark SET `category`=0 WHERE `category`=%d", $id)){
 			$this->dbErr();
 		}
 
