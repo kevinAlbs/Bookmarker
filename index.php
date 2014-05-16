@@ -2,7 +2,7 @@
 require_once("config.php");
 
 function run(){
-	global $API_CLASSES;
+	global $API_CLASSES, $API_FUNCTIONS;
 	
 	$parts = isset($_SERVER['PATH_INFO']) ? explode('/', $_SERVER['PATH_INFO']) : array();
 	$class = "";
@@ -27,7 +27,7 @@ function run(){
 		$data = $_POST;
 	}
 
-	if(in_array($class, $API_CLASSES)){
+	if(in_array($class, $API_CLASSES) && in_array($fn, $API_FUNCTIONS[$class])){
 		//load class (singleton) and check if function exists
 		$className = ucfirst($class);
 		require_once("classes/" .  $className . ".class.php");
@@ -38,6 +38,9 @@ function run(){
 		catch(Exception $e){
 			echo "<b>".$e->getMessage()."</b>";
 		}
+	}
+	else{
+		echo "API class or function not found";
 	}
 }
 

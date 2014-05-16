@@ -53,28 +53,48 @@ class Bookmark extends API{
 
 		//save in database, return insert_id
 		$id = DB::getInstance()->insertBookmark($url, $title, $notes);
-		$this->success();
+		echo "{insert_id: " . $id . "}";
 	}
+	//should check integrity (i.e. that the category exists)
 	public function archive(){
 		$id = $this->reqParam("id", "Bookmark id not passed");
-		$cat = $this->optParam("category", "general");
+		$catId = intval($this->optParam("category", -1));
 
-		DB::getInstance()->updateBookmark($id, NULL, NULL, NULL, $cat);
+		DB::getInstance()->updateBookmark($id, NULL, NULL, NULL, $catId);
 		$this->success();
 	}
+	public function archiveMultiple(){
+		$idList = $this->reqParam("idList", "Bookmark id list not passed");
+		$catId = $this->reqParam("category", "Category id not passed");
+		$ids = explode("|", $idList);
+		DB::getInstance()->updateBookmarkSet($ids, NULL, NULL, NULL, $catId);
+		$this->success();
+	}
+
 	public function delete(){
 		echo "Deleting bookmark";
 		//id should be first data item
 		$id = $this->reqParam("id", "Bookmark id not passed");
-
 		DB::getInstance()->deleteBookmark($id);
+		echo $this->success();
 	}
-	//"Deletes" category by moving them all to general. General is not allowed to be deleted.
-	private function deleteCategory(){
-		$category = $this->reqParam("category", "Category not passed");
-		if($category == "general"){
-			$this->error("Cannot delete general category");
-		}
+	public function addCategory(){
+		$catName = $this->reqParam("category_name", "Category name not passed");
+		//this is the name
+		$id = DB::getInstance()->addCategory($catName);
+		echo "{insert_id: " . $id . "}";
+	}
+	public function renameCategory(){
+		$catId = $this->reqParam("category", "Category id not passed");
+		$catName = $this->reqParam("category_name", "Category name not passed");
+		DB::getInstance()->renameCategory($catId, $catName);
+		echo $this->success();
+	}
+	//Deletes category by moving them all to general. General is not allowed to be deleted.
+	public function deleteCategory(){
+		$catId = intval($this->reqParam("category", "Category id not passed"));
+		DB::getInstance()->deleteCategory($catId);
+		echo $this->success();	
 	}
 	public function fetch(){
 		$category = $this->optParam("category", NULL);
@@ -87,10 +107,10 @@ class Bookmark extends API{
 		$results = DB::getInstance()->getCategories();
 		echo "{'results': [";
 		$first = true;
-		while($row = mysqli_fetch_row($results)){
+		while($row = mysqli_fetch_assoc($results)){
 			if($first) $first = false;
 			else echo ",";
-			echo "'". $row[0] . "'";
+			printf("{name: '%s', id: %d}", $row['name'], $row['id']);
 		}
 		echo "]}";
 	}
