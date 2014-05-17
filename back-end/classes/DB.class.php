@@ -6,18 +6,20 @@ class DB{
 	private function __construct(){
 		$this->cxn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_DB);
 	}
-	private function esc($txt){
-		return mysqli_real_escape_string($this->cxn, $txt);
-	}
-	private function dbErr(){
-		throw new Exception("Database error: " . mysqli_error($this->cxn));
-	}
 	public static function getInstance(){
 		if(DB::$instance == NULL){
 			DB::$instance = new DB();
 		}
 		return DB::$instance;
 	}
+	
+	private function esc($txt){
+		return mysqli_real_escape_string($this->cxn, $txt);
+	}
+	private function dbErr(){
+		throw new Exception("Database error: " . mysqli_error($this->cxn));
+	}
+
 	public function insertBookmark($url, $title, $notes){
 		if(!mysqli_query($this->cxn, sprintf("INSERT INTO bookmark (`url`, `title`, `notes`, `date_added`) VALUES('%s', '%s', '%s', NOW())", $this->esc($url), $this->esc($title), $this->esc($notes)))){
 			$this->dbErr();

@@ -6,6 +6,12 @@ class Bookmark extends API{
 	protected function __construct($reqType, $data){
 		parent::__construct($reqType, $data);
 	}
+	public static function getInstance($reqType, $data){
+		if(Bookmark::$instance == NULL){
+			Bookmark::$instance = new Bookmark($reqType, $data);
+		}
+		return Bookmark::$instance;
+	}
 	private function output($results){
 		echo "{results: [";
 		$first = TRUE;
@@ -40,12 +46,7 @@ class Bookmark extends API{
 		}
 		echo "}";
 	}
-	public static function getInstance($reqType, $data){
-		if(Bookmark::$instance == NULL){
-			Bookmark::$instance = new Bookmark($reqType, $data);
-		}
-		return Bookmark::$instance;
-	}
+
 	public function save(){
 		$url = $this->reqParam("url", "Page URL not passed");
 		$title = $this->reqParam("title", "Page title not passed");

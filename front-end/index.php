@@ -11,6 +11,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
   <meta name="author" content="Kevin Albertson">
 
   <style>
+
 	*{
 		margin: 0px;
 		padding: 0px;
@@ -18,9 +19,16 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 		font-size: 10px;
 		font-weight: normal;
 	}
+	h1{
+		font-size: 16px;
+		margin-bottom: 3px;
+	}
 	div.content{
 		width: 600px;
-		padding: 25px;
+		padding-right: 25px;
+		padding-top: 25px;
+		padding-bottom: 25px;
+		margin-left: 220px;
 	}
 	#bm_list{
 		list-style-type: none;
@@ -42,6 +50,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 		position: absolute;
 		right: 12px;
 		top: 6px;
+		text-align: right;
 	}
 	#bm_list .right p{
 		color: #e34e4e;
@@ -84,7 +93,20 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	#bm_list li:hover .handle{
 		display: block;
 	}
-
+	#sidebar{
+		width: 175px;
+		position: fixed;
+		top: 60px;
+		left: 20px;
+	}
+	#search{
+		border: 1px black solid;
+		background: #eeeeee;
+		padding: 4px 8px;
+	}
+	#search:focus{
+		background: #fbfbfb;
+	}
   </style>
 
   <!--[if lt IE 9]>
@@ -92,64 +114,108 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
   <![endif]-->
 </head>
 <body>
-	<div class="content">
-		<ul id="bm_list">
-			<li>
-				<div class='left'>
-					<img class='handle' src='handle.jpg' alt='Handle'/>
-					<div class='box'><div class="fill"></div></div>
-				</div>
-				<header>
-					<h1>Google</h1>
-					<p>http://google.com</p>
-				</header>
-				<div class='right'>
-					<p>This was a great page</p>
-					<time>saved 10 minutes ago</time>
-				</div>
-			</li>
-			<li>
-				<div class='left'>
-					<img class='handle' src='handle.jpg' alt='Handle'/>
-					<div class='box'><div class="fill"></div></div>
-				</div>
-				<header>
-					<h1>Google</h1>
-					<p>http://google.com</p>
-				</header>
-				<div class='right'>
-					<p>This was a great page</p>
-					<time>saved 10 minutes ago</time>
-				</div>
-			</li>
-			<li>
-				<div class='left'>
-					<img class='handle' src='handle.jpg' alt='Handle'/>
-					<div class='box'><div class="fill"></div></div>
-				</div>
-				<header>
-					<h1>Google</h1>
-					<p>http://google.com</p>
-				</header>
-				<div class='right'>
-					<p>This was a great page</p>
-					<time>saved 10 minutes ago</time>
-				</div>
-			</li>
-		</ul>
+	<div id="container">
+		<aside id="sidebar">
+			<input type="text" id="search" value="search"/>
+		</aside>
+		<div class="content">
+			<h1>Queue</h1>
+			<ul id="bm_list">
+			</ul>
+		</div>
 	</div>
+	<script type="text/html" id="bookmark-template">
+	<li>
+		<div class='left'>
+			<img class='handle' src='handle.jpg' alt='Handle'/>
+			<div class='box'><div class="fill"></div></div>
+		</div>
+		<header>
+			<h1 data-content="title">Google</h1>
+			<p data-content="url">http://google.com</p>
+		</header>
+		<div class='right'>
+			<p data-content="notes"></p>
+			<time data-content="time"></time>
+		</div>
+	</li>
+	</script>
+	<script src="jquery.js"></script>
+	<script src="template.js"></script>
 	<script>
 		/*
 			Keep a local list of only everything on hand which can be updated on (delete, update, and addition)
 			This can be used for search.
 			http://lunrjs.com/
 		*/
-		function showList(json, cat){
+		/* Gets timezone without daylight savings */
+		Date.prototype.stdTimezoneOffset = function() {
+		    var jan = new Date(this.getFullYear(), 0, 1);
+		    var jul = new Date(this.getFullYear(), 6, 1);
+		    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+		}
+		function prettyDate(dateStr){
+			function pluralize(time, type){
+				if(time != 1){
+					return time + " " + type + "s" + " ago";
+				}
+				else{
+					return time + " " + type + " ago";
+				}
+			}
+			var pretty = "just now";
+			var date = new Date(dateStr);
+			var now = new Date();
+			var hourOff = now.stdTimezoneOffset()/60;
+			//hourOff is positive if the UTC offset is negative...ok...
+			now.setHours(now.getHours() - hourOff + 5);
+
+			var diff = now.getTime() - date.getTime();
+
+			if(diff < 1000){
+				pretty = "just now";
+			}
+			else if(diff < 60 * 1000){
+				pretty = pluralize(Math.round(diff/1000), "second");
+			}
+			else if(diff < 60 * 60 * 1000){
+				pretty = pluralize(Math.round(diff/(60 * 1000)), "minute");
+			}
+			else if(diff < 24 * 60 * 60 * 1000){
+				pretty = pluralize(Math.round(diff/(60 * 60 * 1000)), "hour");
+			}
+			else if(diff < 30 * 24 * 60 * 60 * 1000){
+				pretty = pluralize(Math.round(diff/(24 * 60 * 60 * 1000)), "day");
+			}
+			else if(diff < 12 * 30 * 24 * 60 * 60 * 1000){
+				pretty = pluralize(Math.round(diff/(30 * 24 * 60 * 60 * 1000)), "month");
+			}
+			else{
+				pretty = "over a year ago";
+			}
+			return pretty;
+		}
+		function showList(json){
 			console.log(json);
+			var bms = json.results;
+			var bm_list = $("#bm_list");
+			for(var i = 0; i < bms.length; i++){
+				bm_list.loadTemplate($("#bookmark-template"), {
+					title: bms[i].title,
+					url: bms[i].url,
+					time: prettyDate(bms[i].date_added),
+					notes: bms[i].notes
+				}, {append: true});
+				
+				
+			}
 		}
 		function fetchList(cat){
-
+			//ajax call, update cache
 		}
+		function deleteCategory(e){}
+		function deleteBookmark(e){}
+		function onListReorder(e){}
 		//initialize with queue list
   		showList(<?php echo file_get_contents($API_URL . "bookmark/fetch?category=-1"); ?>);
   	</script>
