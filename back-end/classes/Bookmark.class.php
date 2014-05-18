@@ -1,6 +1,7 @@
 <?php
 require_once("API.class.php");
 require_once("DB.class.php");
+require_once("Node.class.php");
 class Bookmark extends API{
 	private static $instance = NULL;
 	protected function __construct($reqType, $data){
@@ -13,7 +14,9 @@ class Bookmark extends API{
 		return Bookmark::$instance;
 	}
 	private function output($results){
-		echo "{results: [";
+		//first build the linked list
+		//if there are any cycles, remove the bad node and place it in front
+		echo '{"results": [';
 		$first = TRUE;
 		while($row = mysqli_fetch_assoc($results)){
 			if($first){
@@ -22,13 +25,13 @@ class Bookmark extends API{
 			else{
 				echo ",";
 			}
-			printf("{url: '%s',", $row['url']);
-			printf("notes: '%s',", $row['notes']);
-			printf("title: '%s',", $row['title']);
-			printf("date_added: '%s',", $row['date_added']);
-			printf("category: '%s',", $row['category']);
-			printf("id: %d,", $row['id']);
-			printf("list_position: %d}", $row['list_position']);
+			printf('{"url": "%s",', $row['url']);
+			printf('"notes": "%s",', $row['notes']);
+			printf('"title": "%s",', $row['title']);
+			printf('"date_added": "%s",', $row['date_added']);
+			printf('"category": "%s",', $row['category']);
+			printf('"id": %d,', $row['id']);
+			printf('"next": %d}', $row['next']);
 		}
 		echo "]}";
 	}
@@ -106,7 +109,11 @@ class Bookmark extends API{
 	}
 	public function fetch(){
 		$category = $this->optParam("category", NULL);
-		//blank category means unarchived
+		
+		if($category == -2){
+			//all category
+			$category = NULL;
+		}
 		$results = DB::getInstance()->getBookmarks($category);
 		$this->output($results);
 	}

@@ -99,7 +99,7 @@ class DB{
 		if($category !== NULL){
 			$qStr .= " WHERE `category`=" . intval($category) ."";
 		}
-		$qStr .= " ORDER BY `date_added`";
+		$qStr .= " ORDER BY `date_added` DESC";
 		if(!$results = mysqli_query($this->cxn, $qStr)){
 			$this->dbErr();
 		}

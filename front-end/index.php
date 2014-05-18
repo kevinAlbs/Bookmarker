@@ -19,6 +19,9 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 		font-size: 10px;
 		font-weight: normal;
 	}
+	b{
+		font-weight: bold;
+	}
 	h1{
 		font-size: 16px;
 		margin-bottom: 3px;
@@ -131,6 +134,9 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	#cats{
 		list-style-type: none;
 	}
+	#cats.selection li{
+		font-weight: bold;
+	}
 	#cats li{
 		padding: 5px 0px;
 		display: block;
@@ -157,6 +163,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	.selection.button{
 		display: none;
 	}
+	#none{display: none;}
   </style>
 
   <!--[if lt IE 9]>
@@ -176,12 +183,12 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 				<p data-action="select" class="unselection button">Select All</p>
 				<p data-action="unselect" class="selection button">Unselect All</p>
 				<p data-action="delete" class="selection button">Delete Selected</p>
-				
 				<p id="loader">Loading<span class="dots">...</span></p>
 			</div>
 		</aside>
 		<div class="content">
-			<h1>Queue</h1>
+			<h1 id="category">Queue</h1>
+			<p id="none">No bookmarks found in category</p>
 			<ul id="bm_list">
 			</ul>
 		</div>
@@ -216,6 +223,9 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 
 		var ajaxRequests = 0;//semaphore type
 		var root = "http://localhost/bookmarks/back-end/index.php/";
+		var listStart = -1, oldPrev = -1;//list reordering variables
+		var curCat = -1;//queue
+		var catCache = {};
 		/*
 			Keep a local list of only everything on hand which can be updated on (delete, update, and addition)
 			This can be used for search.
@@ -273,6 +283,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 			var cat_list = $("#cats");
 			cat_list.find("li").not(".fixed").detach();//remove non-fixed categories
 			for(var i = 0; i < cats.length; i++){
+				catCache[cats[i].id] = cats[i].name;
 				cat_list.loadTemplate($("#category-template"),{
 					catname: cats[i].name,
 					catid: cats[i].id
@@ -282,9 +293,25 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 		function showList(json){
 			var bms = json.results;
 			var bm_list = $("#bm_list").empty();
+			if(bms.length == 0){
+				$("#none").show();
+			}
+			else{
+				$("#none").hide();
+			}
 			for(var i = 0; i < bms.length; i++){
+				var title = bms[i].title;
+				if(curCat == -2){
+					var c = "Queue";
+					if(bms[i].category == -1){c = "Queue";}
+					else if(bms[i].category == 0 || !(bms[i].category in catCache)){c = "General";}
+					else{c = catCache[bms[i].category];}
+					//all, show category
+					title = "[<b>" + c + "</b>] " + bms[i].title;
+				}
+				
 				bm_list.loadTemplate($("#bookmark-template"), {
-					title: bms[i].title,
+					title: title,
 					url: bms[i].url,
 					time: prettyDate(bms[i].date_added),
 					notes: bms[i].notes,
@@ -292,20 +319,37 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 				}, {append: true});
 			}
 		}
-		function fetchList(cat){
+		function fetchList(catId, catName){
 			//ajax call, update cache
+			$("#category").html(catName);
+			addAjax({
+				url: root + "bookmark/fetch",
+				method: 'post',
+				data:{
+					category: catId,
+					ispost: true
+				},
+				dataType: "json",
+				success: function(data){
+					console.log(data);
+					showList(data);
+				}
+			});
+			curCat = catId;
 		}
+		
 		function deleteCategory(e){}
-		function deleteBookmarks(e){}
-		function onListReorder(e){}
+		
 		/* called when a list item checkbox is toggled */
 		function refreshSelected(){
 			if($("li .box.active").size() == 0){
 				//remove the delete selected and categorization clickable classes
 				$(".selection.button").hide();
 				$(".unselection.button").show();
+				$("#cats").removeClass("selection");
 			}
 			else{
+				$("#cats").addClass("selection");
 				$(".selection.button").show();
 				$(".unselection.button").hide();
 			}
@@ -338,6 +382,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 			switch($(this).attr("data-action")){
 				case "delete":
 					selected.detach();
+					refreshSelected();
 					addAjax({
 						url: root + "bookmark/deleteMultiple",
 						method: "post",
@@ -347,17 +392,97 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 						}
 					})
 				break;
+				case "select":
+					$("#bm_list li .box").addClass("active");
+					refreshSelected();
+				break;
+				case "unselect":
+					$("#bm_list li .box").removeClass("active");
+					refreshSelected();
+				break;
 			}
+		}
+
+		function catClicked(){
+			var selected = $("#bm_list li:has(.box.active)");
+			var catId = $(this).attr("data-id");
+			var catName = $(this).html();
+			if(curCat == catId){return;}
+
+			if(selected.size() == 0){
+				//switch to new category
+				fetchList(catId, catName);
+			}
+			else{
+				//archive to that category
+				console.log("archiving");	
+				if(catId == -2){
+					alert("Cannot categorize to 'all'")
+				}
+				var selectedString = "";
+				var first = true;
+				for(var i = 0; i < selected.size(); i++){
+					if(!first) selectedString += "|";
+					else first = false;
+					selectedString += $(selected.get(i)).attr("data-id");
+				}
+				if(curCat != -2){
+					selected.detach();//should not remove if viewing everything anyway
+				}
+				$(".box.active").removeClass("active");
+				refreshSelected();
+				addAjax({
+					url: root + "bookmark/archiveMultiple",
+					method: "post",
+					data: {
+						idList: selectedString,
+						category: catId,
+						ispost: true 
+					}
+				})
+			}
+			
 		}
 
 		$(".button").click(onButton);
   		//set up events
   		$("#bm_list").sortable({
-  			distance: 12
+  			distance: 12,
+  			start: function(e,ui){
+  				listStart = $("#bm_list li").index(ui.item);
+  				oldNext = $("#bm_list li:nth-child(" + (listStart+1) + ")");
+  				if(oldNext) oldNext = oldNext.attr("data-id");
+  				else oldNext = -1;
+  			},
+  			stop: function(e,ui){
+  				var listEnd = $("#bm_list li").index(ui.item);
+  				var newNext = $("#bm_list li:nth-child(" + (listEnd+1) + ")");
+  				if(newNext) newNext = newNext.attr("data-id");
+  				else newNext = -1;
+  				var newPrev = $("#bm_list li:nth-child(" + (listEnd-1) + ")");
+  				if(newPrev) newPrev = newNext.attr("data-id");
+  				else newPrev = -1;
+  				//check if it has changed
+  				if(listEnd != listStart){
+  					/*
+  					addAjax({
+  						url: root + "bookmark/listOrder",
+  						method: "post",
+  						data: {
+  							ispost: true,
+  							id: $(ui.item).attr("data-id"),
+  							oldPrev : oldPrev,
+  							newNext : newNext,
+  							newPrev : newPrev
+  						}
+  					})
+					*/
+  				}
+  			}
   		});
 		//event delegation
 		$("#bm_list").on("click", "li .box", toggleBox);
-
+		$("#cats").on("click", "li", catClicked);
 		//initialize with queue list
   		showList(<?php echo file_get_contents($API_URL . "bookmark/fetch?category=-1"); ?>);
   		//initialize category list
