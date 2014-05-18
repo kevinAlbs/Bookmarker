@@ -12,7 +12,7 @@ class DB{
 		}
 		return DB::$instance;
 	}
-	
+
 	private function esc($txt){
 		return mysqli_real_escape_string($this->cxn, $txt);
 	}
@@ -80,7 +80,14 @@ class DB{
 			$this->dbErr();
 		}
 	}
-
+	public function deleteBookmarkSet($ids){
+		for($i = 0; $i < sizeof($ids); $i++){
+			$ids[$i] = intval($ids[$i]);
+		}
+		if(!mysqli_query($this->cxn, "DELETE FROM bookmark WHERE `id` IN (" . implode(",", $ids) . ")")){
+			$this->dbErr();
+		}
+	}
 	public function deleteBookmark($id){
 		if(!mysqli_query($this->cxn, sprintf("DELETE FROM bookmark WHERE `id`=%d", intval($id)))){
 			$this->dbErr();

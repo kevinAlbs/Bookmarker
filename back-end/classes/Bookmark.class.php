@@ -54,7 +54,7 @@ class Bookmark extends API{
 
 		//save in database, return insert_id
 		$id = DB::getInstance()->insertBookmark($url, $title, $notes);
-		echo "{insert_id: " . $id . "}";
+		echo '{"insert_id": ' . $id . '}';
 	}
 	//should check integrity (i.e. that the category exists)
 	public function archive(){
@@ -69,6 +69,13 @@ class Bookmark extends API{
 		$catId = $this->reqParam("category", "Category id not passed");
 		$ids = explode("|", $idList);
 		DB::getInstance()->updateBookmarkSet($ids, NULL, NULL, NULL, $catId);
+		$this->success();
+	}
+
+	public function deleteMultiple(){
+		$idList = $this->reqParam("idList", "Bookmark id list not passed");
+		$ids = explode("|", $idList);
+		DB::getInstance()->deleteBookmarkSet($ids);
 		$this->success();
 	}
 
@@ -106,12 +113,12 @@ class Bookmark extends API{
 
 	public function fetchCategories(){
 		$results = DB::getInstance()->getCategories();
-		echo "{'results': [";
+		echo '{"results": [';
 		$first = true;
 		while($row = mysqli_fetch_assoc($results)){
 			if($first) $first = false;
 			else echo ",";
-			printf("{name: '%s', id: %d}", $row['name'], $row['id']);
+			printf('{"name": "%s", "id": %d}', $row['name'], $row['id']);
 		}
 		echo "]}";
 	}

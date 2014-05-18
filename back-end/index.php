@@ -1,5 +1,5 @@
 <?php
-header("Content-Type: text/plain");
+header("Content-Type: application/json");
 require_once("config.php");
 
 function run(){
@@ -23,7 +23,7 @@ function run(){
 	$class = $parts[1];
 	$fn = $parts[2];
 
-	if(isset($_POST['data'])){
+	if(isset($_POST['ispost'])){
 		$reqType = "POST";
 		$data = $_POST;
 	}
