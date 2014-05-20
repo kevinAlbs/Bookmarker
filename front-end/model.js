@@ -3,9 +3,17 @@
 var model = (function(){
 	var that = {};
 	var bookmarkCache = {
-		lookup : null//maps category (including 'all') to bookmark list
+		lookup : {//maps category (including 'all') to bookmark list
+			'-2' : [],
+			'-1' : [],
+			'0' : []
+		}
 	};
-	var catCache = {};
+	var catCache = {
+		'-2' : 'All',
+		'-1' : 'Queue',
+		'0' : 'General'
+	};
 	var ajaxRequests = 0;//semaphore type
 
 	//initialize category list
@@ -33,19 +41,55 @@ var model = (function(){
 			//$("#loader").hide();
 		}
 	}
+	function addToCache(bm, cat){
+		if(!(cat in bookmarkCache.lookup)){
+			bookmarkCache.lookup[cat] = [];
+		}
+		for(var i = 0; i < bookmarkCache.lookup.length; i++){
+			if(bookmarkCache.lookup[i] == bm){
+				return;//this check is necessary if user tries to add bookmark from all category
+			}
+		}
+		bookmarkCache.lookup[cat].push(bm);
+	}
+	//TODO change to O(1) when cache is changed to object instead of array
+	function getBookmark(id, cat, deleteBm){
+		var arr = bookmarkCache.lookup[cat + ''];
+		for(var i = 0; i < arr.length; i++){
+			if(id == arr[i].id){
+				if(deleteBm){
+					return arr.splice(i, 1)[0];
+				}
+				return arr[i];
+			}
+		}
+	}
+
+	that.updateNote = function(bm_id, newNote){}
 	that.getList = function(catId){
 		//ajax call, update cache
 		return (catId in bookmarkCache.lookup) ? bookmarkCache.lookup[catId] : [];
 	}
 	//idList is array of id values
 	that.deleteSelected = function(idList, curCat){
-		//delete from all and curCat cache
+		for(var i = 0; i < idList.length; i++){
+			var bm = null;
+			if(curCat == C.ALL){
+				//delete from individual category, not all, update cat in title
+				bm = getBookmark(idList[i], curCat, true);//delete from all
+				getBookmark(bm.id, bm.category, true);//delete from individual category
+			}
+			else{
+				bm = getBookmark(idList[i], curCat, true);
+			}
+		}
 		var selectedString = "";
 		var first = true;
 		for(var i = 0; i < idList.length; i++){
 			if(!first) selectedString += "|";
 			else first = false;
 			selectedString += idList[i];
+
 		}
 		addAjax({
 			url: root + "bookmark/deleteMultiple",
@@ -56,8 +100,24 @@ var model = (function(){
 			}
 		});
 	}
-	that.archiveSelected = function(idList, curCat){
-		//move over from cache as well and update category
+	that.archiveSelected = function(idList, curCat, toCat){
+		if(curCat == toCat){
+			return;
+		}
+		for(var i = 0; i < idList.length; i++){
+			var bm = null;
+			if(curCat == C.ALL){
+				//delete from individual category, not all, update cat in title
+				bm = getBookmark(idList[i], curCat, false);//don't delete
+				getBookmark(bm.id, bm.category, true);//delete from individual category
+			}
+			else{
+				bm = getBookmark(idList[i], curCat, true);
+			}
+			addToCache(bm, toCat);
+			bm.category = toCat;
+			//update category in ALL list
+		}
 		var selectedString = "";
 		var first = true;
 		for(var i = 0; i < idList.length; i++){
@@ -70,25 +130,32 @@ var model = (function(){
 			method: "post",
 			data: {
 				idList: selectedString,
-				category: catId,
+				category: toCat,
 				ispost: true 
 			}
 		});
+	}
+	that.getCatName = function(catId){
+		if(!(catId in catCache)){
+			return "Not loaded";
+		}
+		return catCache[catId];
 	}
 	that.init = function(allBookmarks){
 		//populate cache
 		var bms = allBookmarks.results;
 		bookmarkCache.lookup = [];
-		bookmarkCache.lookup['-2'] = bms; //since this is by reference, changes to other categories, notes, etc. need not be repeated
+		bookmarkCache.lookup[C.ALL] = bms; //since this is by reference, changes to other categories, notes, etc. need not be repeated
 		for(var i = 0; i < bms.length; i++){
 			var cat = bms[i].category;
-			if(!(cat in bookmarkCache.lookup)){
-				bookmarkCache.lookup[cat] = [];
+			if(cat == C.ALL){
+				console.log("Error: Something categorized to all");
+				return;
 			}
-			bookmarkCache.lookup[cat].push(bms[i]);
+			addToCache(bms[i], cat);
 		}
 		//show queue
-		showList(that.getList('-1'));
+		showList(that.getList(C.QUEUE));
 	}
 
 	return that;

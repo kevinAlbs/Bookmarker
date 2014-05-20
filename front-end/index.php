@@ -59,8 +59,13 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	#bm_list li:last-child{
 		border-bottom: 1px black solid;
 	}
-	#bm_list li h1{
+	#bm_list li h1, #bm_list li h2{
 		font-size: 12px;
+		display: inline-block;
+	}
+	#bm_list li h2{
+		font-size: 10px;
+		font-weight: bold;
 	}
 	#bm_list li .right{
 		position: absolute;
@@ -206,7 +211,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 			<div class='box'><div class="fill"></div></div>
 		</div>
 		<header>
-			<h1 data-content="title">Google</h1>
+			<h2 data-content="catName"></h2> <h1 data-content="title">Google</h1>
 			<p data-content="url">http://google.com</p>
 		</header>
 		<div class='right'>
