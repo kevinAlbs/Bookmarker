@@ -35,7 +35,7 @@ var model = (function(){
 	}
 	that.getList = function(catId){
 		//ajax call, update cache
-		return bookmarkCache.lookup[catId];
+		return (catId in bookmarkCache.lookup) ? bookmarkCache.lookup[catId] : [];
 	}
 	//idList is array of id values
 	that.deleteSelected = function(idList, curCat){
@@ -77,8 +77,18 @@ var model = (function(){
 	}
 	that.init = function(allBookmarks){
 		//populate cache
-		console.log("Init");
-		console.log(allBookmarks);
+		var bms = allBookmarks.results;
+		bookmarkCache.lookup = [];
+		bookmarkCache.lookup['-2'] = bms; //since this is by reference, changes to other categories, notes, etc. need not be repeated
+		for(var i = 0; i < bms.length; i++){
+			var cat = bms[i].category;
+			if(!(cat in bookmarkCache.lookup)){
+				bookmarkCache.lookup[cat] = [];
+			}
+			bookmarkCache.lookup[cat].push(bms[i]);
+		}
+		//show queue
+		showList(that.getList('-1'));
 	}
 
 	return that;

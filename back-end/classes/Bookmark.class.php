@@ -29,7 +29,7 @@ class Bookmark extends API{
 			printf('"notes": "%s",', $row['notes']);
 			printf('"title": "%s",', $row['title']);
 			printf('"date_added": "%s",', $row['date_added']);
-			printf('"category": "%s",', $row['category']);
+			printf('"category": %d,', $row['category']);
 			printf('"id": %d,', $row['id']);
 			printf('"next": %d}', $row['next']);
 		}

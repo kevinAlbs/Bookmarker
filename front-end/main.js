@@ -66,7 +66,7 @@ function showCategories(json){
 	}
 }
 function showList(json){
-	var bms = json.results;
+	var bms = json;
 	var bm_list = $("#bm_list").empty();
 	if(bms.length == 0){
 		$("#none").show();
@@ -77,10 +77,12 @@ function showList(json){
 	for(var i = 0; i < bms.length; i++){
 		var title = bms[i].title;
 		if(curCat == -2){
-			var c = "Queue";
+			var c = "<TODO cat>";
+			/*
 			if(bms[i].category == -1){c = "Queue";}
 			else if(bms[i].category == 0 || !(bms[i].category in catCache)){c = "General";}
 			else{c = catCache[bms[i].category];}
+			*/
 			//all, show category
 			title = "[<b>" + c + "</b>] " + bms[i].title;
 		}
@@ -148,7 +150,8 @@ function catClicked(){
 
 	if(selected.size() == 0){
 		//switch to new category
-		fetchList(catId, catName);
+		curCat = catId;
+		showList(model.getList(catId));
 	}
 	else{
 		//archive to that category
