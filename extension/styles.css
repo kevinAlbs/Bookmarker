@@ -1,14 +1,34 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
 #bm_extension_bookmark{
 	background: #000;
-	color: #FFF;
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 200px;
-	text-align: left;
-	z-index: 1000;
+	color: #FFF !important;
+	position: fixed !important;
+	top: 0px !important;
+	left: 0px !important;
+	width: 100% !important;
+	height: 50px !important;
+	text-align: left !important;
+	z-index: 1000 !important;
+	display: none;
+	font-family: 'Open Sans' !important;
+	font-size: 10px !important;
+	padding: 7px 20px !important;
 }
 #bm_extension_bookmark h1{
 	color: #FFF !important;
+	font-size: 12px !important;
+	font-family: 'Open Sans' !important;
+	margin: 0px 0px 4px 0px !important;
+}
+#bm_extension_bookmark input{
+	float: left !important;
+	border: 1px #9089ec solid !important;
+	color: #000 !important;
+	padding: 2px 5px !important;
+	font-size: 12px !important;
+}
+#bm_extension_bookmark div{
+	float: left !important;
+	margin-left: 10px !important;
+	font-size: 10px !important;
 }

@@ -8,6 +8,7 @@ Since this is a personal bookmarking system, there is no user management current
 - Deletion and addition of categories
 - Reordering of lists
 - Chrome extension
+	+ Make popup shortcut Shift+qq
 
 ##Future Goals
 - I'm thinking that I should redo the front-end to have a complete copy of all bookmarks, and do all changes locally. Then the changes can be pushed to the server in the background without impeding performance (i.e. switching categories will not depend on another API request). This is probably similar to what Google Docs does (very responsive UI).

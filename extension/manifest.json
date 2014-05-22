@@ -9,5 +9,11 @@
 			"js" : ["jquery.js", "main.js"],
 			"css" : ["styles.css"]
 		}
+	],
+	"background" : {
+		"scripts" : ["background.js"]
+	},
+	"permissions" : [
+		"tabs"
 	]
 }
