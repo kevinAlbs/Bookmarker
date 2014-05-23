@@ -28,17 +28,19 @@ var model = (function(){
 			showCategories(data);
 		}
 	});
-		
-	function addAjax(param){
+	
+	function addAjax(param, msg){
 		param.complete = ajaxComplete;
 		$.ajax(param);
 		ajaxRequests++;
+		showStatus("Background requests in progress");
 		//$("#loader").show();
 	}
 	function ajaxComplete(){
 		ajaxRequests--;
 		if(ajaxRequests == 0){
 			//$("#loader").hide();
+			showStatus(false);
 		}
 	}
 	function addToCache(bm, cat){
@@ -64,7 +66,23 @@ var model = (function(){
 			}
 		}
 	}
-
+	that.addCategory = function(catName){
+		addAjax({
+				url: root + "bookmark/addCategory",
+				data: {
+					ispost: true,
+					category_name: catName
+				},
+				dataType: 'json',
+				success: function(data){
+					UIAddCategory(catName, data.insert_id);//ui
+					catCache[data.insert_id + ""] = catName;
+				}
+		})
+	}
+	that.numRequestsLingering = function(){
+		return ajaxRequests;
+	}
 	that.updateNote = function(bm_id, newNote){}
 	that.getList = function(catId){
 		//ajax call, update cache

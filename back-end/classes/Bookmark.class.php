@@ -93,7 +93,7 @@ class Bookmark extends API{
 		$catName = $this->reqParam("category_name", "Category name not passed");
 		//this is the name
 		$id = DB::getInstance()->addCategory($catName);
-		echo "{insert_id: " . $id . "}";
+		echo '{"insert_id": ' . $id . '}';
 	}
 	public function renameCategory(){
 		$catId = $this->reqParam("category", "Category id not passed");

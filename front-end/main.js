@@ -59,6 +59,15 @@ function prettyDate(dateStr){
 	}
 	return pretty;
 }
+function showStatus(msg){
+	if(!msg){
+		$("#status_wrapper").fadeOut(250);
+	}
+	else{
+		$("#status_wrapper").fadeIn(250);
+		$("#status").html(msg);
+	}
+}
 function showCategories(json){
 	var cats = json.results;
 	var cat_list = $("#cats");
@@ -69,6 +78,13 @@ function showCategories(json){
 			catid: cats[i].id
 		}, {append: true})
 	}
+}
+function UIAddCategory(catName, catId){
+	var cat_list = $("#cats");
+	cat_list.loadTemplate($("#category-template"), {
+		catname: catName,
+		catid: catId
+	}, {append: true});
 }
 function showList(json){
 	var bms = json;
@@ -138,6 +154,14 @@ function onButton(){
 		case "unselect":
 			$("#bm_list li .box").removeClass("active");
 			refreshSelected();
+		break;
+		case "add_cat":
+			var catName = window.prompt("Enter Category name").trim();//TODO dear god change this
+			if(catName == ""){
+				return;//TODO show error feedback
+			}
+			model.addCategory(catName);
+			
 		break;
 	}
 }
@@ -220,3 +244,7 @@ $("#bm_list").sortable({
 //event delegation
 $("#bm_list").on("click", "li .box", toggleBox);
 $("#cats").on("click", "li", catClicked);
+$(window).on("beforeunload", function(){
+	if(model.numRequestsLingering() > 0)
+		return "Unsaved data, are you sure you want to leave?";
+})
