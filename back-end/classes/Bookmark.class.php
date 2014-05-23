@@ -36,18 +36,18 @@ class Bookmark extends API{
 		echo "]}";
 	}
 	private function success($msg = ""){
-		echo "{results: 'success'";//hmm..
+		echo '{"results": "success"';//hmm..
 		if($msg != ""){
-			echo ", message: '" . $msg ."'";
+			echo ', "message": "' . $msg .'"';
 		}
-		echo "}";
+		echo '}';
 	}
 	private function error($msg = ""){
-		echo "{results: 'error'";
+		echo '{"results": "error"';//hmm..
 		if($msg != ""){
-			echo ", message: '" . $msg ."'";
+			echo ', "message": "' . $msg .'"';
 		}
-		echo "}";
+		echo '}';
 	}
 
 	public function save(){

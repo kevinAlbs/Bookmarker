@@ -121,8 +121,8 @@ class DB{
 		$id = intval($id);
 		//queue category is -1, general category is 0
 
-		//change them over to the general category
-		if(!mysqli_query($this->cxn, "UPDATE bookmark SET `category`=0 WHERE `category`=%d", $id)){
+		//delete bookmarks from this category
+		if(!mysqli_query($this->cxn, sprintf("DELETE FROM bookmark WHERE `category`=%d", $id))){
 			$this->dbErr();
 		}
 

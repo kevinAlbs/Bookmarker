@@ -6,6 +6,8 @@ var C = {
 var root = "http://localhost/bookmarks/back-end/index.php/";
 var listStart = -1, oldPrev = -1;//list reordering variables
 var curCat = C.QUEUE;//queue
+var shiftDown = false;
+var mostRecent = null;//most recently clicked bookmark
 
 /*
 	Keep a local list of only everything on hand which can be updated on (delete, update, and addition)
@@ -109,10 +111,8 @@ function showList(json){
 		}
 		bm_list.loadTemplate($("#bookmark-template"), data, {append: true});
 	}
+	mostRecent = null;
 }
-
-
-function deleteCategory(e){}
 
 /* called when a list item checkbox is toggled */
 function refreshSelected(){
@@ -129,7 +129,37 @@ function refreshSelected(){
 	}
 }
 function toggleBox(e){
-	$(this).toggleClass("active");
+	if(shiftDown && mostRecent != null){
+		//activate all boxes from between this box and the most recent
+		var bmList = $("#bm_list li");
+		var thisItem = $(this).parent().parent();
+		var i = bmList.index(thisItem);
+		var j = bmList.index(mostRecent);
+		if(i != j){
+			//make sure not equal
+			if(i > j){
+				//swap
+				var tmp = i;
+				i = j;
+				j = tmp;
+			}
+			for(var k = i; k <= j; k++){
+				$(bmList.get(k)).find(".box").addClass("active");
+			}
+			mostRecent = null;
+		}
+	}
+	else{
+		if($(this).hasClass("active")){
+			mostRecent = null;
+			$(this).removeClass("active");
+		}
+		else{
+			mostRecent = $(this).parent().parent();//li
+			$(this).addClass("active");
+		}
+	}
+	
 	refreshSelected();
 }
 
@@ -150,34 +180,59 @@ function onButton(){
 		case "select":
 			$("#bm_list li .box").addClass("active");
 			refreshSelected();
+			mostRecent = null;
 		break;
 		case "unselect":
 			$("#bm_list li .box").removeClass("active");
 			refreshSelected();
+			mostRecent = null;
 		break;
 		case "add_cat":
-			var catName = window.prompt("Enter Category name").trim();//TODO dear god change this
+			var catName = window.prompt("Enter new category name (blank otherwise)").trim();//TODO dear god change this
 			if(catName == ""){
 				return;//TODO show error feedback
 			}
 			model.addCategory(catName);
-			
+		break;
+		case "rename_cat":
+			var catName = window.prompt("Enter new category name (blank otherwise)").trim();//TODO dear god change this
+			if(catName == ""){
+				return;//TODO show error feedback
+			}
+			model.renameCategory(catName);
+		break;
+		case "delete_cat":
+			var go = window.confirm("Are you sure you wish to delete the category AND all bookmarks?");
+			if(go){
+				model.deleteCategory(curCat);
+				$("#cats").find("li[data-id=" + curCat + "]").detach();
+				switchCategory(C.ALL);
+			}
 		break;
 	}
 }
 
+function switchCategory(catId){
+	curCat = catId;
+	if(catId != C.ALL && catId != C.QUEUE && catId != C.GENERAL){
+		$(".button[data-action=delete_cat],.button[data-action=rename_cat]").fadeIn();
+	}
+	else{
+		$(".button[data-action=delete_cat],.button[data-action=rename_cat]").hide();
+	}
+	showList(model.getList(catId));
+	var catName = model.getCatName(catId);
+	$("#category").html(catName);
+}
 function catClicked(){
 	var selected = $("#bm_list li:has(.box.active)");
 	var catId = $(this).attr("data-id");
-	var catName = $(this).html();
 
 	if(curCat == catId){return;}
 
 	if(selected.size() == 0){
 		//switch to new category
-		curCat = catId;
-		showList(model.getList(catId));
-		$("#category").html(catName);
+		switchCategory(catId);
 	}
 	else{
 		//archive to that category
@@ -205,42 +260,19 @@ function catClicked(){
 	
 }
 
+function onKeyDown(e){
+	if(e.keyCode == 16){
+		shiftDown = true;
+	}
+}
+function onKeyUp(e){
+	if(e.keyCode == 16){
+		shiftDown = false;
+	}
+}
 $(".button").click(onButton);
 //set up events
-$("#bm_list").sortable({
-	distance: 12,
-	start: function(e,ui){
-		listStart = $("#bm_list li").index(ui.item);
-		oldNext = $("#bm_list li:nth-child(" + (listStart+1) + ")");
-		if(oldNext) oldNext = oldNext.attr("data-id");
-		else oldNext = -1;
-	},
-	stop: function(e,ui){
-		var listEnd = $("#bm_list li").index(ui.item);
-		var newNext = $("#bm_list li:nth-child(" + (listEnd+1) + ")");
-		if(newNext) newNext = newNext.attr("data-id");
-		else newNext = -1;
-		var newPrev = $("#bm_list li:nth-child(" + (listEnd-1) + ")");
-		if(newPrev) newPrev = newNext.attr("data-id");
-		else newPrev = -1;
-		//check if it has changed
-		if(listEnd != listStart){
-			/*
-			addAjax({
-				url: root + "bookmark/listOrder",
-				method: "post",
-				data: {
-					ispost: true,
-					id: $(ui.item).attr("data-id"),
-					oldPrev : oldPrev,
-					newNext : newNext,
-					newPrev : newPrev
-				}
-			})
-		*/
-		}
-	}
-});
+//$("#bm_list").sortable();
 //event delegation
 $("#bm_list").on("click", "li .box", toggleBox);
 $("#cats").on("click", "li", catClicked);
@@ -248,3 +280,5 @@ $(window).on("beforeunload", function(){
 	if(model.numRequestsLingering() > 0)
 		return "Unsaved data, are you sure you want to leave?";
 })
+$(document).on("keydown", onKeyDown);
+$(document).on("keyup", onKeyUp);

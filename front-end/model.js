@@ -66,6 +66,20 @@ var model = (function(){
 			}
 		}
 	}
+	that.deleteCategory = function(catId){
+		addAjax({
+			url: root + "bookmark/deleteCategory",
+			data: {
+				ispost: true,
+				category: catId
+			},
+			method: "post",
+			dataType: 'json',
+			success: function(data){
+				console.log("Category deleted");
+			}
+		});
+	};
 	that.addCategory = function(catName){
 		addAjax({
 				url: root + "bookmark/addCategory",
@@ -73,13 +87,14 @@ var model = (function(){
 					ispost: true,
 					category_name: catName
 				},
+				method: "post",
 				dataType: 'json',
 				success: function(data){
 					UIAddCategory(catName, data.insert_id);//ui
 					catCache[data.insert_id + ""] = catName;
 				}
 		})
-	}
+	};
 	that.numRequestsLingering = function(){
 		return ajaxRequests;
 	}

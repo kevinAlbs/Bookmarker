@@ -36,6 +36,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 			</div>
 		</aside>
 		<div class="content">
+			<div id="topbar"><span class='button' data-action='delete_cat'>Delete Category</span> <span class='button' data-action='delete_cat'>Rename Category</span></div>
 			<h1 id="category">Queue</h1>
 			<p id="none">No bookmarks found in category</p>
 			<ul id="bm_list">
