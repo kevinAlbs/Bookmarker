@@ -113,7 +113,7 @@ class DB{
 		return mysqli_insert_id($this->cxn);
 	}
 	public function renameCategory($id, $newName){
-		if(!mysqli_query($this->cxn, sprintf("UPDATE category SET `name`= '%s' WHERE `id`=%d", $id, $newName))){
+		if(!mysqli_query($this->cxn, sprintf("UPDATE category SET `name`= '%s' WHERE `id`=%d", $newName, $id))){
 			$this->dbErr();
 		}
 	}

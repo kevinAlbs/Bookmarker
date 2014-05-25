@@ -200,7 +200,7 @@ function onButton(){
 				return;//TODO show error feedback
 			}
 			model.renameCategory(newName, curCat);
-			$("#cats li[data-id=" + curCat + "]").html(newName);
+			$("#cats li[data-id=" + curCat + "], #category").html(newName);
 		break;
 		case "delete_cat":
 			var go = window.confirm("Are you sure you wish to delete the category AND all bookmarks?");

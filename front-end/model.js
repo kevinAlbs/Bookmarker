@@ -99,7 +99,7 @@ var model = (function(){
 		addAjax({
 			url: root + "bookmark/renameCategory",
 			data: {
-				idpost: true,
+				ispost: true,
 				category_name: catName,
 				category: catId
 			},
