@@ -195,11 +195,12 @@ function onButton(){
 			model.addCategory(catName);
 		break;
 		case "rename_cat":
-			var catName = window.prompt("Enter new category name (blank otherwise)").trim();//TODO dear god change this
-			if(catName == ""){
+			var newName = window.prompt("Enter new category name (blank otherwise)").trim();//TODO dear god change this
+			if(newName == ""){
 				return;//TODO show error feedback
 			}
-			model.renameCategory(catName);
+			model.renameCategory(newName, curCat);
+			$("#cats li[data-id=" + curCat + "]").html(newName);
 		break;
 		case "delete_cat":
 			var go = window.confirm("Are you sure you wish to delete the category AND all bookmarks?");

@@ -95,6 +95,17 @@ var model = (function(){
 				}
 		})
 	};
+	that.renameCategory = function(catName, catId){
+		addAjax({
+			url: root + "bookmark/renameCategory",
+			data: {
+				idpost: true,
+				category_name: catName,
+				category: catId
+			},
+			method: "post"
+		});
+	}
 	that.numRequestsLingering = function(){
 		return ajaxRequests;
 	}
