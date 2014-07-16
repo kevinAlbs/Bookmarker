@@ -18,7 +18,7 @@ var model = (function(){
 
 	//initialize category list
 	addAjax({
-		url: root + "bookmark/fetchCategories",
+		url: root + "category/fetch",
 		dataType: "json",
 		success: function(data){
 			var cats = data.results;
@@ -68,7 +68,7 @@ var model = (function(){
 	}
 	that.deleteCategory = function(catId){
 		addAjax({
-			url: root + "bookmark/deleteCategory",
+			url: root + "category/delete",
 			data: {
 				ispost: true,
 				category: catId
@@ -82,7 +82,7 @@ var model = (function(){
 	};
 	that.addCategory = function(catName){
 		addAjax({
-				url: root + "bookmark/addCategory",
+				url: root + "category/add",
 				data: {
 					ispost: true,
 					category_name: catName
@@ -97,7 +97,7 @@ var model = (function(){
 	};
 	that.renameCategory = function(catName, catId){
 		addAjax({
-			url: root + "bookmark/renameCategory",
+			url: root + "category/rename",
 			data: {
 				ispost: true,
 				category_name: catName,
@@ -186,6 +186,8 @@ var model = (function(){
 		return catCache[catId];
 	}
 	that.init = function(allBookmarks){
+		console.log("Initializing");
+		console.log(allBookmarks);
 		//populate cache
 		var bms = allBookmarks.results;
 		bookmarkCache.lookup = [];
@@ -198,8 +200,6 @@ var model = (function(){
 			}
 			addToCache(bms[i], cat);
 		}
-		//show queue
-		showList(that.getList(C.QUEUE));
 	}
 
 	return that;

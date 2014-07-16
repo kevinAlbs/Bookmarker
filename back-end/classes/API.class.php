@@ -15,4 +15,20 @@ class API{
 	protected function optParam($p, $def=NULL){
 		return isset($this->data[$p]) ? $this->data[$p] : $def;
 	}
+
+	protected function success($msg = ""){
+		echo '{"results": "success"';//hmm..
+		if($msg != ""){
+			echo ', "message": "' . $msg .'"';
+		}
+		echo '}';
+	}
+
+	protected function error($msg = ""){
+		echo '{"results": "error"';//hmm..
+		if($msg != ""){
+			echo ', "message": "' . $msg .'"';
+		}
+		echo '}';
+	}
 }

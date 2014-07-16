@@ -36,7 +36,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 			</div>
 		</aside>
 		<div class="content">
-			<div id="topbar"><span class='button' data-action='delete_cat'>Delete Category</span> <span class='button' data-action='rename_cat'>Rename Category</span></div>
+			<div id="topbar"><a class='button' href='settings.php'>Settings</a><span class='button' data-action='delete_cat'>Delete Category</span> <span class='button' data-action='rename_cat'>Rename Category</span></div>
 			<h1 id="category">Queue</h1>
 			<p id="none">No bookmarks found in category</p>
 			<ul id="bm_list">
@@ -74,6 +74,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	<script>
 		//fetch all bookmarks
 		model.init(<?php echo file_get_contents($API_URL . "bookmark/fetch"); ?>);
+		switchCategory(C.QUEUE);
 	</script>
 </body>
 </html>

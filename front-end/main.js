@@ -164,6 +164,7 @@ function toggleBox(e){
 }
 
 function onButton(){
+	console.log("Button");
 	var selected = $("#bm_list li:has(.box.active)");
 	var selectedList = [];
 	for(var i = 0; i < selected.size(); i++){
@@ -188,17 +189,23 @@ function onButton(){
 			mostRecent = null;
 		break;
 		case "add_cat":
-			var catName = window.prompt("Enter new category name (blank otherwise)").trim();//TODO dear god change this
-			if(catName == ""){
-				return;//TODO show error feedback
-			}
+			var catName = window.prompt("Enter new category name (blank otherwise)");
+			if(catName){
+				catName = catName.trim();
+				if (catName == "") {
+					return;//TODO show error feedback
+				}
+			} else { return; }
 			model.addCategory(catName);
 		break;
 		case "rename_cat":
-			var newName = window.prompt("Enter new category name (blank otherwise)").trim();//TODO dear god change this
-			if(newName == ""){
-				return;//TODO show error feedback
-			}
+			var newName = window.prompt("Enter new category name (blank otherwise)");
+			if(newName){
+				newName = newName.trim();
+				if(newName == "") {
+					return;//TODO show error feedback
+				}
+			} else { return; }
 			model.renameCategory(newName, curCat);
 			$("#cats li[data-id=" + curCat + "], #category").html(newName);
 		break;
@@ -225,6 +232,7 @@ function switchCategory(catId){
 	var catName = model.getCatName(catId);
 	$("#category").html(catName);
 }
+
 function catClicked(){
 	var selected = $("#bm_list li:has(.box.active)");
 	var catId = $(this).attr("data-id");
@@ -271,15 +279,18 @@ function onKeyUp(e){
 		shiftDown = false;
 	}
 }
-$(".button").click(onButton);
-//set up events
-//$("#bm_list").sortable();
-//event delegation
-$("#bm_list").on("click", "li .box", toggleBox);
-$("#cats").on("click", "li", catClicked);
-$(window).on("beforeunload", function(){
-	if(model.numRequestsLingering() > 0)
-		return "Unsaved data, are you sure you want to leave?";
-})
-$(document).on("keydown", onKeyDown);
-$(document).on("keyup", onKeyUp);
+
+$(document).ready(function(){
+	$(".button").click(onButton);
+	//set up events
+	//$("#bm_list").sortable();
+	//event delegation
+	$("#bm_list").on("click", "li .box", toggleBox);
+	$("#cats").on("click", "li", catClicked);
+	$(window).on("beforeunload", function(){
+		if(model.numRequestsLingering() > 0)
+			return "Unsaved data, are you sure you want to leave?";
+	})
+	$(document).on("keydown", onKeyDown);
+	$(document).on("keyup", onKeyUp);
+});
