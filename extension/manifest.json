@@ -7,11 +7,11 @@
 		{
 			"matches" : ["<all_urls>"],
 			"js" : ["jquery.js", "main.js"],
-			"css" : ["styles.css"]
+			"css" : ["initializer.css", "styles.css"]
 		}
 	],
 	"background" : {
-		"scripts" : ["background.js"]
+		"scripts" : ["jquery.js", "background.js"]
 	},
 	"permissions" : [
 		"tabs"

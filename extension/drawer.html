@@ -1,0 +1,52 @@
+<template id='bm_extension_bookmark'>
+	<style>
+		*{
+			margin: 0px;
+			padding: 0px;
+		}
+		.content{
+			text-align: left;
+			position: fixed;
+			z-index: 10000;
+			top: 0px;
+			left: 0px;
+			border-bottom: 3px black dashed;
+			background: #FFF;
+			width: 100%;
+			font-family: "Open Sans", "Arial", "Helvetica";
+			font-size: 12px;
+			padding: 5px 10px;
+		}
+		.content h1{
+			font-size: 14px;
+			margin-bottom: 2px;
+		}			
+		.content input{
+			padding: 2px 4px;
+		}
+		.content .left{
+			float: left;
+		}
+		.content .sec_two{
+			margin-top: 12px;
+			margin-left: 20px;
+		}
+		span{
+			color: #4AC930;
+		}
+		span.red{
+			color: #C93030;
+		}
+	</style>
+	<div class="content">
+		<div class="left sec_one">
+			<h1>Bookmark this Page</h1>
+			<input type='text' placeholder='Notes'/>
+		</div>
+		<div class="left sec_two">
+			Press <span>&lt;enter&gt;</span> to save<br/>Press <span class='red'>&lt;esc&gt;</span> to exit
+		</div>
+	</div>
+</template>
+
+<div id="bm_extension_shadow_root"></div>
