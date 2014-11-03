@@ -82,7 +82,7 @@ $(document).on("keyup", function(e){
 });
 
 chrome.runtime.sendMessage({msg: "fetch_html"}, function(response){
-	document.body.innerHTML += response.html;
+	$(document.body).append(response.html); //using innerHtml screws up events
 	var temp = document.querySelector("#bm_extension_bookmark");
 	shadow_root = document.querySelector("#bm_extension_shadow_root");
 	shadow_root.createShadowRoot().appendChild(document.importNode(temp.content, true));

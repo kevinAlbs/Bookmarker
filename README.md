@@ -12,9 +12,10 @@ Since this is a personal bookmarking system, there is no user management current
 	+ Make popup shortcut Shift+qq
 - Data import from Kippt
 - Provide good feedback + error messages on AJAX and prompt refresh on error
+- Fix: the front-end events fail when the extension is enabled
 
 ##Future Goals
-- I'm thinking that I should redo the front-end to have a complete copy of all bookmarks, and do all changes locally. Then the changes can be pushed to the server in the background without impeding performance (i.e. switching categories will not depend on another API request). This is probably similar to what Google Docs does (very responsive UI).
+- [done] I'm thinking that I should redo the front-end to have a complete copy of all bookmarks, and do all changes locally. Then the changes can be pushed to the server in the background without impeding performance (i.e. switching categories will not depend on another API request). This is probably similar to what Google Docs does (very responsive UI).
 - Add an easy way to import bookmarks from other services (via copy paste of XML/JSON)
 - Tempted to remove search in favor of user going to 'All' section and using ctrl-f
 
