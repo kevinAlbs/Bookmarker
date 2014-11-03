@@ -30,16 +30,15 @@ var model = (function(){
 	});
 	
 	function addAjax(param, msg){
+		/* Generalize this method to either send actual ajax requests or requests to the background page to update storage.sync */
 		param.complete = ajaxComplete;
 		$.ajax(param);
 		ajaxRequests++;
 		showStatus("Background requests in progress");
-		//$("#loader").show();
 	}
 	function ajaxComplete(){
 		ajaxRequests--;
 		if(ajaxRequests == 0){
-			//$("#loader").hide();
 			showStatus(false);
 		}
 	}

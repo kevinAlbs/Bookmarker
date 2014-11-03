@@ -25,6 +25,7 @@ function fetchHtml(callback){
 }
 
 
+/* add the same methods as the PHP API for bookmarks and categories */
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		if (request.msg == "fetch_url"){
