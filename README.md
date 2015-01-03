@@ -16,6 +16,7 @@ I think a compromise is to use the synchronized local storage for now.
 - Tempted to remove search in favor of user going to 'All' section and using ctrl-f
 - Add manual bookmarking on front-end
 - Add authentication settings page for extension
+- Add authentication to bookmark injection
 
 Notes
 - All = -2, Queue category = -1, General category = 0

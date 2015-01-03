@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      #container{
+        width: 400px;
+        margin: 10px auto;
+      }
+      .row{
+        margin-bottom: 10px;
+      }
+      .row label{
+        width: 100px;
+        display: inline-block;
+      }
+      #feedback{
+        background: #EEE;
+        padding: 5px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="container">
+    <h1>Bookmarker Options</h1>
+    <p id="feedback"></p>
+    <h2>Authentication</h2>
+    <p>If this server has accounts enabled, enter in your credentials here</p>
+    <form name="auth">
+      <div class="row">
+        <label>Username</label><input type="text" name="username"/>
+      </div>
+      <div class="row">
+        <label>Password</label><input type="password" name="password"/>
+      </div>
+      <div class="row">
+        <input type="submit" value="Log in" />
+      </div>
+    </form>
+    <p>If you do not have an account, <a href="">register here</a></p>
+
+    <h2>Server Settings</h2>
+    <form name="server">
+      <div class="row">
+        <label>Server URL</label><input type="url" name="url" />
+      </div>
+      <div class="row">
+        <input type="submit" value="Update" />
+      </div>
+    </form>
+  </div>
+  <script src="jquery.js"></script>
+  <script src="options.js"></script>
+  </body>
+</html>

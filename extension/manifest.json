@@ -13,7 +13,9 @@
 	"background" : {
 		"scripts" : ["jquery.js", "background.js"]
 	},
+	"options_page" : "options.html",
 	"permissions" : [
-		"tabs"
+		"tabs",
+		"storage"
 	]
 }
