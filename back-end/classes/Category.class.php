@@ -13,7 +13,8 @@ class Category extends API{
 		return static::$instance;
 	}
 	public function fetch(){
-		$results = DB::getInstance()->getCategories();
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
+		$results = DB::getInstance()->getCategories($user_id);
 		echo '{"results": [';
 		$first = true;
 		while($row = mysqli_fetch_assoc($results)){
@@ -25,21 +26,24 @@ class Category extends API{
 	}
 
 	public function add(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$catName = $this->reqParam("category_name", "Category name not passed");
 		//this is the name
-		$id = DB::getInstance()->addCategory($catName);
+		$id = DB::getInstance()->addCategory($catName, $user_id);
 		echo '{"insert_id": ' . $id . '}';
 	}
 	public function rename(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$catId = $this->reqParam("category", "Category id not passed");
 		$catName = $this->reqParam("category_name", "Category name not passed");
-		DB::getInstance()->renameCategory($catId, $catName);
+		DB::getInstance()->renameCategory($catId, $catName, $user_id);
 		echo $this->success();
 	}
 	//Deletes category by moving them all to general. General is not allowed to be deleted.
 	public function delete(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$catId = intval($this->reqParam("category", "Category id not passed"));
-		DB::getInstance()->deleteCategory($catId);
-		echo $this->success();	
+		DB::getInstance()->deleteCategory($catId, $user_id);
+		echo $this->success();
 	}
 }

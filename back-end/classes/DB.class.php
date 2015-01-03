@@ -1,5 +1,10 @@
 <?php
 require_once("config.php");
+
+/*
+Default user id is 0.
+*/
+
 class DB{
 	private $cxn = NULL;
 	private static $instance = NULL;
@@ -20,27 +25,15 @@ class DB{
 		throw new Exception("Database error: " . mysqli_error($this->cxn));
 	}
 
-	public function insertBookmark($url, $title, $notes, $user_id=false){
-		$q = "INSERT INTO bookmark (`url`, `title`, `notes`, `date_added`";
-		if($user_id !== false){
-			$q .= ",`user_id`";
-		}
-		$q .= ") VALUES('%s', '%s', '%s', NOW()";
-		if($user_id !== false){
-			$q .= ",%d)";
-			$q = sprintf($q, $this->esc($url), $this->esc($title), $this->esc($notes), intval($user_id));
-		} else {
-			$q .= ")";
-			$q = sprintf($q, $this->esc($url), $this->esc($title), $this->esc($notes));
-		}
-
+	public function insertBookmark($url, $title, $notes, $user_id=0){
+		$q = sprintf("INSERT INTO bookmark (`url`, `title`, `notes`, `date_added`, `user_id`) VALUES('%s', '%s', '%s', NOW(), %d)", $this->esc($url), $this->esc($title), $this->esc($notes), intval($user_id));
 		if(!mysqli_query($this->cxn, $q)){
 			$this->dbErr();
 		}
 		return mysqli_insert_id($this->cxn);
 	}
 
-	public function updateBookmark($id, $url=NULL, $title=NULL, $notes=NULL, $category=NULL){
+	public function updateBookmark($id, $url=NULL, $title=NULL, $notes=NULL, $category=NULL, $user_id=0){
 		$qStr = "UPDATE bookmark SET ";
 		if($url != NULL){
 			$qStr .= sprintf("url='%s',", $this->esc($url));
@@ -61,11 +54,13 @@ class DB{
 			throw new Exception("No update values passed");
 		}
 		$qStr .= " WHERE `id`=" . intval($id);
+		$qStr .= " AND `user_id`=" . intval($user_id);
 		if(!mysqli_query($this->cxn, $qStr)){
 			$this->dbErr();
 		}
 	}
-	public function updateBookmarkSet($ids, $url=NULL, $title=NULL, $notes=NULL, $category=NULL){
+
+	public function updateBookmarkSet($ids, $url=NULL, $title=NULL, $notes=NULL, $category=NULL, $user_id=0){
 		$qStr = "UPDATE bookmark SET ";
 		if($url != NULL){
 			$qStr .= sprintf("url='%s',", $this->esc($url));
@@ -89,29 +84,36 @@ class DB{
 			$ids[$i] = intval($ids[$i]);
 		}
 		$qStr .= " WHERE `id` IN (" . implode(",", $ids) . ")";
+		$qStr .= " AND `user_id`=" . intval($user_id);
 		if(!mysqli_query($this->cxn, $qStr)){
 			$this->dbErr();
 		}
 	}
-	public function deleteBookmarkSet($ids){
+
+	public function deleteBookmarkSet($ids, $user_id=0){
 		for($i = 0; $i < sizeof($ids); $i++){
 			$ids[$i] = intval($ids[$i]);
 		}
-		if(!mysqli_query($this->cxn, "DELETE FROM bookmark WHERE `id` IN (" . implode(",", $ids) . ")")){
+		$q = "DELETE FROM bookmark WHERE `id` IN (" . implode(",", $ids) . ")";
+		$q .= " AND `user_id`=" . intval($user_id);
+		if(!mysqli_query($this->cxn, $q)){
 			$this->dbErr();
 		}
 	}
-	public function deleteBookmark($id){
-		if(!mysqli_query($this->cxn, sprintf("DELETE FROM bookmark WHERE `id`=%d", intval($id)))){
+	public function deleteBookmark($id, $user_id=0){
+		$q = sprintf("DELETE FROM bookmark WHERE `id`=%d", intval($id));
+		$q .= " AND `user_id`=" . intval($user_id);
+		if(!mysqli_query($this->cxn, $q)){
 			$this->dbErr();
 		}
 	}
 
-	public function getBookmarks($category=NULL){
-		$qStr = "SELECT * FROM bookmark";
+	public function getBookmarks($category=NULL, $user_id=0){
+		$qStr = "SELECT * FROM bookmark WHERE `user_id`=" . intval($user_id);
 		if($category !== NULL){
-			$qStr .= " WHERE `category`=" . intval($category) ."";
+			$qStr .= " AND `category`=" . intval($category);
 		}
+
 		$qStr .= " ORDER BY `date_added` DESC";
 		if(!$results = mysqli_query($this->cxn, $qStr)){
 			$this->dbErr();
@@ -119,32 +121,35 @@ class DB{
 		return $results;
 	}
 
-	public function addCategory($name){
-		if(!mysqli_query($this->cxn, sprintf("INSERT INTO category (`name`) VALUES('%s')", $name))){
+	public function addCategory($name, $user_id=0){
+		$q = sprintf("INSERT INTO category (`name`, `user_id`) VALUES('%s', %d)", $this->esc($name), intval($user_id));
+		if(!mysqli_query($this->cxn, $q)){
 			$this->dbErr();
 		}
 		return mysqli_insert_id($this->cxn);
 	}
-	public function renameCategory($id, $newName){
-		if(!mysqli_query($this->cxn, sprintf("UPDATE category SET `name`= '%s' WHERE `id`=%d", $newName, $id))){
+	public function renameCategory($id, $newName,$user_id=0){
+		$q = sprintf("UPDATE category SET `name`= '%s' WHERE `id`=%d AND `user_id`=%d", $this->esc($newName), $id, $user_id);
+		if(!mysqli_query($this->cxn, $q)){
 			$this->dbErr();
 		}
 	}
-	public function deleteCategory($id){
+	public function deleteCategory($id, $user_id=0){
 		$id = intval($id);
 		//queue category is -1, general category is 0
 
 		//delete bookmarks from this category
-		if(!mysqli_query($this->cxn, sprintf("DELETE FROM bookmark WHERE `category`=%d", $id))){
+		if(!mysqli_query($this->cxn, sprintf("DELETE FROM bookmark WHERE `category`=%d AND `user_id`=%d", $id, $user_id))){
 			$this->dbErr();
 		}
 
-		if(!mysqli_query($this->cxn, sprintf("DELETE FROM category WHERE `id`=%d", $id))){
+		if(!mysqli_query($this->cxn, sprintf("DELETE FROM category WHERE `id`=%d AND `user_id`=%d", $id, $user_id))){
 			$this->dbErr();
 		}
 	}
-	public function getCategories(){
-		$results = mysqli_query($this->cxn, "SELECT * FROM category");
+	public function getCategories($user_id=0){
+		$q = sprintf("SELECT * FROM category WHERE `user_id`=%d", $user_id);
+		$results = mysqli_query($this->cxn, $q);
 		if(!$results) $this->dbErr();
 		return $results;
 	}

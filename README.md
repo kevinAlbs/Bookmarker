@@ -14,9 +14,11 @@ I think a compromise is to use the synchronized local storage for now.
 ##Future Goals
 - Add an easy way to import bookmarks from other services (via copy paste of XML/JSON)
 - Tempted to remove search in favor of user going to 'All' section and using ctrl-f
-- Add manual bookmark adding
+- Add manual bookmarking on front-end
+- Add authentication settings page for extension
 
 Notes
 - All = -2, Queue category = -1, General category = 0
+- Default user has ID 0.
 - Doing a dynamic sorting with both manual sorting and sorting by date may be very difficult. Perhaps the simplest way is to make everything manual, and on insert, set the next to the root, etc.
 - Use PDO

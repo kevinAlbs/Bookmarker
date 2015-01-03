@@ -37,11 +37,7 @@ class Bookmark extends API{
 	}
 
 	public function save(){
-		$user_id = false;
-		if(ACCOUNTS_ENABLED){
-			$user_id = $this->reqAuth();
-		}
-
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$url = $this->reqParam("url", "Page URL not passed");
 		$title = $this->reqParam("title", "Page title not passed");
 		$notes = $this->optParam("notes", "");
@@ -53,42 +49,46 @@ class Bookmark extends API{
 
 	//should check integrity (i.e. that the category exists)
 	public function archive(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$id = $this->reqParam("id", "Bookmark id not passed");
 		$catId = intval($this->optParam("category", -1));
 
-		DB::getInstance()->updateBookmark($id, NULL, NULL, NULL, $catId);
+		DB::getInstance()->updateBookmark($id, NULL, NULL, NULL, $catId, $user_id);
 		$this->success();
 	}
 	public function archiveMultiple(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$idList = $this->reqParam("idList", "Bookmark id list not passed");
 		$catId = $this->reqParam("category", "Category id not passed");
 		$ids = explode("|", $idList);
-		DB::getInstance()->updateBookmarkSet($ids, NULL, NULL, NULL, $catId);
+		DB::getInstance()->updateBookmarkSet($ids, NULL, NULL, NULL, $catId, $user_id);
 		$this->success();
 	}
 
 	public function deleteMultiple(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$idList = $this->reqParam("idList", "Bookmark id list not passed");
 		$ids = explode("|", $idList);
-		DB::getInstance()->deleteBookmarkSet($ids);
+		DB::getInstance()->deleteBookmarkSet($ids, $user_id);
 		$this->success();
 	}
 
 	public function delete(){
-		echo "Deleting bookmark";
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		//id should be first data item
 		$id = $this->reqParam("id", "Bookmark id not passed");
-		DB::getInstance()->deleteBookmark($id);
+		DB::getInstance()->deleteBookmark($id, $user_id);
 		echo $this->success();
 	}
 
 	public function fetch(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$category = $this->optParam("category", NULL);
 		if($category == -2){
 			//all category
 			$category = NULL;
 		}
-		$results = DB::getInstance()->getBookmarks($category);
+		$results = DB::getInstance()->getBookmarks($category, $user_id);
 		$this->output($results);
 	}
 

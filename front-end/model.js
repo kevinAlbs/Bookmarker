@@ -20,18 +20,7 @@ var model = (function(){
 		password : "",
 		logged_in : false
 	};
-	//initialize category list
-	addAjax({
-		url: root + "category/fetch",
-		dataType: "json",
-		success: function(data){
-			var cats = data.results;
-			for(var i = 0; i < cats.length; i++){
-				catCache[cats[i].id] = cats[i].name;
-			}
-			showCategories(data);
-		}
-	});
+
 
 	function addAjax(param, msg){
 		/* Generalize this method to either send actual ajax requests or requests to the background page to update storage.sync */
@@ -77,6 +66,7 @@ var model = (function(){
 			}
 		}
 	}
+
 	that.deleteCategory = function(catId){
 		addAjax({
 			url: root + "category/delete",
@@ -240,9 +230,7 @@ var model = (function(){
 		});
 	};
 
-	that.init = function(allBookmarks){
-		console.log("Initializing");
-		console.log(allBookmarks);
+	function initHelper(allBookmarks){
 		//populate cache
 		var bms = allBookmarks.results;
 		bookmarkCache.lookup = [];
@@ -255,6 +243,34 @@ var model = (function(){
 			}
 			addToCache(bms[i], cat);
 		}
+	}
+
+	that.init = function(allBookmarks){
+		if(!allBookmarks){
+			console.log("Initializing with ajax option");
+			addAjax({
+				url : root + "bookmark/fetch",
+				dataType : "json",
+				success : initHelper
+			});
+		} else {
+			console.log("Initializing");
+			initHelper(allBookmarks);
+		}
+
+		//initialize category list
+		addAjax({
+			url: root + "category/fetch",
+			dataType: "json",
+			success: function(data){
+				console.log(data);
+				var cats = data.results;
+				for(var i = 0; i < cats.length; i++){
+					catCache[cats[i].id] = cats[i].name;
+				}
+				showCategories(data);
+			}
+		});
 	};
 
 	return that;

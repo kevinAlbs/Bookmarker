@@ -101,10 +101,10 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
       echo "showUserWindow();";
     } else {
       echo "model.init(" . file_get_contents($API_URL . "bookmark/fetch") . ")";
+      echo "switchCategory(C.QUEUE);";
     }
     ?>
-		//fetch all bookmarks
-		switchCategory(C.QUEUE);
+
 	</script>
 </body>
 </html>

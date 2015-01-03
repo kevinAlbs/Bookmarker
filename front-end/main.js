@@ -79,6 +79,7 @@ function showUserWindow(){
 			if(success){
 				alert("Welcome " + u + "!");
 				hideUserWindow();
+				model.init();
 			} else{
 				alert("Could not register, try another name");
 			}
@@ -93,6 +94,7 @@ function showUserWindow(){
 			if(data.results == "success"){
 				alert("Welcome " + u + "!");
 				hideUserWindow();
+				model.init();
 			} else{
 				alert("Could not login");
 			}
@@ -283,7 +285,6 @@ function catClicked(){
 	}
 	else{
 		//archive to that category
-		console.log("archiving");
 		if(catId == C.ALL){
 			alert("Cannot categorize to 'all'");
 			return;
