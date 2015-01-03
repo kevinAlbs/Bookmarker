@@ -20,8 +20,21 @@ class DB{
 		throw new Exception("Database error: " . mysqli_error($this->cxn));
 	}
 
-	public function insertBookmark($url, $title, $notes){
-		if(!mysqli_query($this->cxn, sprintf("INSERT INTO bookmark (`url`, `title`, `notes`, `date_added`) VALUES('%s', '%s', '%s', NOW())", $this->esc($url), $this->esc($title), $this->esc($notes)))){
+	public function insertBookmark($url, $title, $notes, $user_id=false){
+		$q = "INSERT INTO bookmark (`url`, `title`, `notes`, `date_added`";
+		if($user_id !== false){
+			$q .= ",`user_id`";
+		}
+		$q .= ") VALUES('%s', '%s', '%s', NOW()";
+		if($user_id !== false){
+			$q .= ",%d)";
+			$q = sprintf($q, $this->esc($url), $this->esc($title), $this->esc($notes), intval($user_id));
+		} else {
+			$q .= ")";
+			$q = sprintf($q, $this->esc($url), $this->esc($title), $this->esc($notes));
+		}
+
+		if(!mysqli_query($this->cxn, $q)){
 			$this->dbErr();
 		}
 		return mysqli_insert_id($this->cxn);
@@ -134,5 +147,52 @@ class DB{
 		$results = mysqli_query($this->cxn, "SELECT * FROM category");
 		if(!$results) $this->dbErr();
 		return $results;
+	}
+
+	public function userExists($username){
+		$q = sprintf("SELECT `username` FROM user WHERE `username`='%s'", $this->esc($username));
+		$results = mysqli_query($this->cxn, $q);
+		if(!$results) $this->dbErr();
+		if(mysqli_num_rows($results) == 0){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public function addUser($username, $pass){
+		//check if username exists
+		if($this->userExists($username, $pass)){
+			throw new InvalidArgumentException("User " . $username . " already exists");
+		} else if(!$pass){
+			throw new InvalidArgumentException("Invalid password");
+		}
+		$q = sprintf("INSERT INTO user (`username`, `password`) VALUES('%s', sha1('%s'))", $username, $pass);
+		if(!mysqli_query($this->cxn, $q)){
+			$this->dbErr();
+		} else{
+			return true;
+		}
+	}
+
+	public function getUserId($username, $pass){
+		$q = sprintf("SELECT `user_id` FROM user WHERE `username`='%s' AND `password`=sha1('%s')", $this->esc($username), $this->esc($pass));
+		$results = mysqli_query($this->cxn, $q);
+		if(!$results) $this->dbErr();
+		if(mysqli_num_rows($results) == 0){
+			throw new Exception("User does not exist");
+		} else {
+			$arr = mysqli_fetch_assoc($results);
+			return $arr['user_id'];
+		}
+	}
+	public function authenticateUser($username, $pass){
+		//feels weird, but reduces duplication
+		try{
+			$this->getUserId($username, $pass);
+			return true;
+		} catch(Exception $e){
+			return false;
+		}
 	}
 }

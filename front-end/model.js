@@ -15,7 +15,11 @@ var model = (function(){
 		'0' : 'General'
 	};
 	var ajaxRequests = 0;//semaphore type
-
+	var user = {
+		name : "",
+		password : "",
+		logged_in : false
+	};
 	//initialize category list
 	addAjax({
 		url: root + "category/fetch",
@@ -28,10 +32,18 @@ var model = (function(){
 			showCategories(data);
 		}
 	});
-	
+
 	function addAjax(param, msg){
 		/* Generalize this method to either send actual ajax requests or requests to the background page to update storage.sync */
 		param.complete = ajaxComplete;
+		//if user is logged in, append credentials to data
+		if(user.logged_in){
+			if(!param.hasOwnProperty("data")){
+				param.data = {};
+			}
+			param.data.auth_username = user.name;
+			param.data.auth_password = user.password;
+		}
 		$.ajax(param);
 		ajaxRequests++;
 		showStatus("Background requests in progress");
@@ -139,7 +151,7 @@ var model = (function(){
 			method: "post",
 			data: {
 				idList: selectedString,
-				ispost: true 
+				ispost: true
 			}
 		});
 	}
@@ -174,7 +186,7 @@ var model = (function(){
 			data: {
 				idList: selectedString,
 				category: toCat,
-				ispost: true 
+				ispost: true
 			}
 		});
 	}
@@ -183,7 +195,51 @@ var model = (function(){
 			return "Not loaded";
 		}
 		return catCache[catId];
-	}
+	};
+
+	that.tryLogin = function(username, password, callback){
+		addAjax({
+			url: root + "user/authenticate",
+			method: "post",
+			data: {
+				username : username,
+				password: password,
+				ispost: true
+			},
+			dataType: "json",
+			success: function(data){
+				if(data.results == "success"){
+					//set user credentials
+					user.name = username;
+					user.password = password;
+					user.logged_in = true;
+				}
+				callback.call(window, data);
+			}
+		})
+	};
+	that.tryRegister = function(username, password, captcha, callback){
+		addAjax({
+			url: root + "user/add",
+			method: "post",
+			data: {
+				username : username,
+				password: password,
+				ispost: true
+			},
+			dataType: "json",
+			success: function(data){
+				if(data.results == "success"){
+					//set user credentials
+					user.name = username;
+					user.password = password;
+					user.logged_in = true;
+				}
+				callback.call(window, data);
+			}
+		});
+	};
+
 	that.init = function(allBookmarks){
 		console.log("Initializing");
 		console.log(allBookmarks);
@@ -199,7 +255,7 @@ var model = (function(){
 			}
 			addToCache(bms[i], cat);
 		}
-	}
+	};
 
 	return that;
 }());

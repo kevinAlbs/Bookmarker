@@ -6,7 +6,7 @@ Since this is a personal bookmarking system, there is no user management current
 ##Immediate Goals
 - I would like the default to store things locally and use chromes internal synchronization (i.e. storage.sync). However, updating this would result in total rewrite of all bookmarks on any change, which can be expensive. I would like to use IndexedDB, but this is not synchronized. Alternatively, I can have the external PHP API as the default, and use the person's email as the default username (and no password), but this is highly insecure, and I'd rather have this as an explicit 'opt-in' option.
 
-I think a comprimise is to use the synchronized local storage for now.
+I think a compromise is to use the synchronized local storage for now.
 
 - Reordering of lists and bookmarks
 - Provide good feedback + error messages on AJAX and prompt refresh on error
@@ -14,6 +14,7 @@ I think a comprimise is to use the synchronized local storage for now.
 ##Future Goals
 - Add an easy way to import bookmarks from other services (via copy paste of XML/JSON)
 - Tempted to remove search in favor of user going to 'All' section and using ctrl-f
+- Add manual bookmark adding
 
 Notes
 - All = -2, Queue category = -1, General category = 0

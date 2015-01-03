@@ -4,7 +4,7 @@ require_once("config.php");
 
 function run(){
 	global $API_CLASSES, $API_FUNCTIONS;
-	
+
 	$parts = isset($_SERVER['PATH_INFO']) ? explode('/', $_SERVER['PATH_INFO']) : array();
 	$class = "";
 	$fn = "";
@@ -32,11 +32,10 @@ function run(){
 		//load class (singleton) and check if function exists
 		$className = ucfirst($class);
 		require_once("classes/" .  $className . ".class.php");
-		try{
+		try {
 			$obj = $className::getInstance($reqType, $data);
 			$obj->$fn();
-		}
-		catch(Exception $e){
+		} catch(Exception $e){
 			echo "<b>".$e->getMessage()."</b>";
 		}
 	}

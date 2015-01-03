@@ -37,12 +37,17 @@ class Bookmark extends API{
 	}
 
 	public function save(){
+		$user_id = false;
+		if(ACCOUNTS_ENABLED){
+			$user_id = $this->reqAuth();
+		}
+
 		$url = $this->reqParam("url", "Page URL not passed");
 		$title = $this->reqParam("title", "Page title not passed");
 		$notes = $this->optParam("notes", "");
 
 		//save in database, return insert_id
-		$id = DB::getInstance()->insertBookmark($url, $title, $notes);
+		$id = DB::getInstance()->insertBookmark($url, $title, $notes, $user_id);
 		echo '{"insert_id": ' . $id . '}';
 	}
 
@@ -87,5 +92,5 @@ class Bookmark extends API{
 		$this->output($results);
 	}
 
-	
+
 }

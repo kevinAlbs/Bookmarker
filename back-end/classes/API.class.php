@@ -1,4 +1,5 @@
 <?php
+require_once("DB.class.php");
 class API{
 	protected $reqType = "GET";
 	protected $data = array();
@@ -30,5 +31,11 @@ class API{
 			echo ', "message": "' . $msg .'"';
 		}
 		echo '}';
+	}
+
+	protected function reqAuth(){
+		$u = $this->reqParam("auth_username", "Username not passed");
+		$p = $this->reqParam("auth_password", "Password not passed");
+		return DB::getInstance()->getUserId($u, $p);
 	}
 }

@@ -61,6 +61,45 @@ function prettyDate(dateStr){
 	}
 	return pretty;
 }
+
+function hideUserWindow(){
+	$("#user").fadeOut();
+}
+function showUserWindow(){
+	$("#user").show();
+	/*
+	do not allow user to get past login window
+	until they log in or register successfully
+	*/
+	$("#user .register form").on("submit", function(e){
+		e.preventDefault();
+		var u = $(this).find("[name=username]").val();
+		var p = $(this).find("[name=password]").val();
+		model.tryRegister(u, p, null, function(success){
+			if(success){
+				alert("Welcome " + u + "!");
+				hideUserWindow();
+			} else{
+				alert("Could not register, try another name");
+			}
+		});
+	});
+
+	$("#user .login form").on("submit", function(e){
+		e.preventDefault();
+		var u = $(this).find("[name=username]").val();
+		var p = $(this).find("[name=password]").val();
+		model.tryLogin(u, p, function(data){
+			if(data.results == "success"){
+				alert("Welcome " + u + "!");
+				hideUserWindow();
+			} else{
+				alert("Could not login");
+			}
+		});
+	});
+}
+
 function showStatus(msg){
 	if(!msg){
 		$("#status_wrapper").fadeOut(250);
@@ -159,12 +198,11 @@ function toggleBox(e){
 			$(this).addClass("active");
 		}
 	}
-	
+
 	refreshSelected();
 }
 
 function onButton(){
-	console.log("Button");
 	var selected = $("#bm_list li:has(.box.active)");
 	var selectedList = [];
 	for(var i = 0; i < selected.size(); i++){
@@ -245,7 +283,7 @@ function catClicked(){
 	}
 	else{
 		//archive to that category
-		console.log("archiving");	
+		console.log("archiving");
 		if(catId == C.ALL){
 			alert("Cannot categorize to 'all'");
 			return;
@@ -260,13 +298,13 @@ function catClicked(){
 		refreshSelected();
 		model.archiveSelected(selectedList, curCat, catId);
 		//Reshow current list
-		
+
 		if(curCat != C.ALL){
 			selected.detach();//should not remove if viewing everything anyway
 		}
 
 	}
-	
+
 }
 
 function onKeyDown(e){

@@ -19,6 +19,29 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
   <![endif]-->
 </head>
 <body>
+  <div id="user">
+    <div class="bg">
+      <div class="box">
+        <div class="login">
+          <h2>Log in</h2>
+          <form class="nice">
+            <div class="row"><label>Username</label><input name="username" type="text"></input></div>
+            <div class="row"><label>Password</label><input name="password" type="password"></input></div>
+            <div class="row"><input type="submit" value="Log in"></input></div>
+          </form>
+        </div>
+        <div class="register">
+          <h2>Register</h2>
+          <form class="nice">
+            <div class="row"><label>Username</label><input name="username" type="text"></input></div>
+            <div class="row"><label>Password</label><input name="password" type="password"></input></div>
+            <div class="row">Soon to be captcha</div>
+            <div class="row"><input type="submit" value="Create User"></input></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 	<div id="container">
 		<aside id="sidebar">
 			<input type="text" id="search" value="search"/>
@@ -43,7 +66,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 			</ul>
 		</div>
 	</div>
-	
+
 	<script type="text/html" id="category-template">
 	<li data-content="catname" data-template-bind='[{"attribute": "data-id", "value" : "catid"}]'>
 	</li>
@@ -72,8 +95,15 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	<script src="main.js"></script>
 	<script src="model.js"></script>
 	<script>
+    <?php
+    if(file_get_contents($API_URL . "user/isEnabled") == "true"){
+      //show user modal window
+      echo "showUserWindow();";
+    } else {
+      echo "model.init(" . file_get_contents($API_URL . "bookmark/fetch") . ")";
+    }
+    ?>
 		//fetch all bookmarks
-		model.init(<?php echo file_get_contents($API_URL . "bookmark/fetch"); ?>);
 		switchCategory(C.QUEUE);
 	</script>
 </body>
