@@ -1,5 +1,5 @@
 <?php
-$API_URL = "http://localhost/bookmarks/back-end/index.php/";
+define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,6 +22,7 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
   <div id="user">
     <div class="bg">
       <div class="box">
+        <p class="feedback"></p>
         <div class="login">
           <h2>Log in</h2>
           <form class="nice">
@@ -95,14 +96,23 @@ $API_URL = "http://localhost/bookmarks/back-end/index.php/";
 	<script src="main.js"></script>
 	<script src="model.js"></script>
 	<script>
+    <?php echo "var API_ROOT = '" . API_ROOT . "';"; ?>
+    
     <?php
-    if(file_get_contents($API_URL . "user/isEnabled") == "true"){
-      //show user modal window
-      echo "showUserWindow();";
-    } else {
-      echo "model.init(" . file_get_contents($API_URL . "bookmark/fetch") . ")";
-      echo "switchCategory(C.QUEUE);";
-    }
+    if(file_get_contents(API_ROOT . "user/isEnabled") == "true"):
+    ?>
+
+    //show user modal window
+    userWindowInit();
+
+    <?php
+    else:
+    ?>
+
+    model.init(<?php echo file_get_contents($API_URL . "bookmark/fetch"); ?>);
+
+    <?php
+    endif;
     ?>
 
 	</script>

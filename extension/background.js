@@ -37,6 +37,25 @@ chrome.runtime.onMessage.addListener(
 			} else {
 				fetchHtml(function(){sendResponse({html: drawer_html});});
 			}
+		} else if(request.msg == "save_url"){
+			//get credentials and server root
+			chrome.storage.sync.get({
+				server: "",
+				username: "",
+				password: ""
+			}, function(stg){
+				//try to save
+				var api_root = stg.server + "back-end/index.php/";
+				$.ajax({
+					url: api_root + "bookmark/save",
+					method: "post",
+					data: request.data,
+					complete: function(resp){
+						sendResponse(resp);
+					}
+				});
+			});
+			return true;
 		}
 });
 fetchHtml();

@@ -207,6 +207,11 @@ div.content{
 	border-bottom: 1px black solid;
 	margin-bottom: 10px;
 }
+#user .feedback{
+	background: #EEE;
+	padding: 5px 10px;
+	display: none;
+}
 form.nice .row{
 	margin-bottom: 10px;
 }

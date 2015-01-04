@@ -69,7 +69,7 @@ var model = (function(){
 
 	that.deleteCategory = function(catId){
 		addAjax({
-			url: root + "category/delete",
+			url: API_ROOT + "category/delete",
 			data: {
 				ispost: true,
 				category: catId
@@ -83,7 +83,7 @@ var model = (function(){
 	};
 	that.addCategory = function(catName){
 		addAjax({
-				url: root + "category/add",
+				url: API_ROOT + "category/add",
 				data: {
 					ispost: true,
 					category_name: catName
@@ -98,7 +98,7 @@ var model = (function(){
 	};
 	that.renameCategory = function(catName, catId){
 		addAjax({
-			url: root + "category/rename",
+			url: API_ROOT + "category/rename",
 			data: {
 				ispost: true,
 				category_name: catName,
@@ -137,7 +137,7 @@ var model = (function(){
 
 		}
 		addAjax({
-			url: root + "bookmark/deleteMultiple",
+			url: API_ROOT + "bookmark/deleteMultiple",
 			method: "post",
 			data: {
 				idList: selectedString,
@@ -171,7 +171,7 @@ var model = (function(){
 			selectedString += idList[i];
 		}
 		addAjax({
-			url: root + "bookmark/archiveMultiple",
+			url: API_ROOT + "bookmark/archiveMultiple",
 			method: "post",
 			data: {
 				idList: selectedString,
@@ -189,7 +189,7 @@ var model = (function(){
 
 	that.tryLogin = function(username, password, callback){
 		addAjax({
-			url: root + "user/authenticate",
+			url: API_ROOT + "user/authenticate",
 			method: "post",
 			data: {
 				username : username,
@@ -210,7 +210,7 @@ var model = (function(){
 	};
 	that.tryRegister = function(username, password, captcha, callback){
 		addAjax({
-			url: root + "user/add",
+			url: API_ROOT + "user/add",
 			method: "post",
 			data: {
 				username : username,
@@ -243,27 +243,26 @@ var model = (function(){
 			}
 			addToCache(bms[i], cat);
 		}
+		//switch category to QUEUE
+		switchCategory(C.QUEUE);
 	}
 
 	that.init = function(allBookmarks){
 		if(!allBookmarks){
-			console.log("Initializing with ajax option");
 			addAjax({
-				url : root + "bookmark/fetch",
+				url : API_ROOT + "bookmark/fetch",
 				dataType : "json",
 				success : initHelper
 			});
 		} else {
-			console.log("Initializing");
 			initHelper(allBookmarks);
 		}
 
 		//initialize category list
 		addAjax({
-			url: root + "category/fetch",
+			url: API_ROOT + "category/fetch",
 			dataType: "json",
 			success: function(data){
-				console.log(data);
 				var cats = data.results;
 				for(var i = 0; i < cats.length; i++){
 					catCache[cats[i].id] = cats[i].name;

@@ -3,7 +3,7 @@ var C = {
 	'QUEUE': '-1',
 	'GENERAL' : '0'
 };
-var root = "http://localhost/bookmarks/back-end/index.php/";
+//API_ROOT is defined as the url to back-end/index.php
 var listStart = -1, oldPrev = -1;//list reordering variables
 var curCat = C.QUEUE;//queue
 var shiftDown = false;
@@ -62,10 +62,25 @@ function prettyDate(dateStr){
 	return pretty;
 }
 
-function hideUserWindow(){
-	$("#user").fadeOut();
+function userWindowFeedback(msg){
+	if(userWindowFeedback.timer != null){
+		window.clearTimeout(userWindowFeedback);
+	}
+	var el = $("#user .feedback");
+	userWindowFeedback.timer = window.setTimeout(function(){
+		el.fadeOut();
+	}, 10000);
+	el.html(msg).show();
 }
-function showUserWindow(){
+userWindowFeedback.timer = null;
+
+function userWindowLogin(){
+	$("#user").fadeOut();
+	model.init();
+	switchCategory(C.QUEUE);
+}
+
+function userWindowInit(){
 	$("#user").show();
 	/*
 	do not allow user to get past login window
@@ -77,11 +92,10 @@ function showUserWindow(){
 		var p = $(this).find("[name=password]").val();
 		model.tryRegister(u, p, null, function(success){
 			if(success){
-				alert("Welcome " + u + "!");
-				hideUserWindow();
-				model.init();
+				userWindowFeedback("Welcome " + u + "!");
+				userWindowLogin();
 			} else{
-				alert("Could not register, try another name");
+				userWindowFeedback("Could not register, try another name");
 			}
 		});
 	});
@@ -92,11 +106,10 @@ function showUserWindow(){
 		var p = $(this).find("[name=password]").val();
 		model.tryLogin(u, p, function(data){
 			if(data.results == "success"){
-				alert("Welcome " + u + "!");
-				hideUserWindow();
-				model.init();
+				userWindowFeedback("Welcome " + u + "!");
+				userWindowLogin();
 			} else{
-				alert("Could not login");
+				userWindowFeedback("Could not login");
 			}
 		});
 	});

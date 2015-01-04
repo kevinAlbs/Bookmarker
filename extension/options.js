@@ -17,6 +17,7 @@ function updateFields(){
   $("[name=username]").val(data.username);
   $("[name=password]").val(data.password);
   $("[name=url]").val(data.server);
+  $("a#register").attr("href", data.server + "front-end/");
 }
 
 $("form[name=auth]").on("submit", function(e){
@@ -44,6 +45,7 @@ $("form[name=auth]").on("submit", function(e){
           data.username = username;
           data.password = password;
           feedback("Logged in as '" + username + "'!");
+          updateFields();
         });
       } else {
         feedback("Incorrect username/password");
@@ -72,6 +74,7 @@ $("form[name=server]").on("submit", function(e){
   }, function(){
     data.server = serverUrl;
     feedback("Server url set to '" + serverUrl +  "'");
+    updateFields();
   })
 });
 

@@ -1,4 +1,3 @@
-var API_ROOT = "http://localhost/bookmarks/back-end/index.php/";
 var shadow_root = null, shadow_content = null;
 var qCount = 0;
 var canSave = false;
@@ -48,19 +47,12 @@ $(document).on("keyup", function(e){
 			canSave = false;
 			data.notes = shadow_content.querySelector("input").value.trim();
 			data.title = document.title;
+			data.auth_username = SETTINGS.username;
+			data.auth_password = SETTINGS.password;
 			shadow_content.style.background = "#97FF7A";
-  			$.ajax({
-  				url: API_ROOT + "bookmark/save",
-  				method: "post",
-  				data: data,
-  				success: function(){
-  					console.log("Saved");
-  					$(shadow_root).slideUp(250, reset);
-  				},
-  				complete: function(data){
-  					console.log(data);
-  				}
-  			});
+				chrome.runtime.sendMessage({msg: "save_url", data: data}, function(response) {
+					$(shadow_root).slideUp(250, reset);
+				});
 		}
 		else if(e.keyCode == keys.EXIT){
 			//exit
