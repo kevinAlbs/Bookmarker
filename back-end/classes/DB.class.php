@@ -22,7 +22,8 @@ class DB{
 		return mysqli_real_escape_string($this->cxn, $txt);
 	}
 	private function dbErr(){
-		throw new Exception("Database error: " . mysqli_error($this->cxn));
+		//log this -> mysqli_error($this->cxn);
+		throw new Exception("Internal database error");
 	}
 
 	public function insertBookmark($url, $title, $notes, $user_id=0){
@@ -185,7 +186,7 @@ class DB{
 		$results = mysqli_query($this->cxn, $q);
 		if(!$results) $this->dbErr();
 		if(mysqli_num_rows($results) == 0){
-			throw new Exception("User does not exist");
+			throw new Exception("Cannot find user with password");
 		} else {
 			$arr = mysqli_fetch_assoc($results);
 			return $arr['user_id'];

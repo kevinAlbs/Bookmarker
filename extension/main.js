@@ -24,6 +24,22 @@ function reset(){
 	qCount = 0;
 }
 
+function feedback(msg, show_link){
+	var h = msg;
+	if(show_link){
+		var src = chrome.extension.getURL("options.html");
+		h += "<br/>View <a target='_blank' href='" + src + "'>options page</a> for more info."
+	}
+	var f = shadow_content.querySelector(".feedback");
+	f.innerHTML = h;
+	f.style.display = "block";
+	window.clearTimeout(feedback.timer);
+	feedback.timer = window.setTimeout(function(){
+		f.style.display = none;
+	}, 10000);
+}
+feedback.timer = null;
+
 $(document).on("keydown", function(e){
 	if(e.keyCode == keys.HOLD){
 		shiftPressed = true;
@@ -47,12 +63,15 @@ $(document).on("keyup", function(e){
 			canSave = false;
 			data.notes = shadow_content.querySelector("input").value.trim();
 			data.title = document.title;
-			data.auth_username = SETTINGS.username;
-			data.auth_password = SETTINGS.password;
-			shadow_content.style.background = "#97FF7A";
-				chrome.runtime.sendMessage({msg: "save_url", data: data}, function(response) {
+
+			chrome.runtime.sendMessage({msg: "save_url", data: data}, function(response) {
+				if(response.results == "error"){
+					feedback(response.message, true);
+				} else {
+					shadow_content.style.background = "#d3ffca";
 					$(shadow_root).slideUp(250, reset);
-				});
+				}
+			});
 		}
 		else if(e.keyCode == keys.EXIT){
 			//exit

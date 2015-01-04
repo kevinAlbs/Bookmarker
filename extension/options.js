@@ -26,7 +26,7 @@ $("form[name=auth]").on("submit", function(e){
   var password = $(this).find("[name=password]").val();
   //authenticate to server
   $.ajax({
-    url: data.server + "user/authenticate",
+    url: data.server + "back-end/index.php/user/authenticate",
     method : "post",
     data : {
       username : username,

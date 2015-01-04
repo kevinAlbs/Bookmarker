@@ -247,6 +247,7 @@ var model = (function(){
 		switchCategory(C.QUEUE);
 	}
 
+	
 	that.init = function(allBookmarks){
 		if(!allBookmarks){
 			addAjax({

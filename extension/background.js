@@ -46,11 +46,14 @@ chrome.runtime.onMessage.addListener(
 			}, function(stg){
 				//try to save
 				var api_root = stg.server + "back-end/index.php/";
+				var params = request.data;
+				params.auth_username = stg.username;
+				params.auth_password = stg.password;
 				$.ajax({
 					url: api_root + "bookmark/save",
 					method: "post",
-					data: request.data,
-					complete: function(resp){
+					data: params,
+					success: function(resp){
 						sendResponse(resp);
 					}
 				});

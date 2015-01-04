@@ -26,9 +26,10 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
         <div class="login">
           <h2>Log in</h2>
           <form class="nice">
-            <div class="row"><label>Username</label><input name="username" type="text"></input></div>
-            <div class="row"><label>Password</label><input name="password" type="password"></input></div>
-            <div class="row"><input type="submit" value="Log in"></input></div>
+            <div class="row"><label>Username</label><input name="username" type="text"/></div>
+            <div class="row"><label>Password</label><input name="password" type="password"/></div>
+            <div class="row"><input name="remember" type="checkbox" id="remember1" checked/>&nbsp;<label for="remember1">Remember me</label></div>
+            <div class="row"><input type="submit" value="Log in"/></div>
           </form>
         </div>
         <div class="register">
@@ -37,6 +38,7 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
             <div class="row"><label>Username</label><input name="username" type="text"></input></div>
             <div class="row"><label>Password</label><input name="password" type="password"></input></div>
             <div class="row">Soon to be captcha</div>
+            <div class="row"><input name="remember" type="checkbox" id="remember2" checked/>&nbsp;<label for="remember2">Remember me</label></div>
             <div class="row"><input type="submit" value="Create User"></input></div>
           </form>
         </div>
@@ -45,7 +47,7 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
   </div>
 	<div id="container">
 		<aside id="sidebar">
-			<input type="text" id="search" value="search"/>
+			<!--<input type="text" id="search" value="search"/>-->
 			<ul id="cats">
 				<li data-id="-2" class='fixed'>All</li>
 				<li data-id="-1" class="fixed">Queue</li>
@@ -60,7 +62,13 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
 			</div>
 		</aside>
 		<div class="content">
-			<div id="topbar"><a class='button' href='settings.php'>Settings</a><span class='button' data-action='delete_cat'>Delete Category</span> <span class='button' data-action='rename_cat'>Rename Category</span></div>
+			<div id="topbar">
+        <!--<a class='button' href='settings.php'>Settings</a>-->
+        <!--<span class='button' data-action='quick_add'>Save Bookmark</span>-->
+        <span class='button' data-action='logout'>Logout</span>
+        <span class='button' data-action='delete_cat'>Delete Category</span>
+        <span class='button' data-action='rename_cat'>Rename Category</span>
+      </div>
 			<h1 id="category">Queue</h1>
 			<p id="none">No bookmarks found in category</p>
 			<ul id="bm_list">
@@ -97,19 +105,28 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
 	<script src="model.js"></script>
 	<script>
     <?php echo "var API_ROOT = '" . API_ROOT . "';"; ?>
-    
+
     <?php
     if(file_get_contents(API_ROOT . "user/isEnabled") == "true"):
     ?>
 
-    //show user modal window
-    userWindowInit();
+    //try to remember
+    tryRemember(function(resp){
+      if(resp.results == "error"){
+        //show user modal window
+        userWindowInit();
+      } else {
+        userWindowLogin();
+      }
+    });
 
+    //show log out button
+    $(".button[data-action=logout]").show();
     <?php
     else:
     ?>
 
-    model.init(<?php echo file_get_contents($API_URL . "bookmark/fetch"); ?>);
+    model.init(<?php echo file_get_contents(API_ROOT . "bookmark/fetch"); ?>);
 
     <?php
     endif;

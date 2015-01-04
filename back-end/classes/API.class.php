@@ -18,24 +18,19 @@ class API{
 	}
 
 	protected function success($msg = ""){
-		echo '{"results": "success"';//hmm..
-		if($msg != ""){
-			echo ', "message": "' . $msg .'"';
-		}
-		echo '}';
+		jsonMessage($msg, "success");
 	}
 
 	protected function error($msg = ""){
-		echo '{"results": "error"';//hmm..
-		if($msg != ""){
-			echo ', "message": "' . $msg .'"';
-		}
-		echo '}';
+		jsonMessage($msg, "error");
 	}
 
 	protected function reqAuth(){
 		$u = $this->reqParam("auth_username", "Username not passed");
 		$p = $this->reqParam("auth_password", "Password not passed");
+		if(!DB::getInstance()->authenticateUser($u, $p)){
+			throw new Exception("Cannot authenticate user");
+		}
 		return DB::getInstance()->getUserId($u, $p);
 	}
 }

@@ -13,6 +13,7 @@
 	"background" : {
 		"scripts" : ["jquery.js", "background.js"]
 	},
+	"web_accessible_resources": ["options.html"],
 	"options_page" : "options.html",
 	"permissions" : [
 		"tabs",

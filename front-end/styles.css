@@ -25,6 +25,9 @@ div.content{
 .button:hover{
 	text-decoration: underline;
 }
+.button[data-action=logout]{
+	display:none;
+}
 
 #bm_list{
 	list-style-type: none;

@@ -2,6 +2,14 @@
 header("Content-Type: application/json");
 require_once("config.php");
 
+function jsonMessage($msg = "", $results = "success"){
+	echo '{"results": "' . $results . '"';
+	if($msg != ""){
+		echo ', "message": "' . $msg .'"';
+	}
+	echo '}';
+}
+
 function run(){
 	global $API_CLASSES, $API_FUNCTIONS;
 
@@ -36,7 +44,7 @@ function run(){
 			$obj = $className::getInstance($reqType, $data);
 			$obj->$fn();
 		} catch(Exception $e){
-			echo "<b>".$e->getMessage()."</b>";
+			jsonMessage($e->getMessage(), "error");
 		}
 	}
 	else{

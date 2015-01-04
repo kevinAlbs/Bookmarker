@@ -7,12 +7,18 @@ Since this is a personal bookmarking system, there is no user management current
 ##Upcoming features/fixes
 - Add an easy way to import bookmarks from other services (via copy paste of XML/JSON)
 - Tempted to remove search in favor of user going to 'All' section and using ctrl-f
-- Add manual bookmarking on front-end
-- Add authentication to content script injection
 - Add check if page is already bookmarked
 - Add ability to edit notes and titles
 - Reordering of categories and bookmarks
 - Add easy installer
+- Add manual bookmarking on front-end
+
+##Before putting in chrome store
+- Add usage info page (shortcuts, installation, etc.)
+- Add captcha
+- Make icon
+- Add button
+- Add https
 
 ###Notes
 - All = -2, Queue category = -1, General category = 0

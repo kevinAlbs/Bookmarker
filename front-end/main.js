@@ -74,6 +74,31 @@ function userWindowFeedback(msg){
 }
 userWindowFeedback.timer = null;
 
+function remember(username, password){
+	//add to local storage
+	if(window.localStorage === undefined){
+		console.log("Cannot remember, no local storage support");
+	} else {
+		window.localStorage.setItem("username", username);
+		window.localStorage.setItem("password", password);
+	}
+}
+
+function forget(){
+	window.localStorage.removeItem("username");
+	window.localStorage.removeItem("password");
+}
+
+function tryRemember(callback){
+	var u = window.localStorage.getItem("username");
+	var p = window.localStorage.getItem("password");
+	if(u !== null && p !== null){
+		model.tryLogin(u,p,callback);
+	} else{
+		callback.call(window, {results: "error"});
+	}
+}
+
 function userWindowLogin(){
 	$("#user").fadeOut();
 	model.init();
@@ -90,10 +115,14 @@ function userWindowInit(){
 		e.preventDefault();
 		var u = $(this).find("[name=username]").val();
 		var p = $(this).find("[name=password]").val();
+		var r = $(this).find("[name=remember]").prop("checked");
 		model.tryRegister(u, p, null, function(success){
 			if(success){
 				userWindowFeedback("Welcome " + u + "!");
 				userWindowLogin();
+				if(r){
+					remember(u,p);
+				}
 			} else{
 				userWindowFeedback("Could not register, try another name");
 			}
@@ -104,10 +133,14 @@ function userWindowInit(){
 		e.preventDefault();
 		var u = $(this).find("[name=username]").val();
 		var p = $(this).find("[name=password]").val();
+		var r = $(this).find("[name=remember]").prop("checked");
 		model.tryLogin(u, p, function(data){
 			if(data.results == "success"){
 				userWindowFeedback("Welcome " + u + "!");
 				userWindowLogin();
+				if(r){
+					remember(u,p);
+				}
 			} else{
 				userWindowFeedback("Could not login");
 			}
@@ -269,6 +302,10 @@ function onButton(){
 				$("#cats").find("li[data-id=" + curCat + "]").detach();
 				switchCategory(C.ALL);
 			}
+		break;
+		case "logout":
+			forget();
+			window.location.reload();
 		break;
 	}
 }

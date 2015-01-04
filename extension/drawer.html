@@ -10,22 +10,25 @@
 			z-index: 2999999999;
 			top: 0px;
 			left: 0px;
-			border-bottom: 3px black dashed;
-			background: #FFF;
+			border-bottom: 3px black solid;
+			background: rgba(255,255,255,.9);
 			width: 100%;
 			font-family: "Open Sans", "Arial", "Helvetica";
 			font-size: 12px;
-			padding: 5px 10px;
+			padding: 10px 10px 20px 10px;
 		}
 		.content h1{
 			font-size: 14px;
 			margin-bottom: 2px;
-		}			
+		}
 		.content input{
 			padding: 2px 4px;
 		}
 		.content .left{
 			float: left;
+		}
+		.content .right{
+			float: right;
 		}
 		.content .sec_two{
 			margin-top: 12px;
@@ -33,9 +36,17 @@
 		}
 		span{
 			color: #4AC930;
+			font-weight: bold;
 		}
 		span.red{
 			color: #C93030;
+			font-weight: bold;
+		}
+		.feedback{
+			margin-left: 50px;
+			margin-top: 12px;
+			font-size: 14px;
+			display: none;
 		}
 	</style>
 	<div class="content">
@@ -45,6 +56,9 @@
 		</div>
 		<div class="left sec_two">
 			Press <span>&lt;enter&gt;</span> to save<br/>Press <span class='red'>&lt;esc&gt;</span> to exit
+		</div>
+		<div class="left feedback">
+			Hello there
 		</div>
 	</div>
 </template>
