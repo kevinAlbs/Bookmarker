@@ -14,11 +14,12 @@ Since this is a personal bookmarking system, there is no user management current
 - Add manual bookmarking on front-end
 
 ##Before putting in chrome store
-- Add usage info page (shortcuts, installation, etc.)
+- Add usage info page (shortcuts, installation, etc.) and easy way to get to front-end page!
 - Add captcha
 - Make icon
-- Add button
+- Add chrome button
 - Add https
+- Keyboard shortcuts!
 
 ###Notes
 - All = -2, Queue category = -1, General category = 0

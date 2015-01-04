@@ -2,7 +2,7 @@
 	"manifest_version" : 2,
 	"name" : "Bookmarker",
 	"description" : "Chrome extension for simple bookmarking system",
-	"version" : "1.0",
+	"version" : "0.0",
 	"content_scripts": [
 		{
 			"matches" : ["<all_urls>"],
@@ -18,5 +18,17 @@
 	"permissions" : [
 		"tabs",
 		"storage"
-	]
+	],
+	"offline_enabled" : false,
+	"browser_action": {
+		"default_icon": {
+			"19": "img/icon_19.png"
+		},
+		"default_title": "Bookmark this page",
+		"default_popup": "popup.html"
+	},
+	"icons" : {
+		"48" : "img/icon_48.png",
+		"19" : "img/icon_19.png"
+	}
 }

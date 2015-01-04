@@ -15,6 +15,16 @@ var keys = {
 	HOLD : 16
 }
 
+function openDrawer(){
+	qCount = 0;
+	canSave = true;
+	$(shadow_root).show("slide", {}, 250, function(){
+		shadow_content.querySelector("input").focus();
+	});
+	chrome.runtime.sendMessage({msg: "fetch_url"}, function(response) {
+		data.url = response.url;
+	});
+}
 function reset(){
 	shadow_content.querySelector("input").value = "";
 	shadow_content.style.background = "#FFFFFF";
@@ -81,16 +91,10 @@ $(document).on("keyup", function(e){
 	}
 
 	if(qCount >= 2){
-		qCount = 0;
-		canSave = true;
-		$(shadow_root).slideDown(250, function(){
-			shadow_content.querySelector("input").focus();
-		});
-		chrome.runtime.sendMessage({msg: "fetch_url"}, function(response) {
-  			data.url = response.url;
-		});
+		openDrawer();
 	}
 });
+
 
 chrome.runtime.sendMessage({msg: "fetch_html"}, function(response){
 	$(document.body).append(response.html); //using innerHtml screws up events
@@ -99,3 +103,13 @@ chrome.runtime.sendMessage({msg: "fetch_html"}, function(response){
 	shadow_root.createShadowRoot().appendChild(document.importNode(temp.content, true));
 	shadow_content = document.querySelector("#bm_extension_shadow_root::shadow .content");
 });
+
+
+//messages sent by popup
+chrome.extension.onMessage.addListener(
+	function(request, sender, sendResponse){
+		if(request.cmd == "open_drawer"){
+			openDrawer();
+		}
+	}
+)

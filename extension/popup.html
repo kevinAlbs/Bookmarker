@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      *{
+        padding: 0px;
+        margin: 0px;
+      }
+      #container{
+        width: 150px;
+      }
+      .button{
+        display: block;
+        width: 100%;
+        padding: 10px;
+        text-decoration: none;
+      }
+      .button:hover{
+        background: #e7e7e7;
+      }
+      #feedback{
+        padding: 10px;
+        font-weight: bold;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="container">
+    <p id="feedback">Cannot authenticate, check <a target="_blank" href="#" class="settings">extension settings</a></p>
+    <a class="button" href="#" id="save">Bookmark this Page</a>
+    <a class="button" target="_blank" href="#" id="view">View all Bookmarks</a>
+    <a class="button" target="_blank" href="#" class="settings">Extension Settings</a>
+  </div>
+  <script src="jquery.js"></script>
+  <script src="popup.js"></script>
+  </body>
+</html>
