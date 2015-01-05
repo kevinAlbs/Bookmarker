@@ -2,6 +2,7 @@ var shadow_root = null, shadow_content = null;
 var qCount = 0;
 var canSave = false;
 var shiftPressed = false;
+var OPEN_TOP = 0, CLOSE_TOP = -80;
 var data = {
 	url : "",
 	title : "",
@@ -15,14 +16,31 @@ var keys = {
 	HOLD : 16
 }
 
-function openDrawer(){
+function openDrawer(callback){
 	qCount = 0;
 	canSave = true;
-	$(shadow_root).show("slide", {}, 250, function(){
+	$(shadow_root).show().animate({
+		top: OPEN_TOP
+	}, 250, "easeOutQuad", function(){
+		if(callback){
+			callback.call();
+		}
 		shadow_content.querySelector("input").focus();
 	});
+	//update page url
 	chrome.runtime.sendMessage({msg: "fetch_url"}, function(response) {
 		data.url = response.url;
+	});
+}
+
+function closeDrawer(callback){
+	$(shadow_root).animate({
+		top: CLOSE_TOP
+	}, 250, "easeOutQuad", function(){
+		if(callback){
+			callback.call();
+		}
+		$(shadow_root).hide();
 	});
 }
 function reset(){
@@ -79,14 +97,14 @@ $(document).on("keyup", function(e){
 					feedback(response.message, true);
 				} else {
 					shadow_content.style.background = "#d3ffca";
-					$(shadow_root).slideUp(250, reset);
+					closeDrawer(reset);
 				}
 			});
 		}
 		else if(e.keyCode == keys.EXIT){
 			//exit
 			canSave = false;
-			$(shadow_root).slideUp(250, reset);
+			closeDrawer(reset);
 		}
 	}
 
