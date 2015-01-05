@@ -8,6 +8,7 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
   <title>Bookmarks</title>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
   <link href='styles.css' rel='stylesheet' type='text/css'>
+  <link rel="icon" type="image/png" href="favicon.png" />
   <meta name="description" content="Bookmarker front-end">
   <meta name="author" content="Kevin Albertson">
 
@@ -19,32 +20,7 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
   <![endif]-->
 </head>
 <body>
-  <div id="user">
-    <div class="bg">
-      <div class="box">
-        <p class="feedback"></p>
-        <div class="login">
-          <h2>Log in</h2>
-          <form class="nice">
-            <div class="row"><label>Username</label><input name="username" type="text"/></div>
-            <div class="row"><label>Password</label><input name="password" type="password"/></div>
-            <div class="row"><input name="remember" type="checkbox" id="remember1" checked/>&nbsp;<label for="remember1">Remember me</label></div>
-            <div class="row"><input type="submit" value="Log in"/></div>
-          </form>
-        </div>
-        <div class="register">
-          <h2>Register</h2>
-          <form class="nice">
-            <div class="row"><label>Username</label><input name="username" type="text"></input></div>
-            <div class="row"><label>Password</label><input name="password" type="password"></input></div>
-            <div class="row">Soon to be captcha</div>
-            <div class="row"><input name="remember" type="checkbox" id="remember2" checked/>&nbsp;<label for="remember2">Remember me</label></div>
-            <div class="row"><input type="submit" value="Create User"></input></div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  <?php require_once("modal.php"); ?>
 	<div id="container">
 		<aside id="sidebar">
 			<!--<input type="text" id="search" value="search"/>-->
@@ -64,8 +40,12 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
 		<div class="content">
 			<div id="topbar">
         <!--<a class='button' href='settings.php'>Settings</a>-->
-        <!--<span class='button' data-action='quick_add'>Save Bookmark</span>-->
-        <span class='button' data-action='logout'>Logout</span>
+        <div class="userarea">
+          <span id="welcome"></span>
+          <span class='button' data-action='logout'>Logout</span>
+        </div>
+
+        <span class='button' data-action='save_bookmark'>Save Bookmark</span>
         <span class='button' data-action='delete_cat'>Delete Category</span>
         <span class='button' data-action='rename_cat'>Rename Category</span>
       </div>

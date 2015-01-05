@@ -101,6 +101,8 @@ function tryRemember(callback){
 
 function userWindowLogin(){
 	$("#user").fadeOut();
+	$(".userarea").show();
+	$("#welcome").html("Hello " + model.getUsername() + ".");
 	model.init();
 	switchCategory(C.QUEUE);
 }
@@ -157,6 +159,58 @@ function showStatus(msg){
 		$("#status").html(msg);
 	}
 }
+
+/*
+shows modal for adding a bookmark
+*/
+function saveBookmarkShow(){
+	$("#save_bookmark").fadeIn();
+	//TODO listen for changes in URL and update title field by sending ajax request
+}
+
+function saveBookmarkHide(){
+	$("#save_bookmark").fadeOut();
+}
+
+function saveBookmarkSubmit(e){
+	e.preventDefault();
+	var in_url = $(this).find("[name=url]");
+	var in_title = $(this).find("[name=title]")
+	var in_notes = $(this).find("[name=notes]")
+
+	var url = in_url.val();
+	var title = in_title.val();
+	var notes = in_notes.val();
+
+	var cat = (curCat == C.ALL) ? C.QUEUE : curCat; //cannot add to All
+	model.saveBookmark(url, title, notes, cat, function(resp){
+		if("results" in resp && resp.results == "error"){
+			alert("Error adding bookmark: " + resp.message);
+		} else {
+			//refresh list
+			refreshCategory();
+
+			//clear inputs
+			in_url.val("");
+			in_title.val("");
+			in_notes.val("");
+
+			saveBookmarkHide();
+
+		}
+	});
+}
+
+function saveBookmarkUpdateTitle(){
+		var val = $(this).val();
+		//check if valid url
+		if(val.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i)){
+			/*
+			TODO: fetch page and get title
+			*/
+		}
+}
+
 function showCategories(json){
 	var cats = json.results;
 	var cat_list = $("#cats");
@@ -168,6 +222,7 @@ function showCategories(json){
 		}, {append: true})
 	}
 }
+
 function UIAddCategory(catName, catId){
 	var cat_list = $("#cats");
 	cat_list.loadTemplate($("#category-template"), {
@@ -175,6 +230,7 @@ function UIAddCategory(catName, catId){
 		catid: catId
 	}, {append: true});
 }
+
 function showList(json){
 	var bms = json;
 	var bm_list = $("#bm_list").empty();
@@ -307,9 +363,16 @@ function onButton(){
 			forget();
 			window.location.reload();
 		break;
+		case "save_bookmark":
+			saveBookmarkShow();
+		break;
 	}
 }
 
+//using model cache, refresh current list
+function refreshCategory(){
+	showList(model.getList(curCat));
+}
 function switchCategory(catId){
 	curCat = catId;
 	if(catId != C.ALL && catId != C.QUEUE && catId != C.GENERAL){
@@ -382,4 +445,7 @@ $(document).ready(function(){
 	})
 	$(document).on("keydown", onKeyDown);
 	$(document).on("keyup", onKeyUp);
+	$(".modal#save_bookmark form").on("submit", saveBookmarkSubmit);
+	$(".modal#save_bookmark form [name=url]").on("keyup", saveBookmarkUpdateTitle);
+	$(".modal#save_bookmark .close").on("click", saveBookmarkHide);
 });

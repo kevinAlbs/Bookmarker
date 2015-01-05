@@ -122,6 +122,17 @@ class DB{
 		return $results;
 	}
 
+	public function getBookmark($bookmark_id, $user_id=0){
+		$qStr = "SELECT * FROM bookmark WHERE `id`=" . intval($bookmark_id) . " AND `user_id`=" . intval($user_id);
+		if(!$results = mysqli_query($this->cxn, $qStr)){
+			$this->dbErr();
+		}
+		if(mysqli_num_rows($results) == 0){
+			throw new Exception("Bookmark with specified id not found");
+		}
+		return mysqli_fetch_assoc($results);
+	}
+
 	public function addCategory($name, $user_id=0){
 		$q = sprintf("INSERT INTO category (`name`, `user_id`) VALUES('%s', %d)", $this->esc($name), intval($user_id));
 		if(!mysqli_query($this->cxn, $q)){

@@ -1,8 +1,8 @@
 {
 	"manifest_version" : 2,
 	"name" : "Bookmarker",
-	"description" : "Chrome extension for simple bookmarking system",
-	"version" : "0.0",
+	"description" : "Companion extension for simple bookmarking system",
+	"version" : "0.1",
 	"content_scripts": [
 		{
 			"matches" : ["<all_urls>"],

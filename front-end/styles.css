@@ -28,6 +28,9 @@ div.content{
 .button[data-action=logout]{
 	display:none;
 }
+#welcome{
+	margin-right: 10px;
+}
 
 #bm_list{
 	list-style-type: none;
@@ -180,7 +183,14 @@ div.content{
 #topbar .button{
 	margin-right: 10px;
 }
-#user{
+#topbar .userarea{
+	display: none;
+	border-bottom: 1px black solid;
+	padding-bottom: 1px;
+	margin-bottom: 1px;
+}
+
+.modal{
 	display: none;
 	position: absolute;
 	width: 100%;
@@ -189,14 +199,14 @@ div.content{
 	height: 100%;
 	z-index: 10;
 }
-#user .bg{
+.modal .bg{
 	width: 100%;
 	height: 100%;
 	padding-top: 1px;
 	position fixed;
 	background: rgba(0,0,0,.8);
 }
-#user .box{
+.modal .box{
 	width: 300px;
 	margin-top: 100px;
 	margin-left: auto;
@@ -205,10 +215,19 @@ div.content{
 	padding: 20px;
 }
 
-#user h2{
+.modal h2{
 	font-size: 14px;
 	border-bottom: 1px black solid;
 	margin-bottom: 10px;
+	position: relative;
+}
+.modal h2 .close{
+	position: absolute;
+	right: 0px;
+	cursor: pointer;
+}
+.modal h2 .close:hover{
+	text-decoration: underline;
 }
 #user .feedback{
 	background: #EEE;

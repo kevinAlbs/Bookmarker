@@ -13,6 +13,15 @@ class Bookmark extends API{
 		}
 		return static::$instance;
 	}
+	private function outputBookmark($row){
+		printf('{"url": "%s",', $row['url']);
+		printf('"notes": "%s",', $row['notes']);
+		printf('"title": "%s",', htmlentities($row['title']));
+		printf('"date_added": "%s",', $row['date_added']);
+		printf('"category": %d,', $row['category']);
+		printf('"id": %d,', $row['id']);
+		printf('"next": %d}', $row['next']);
+	}
 	private function output($results){
 		//first build the linked list
 		//if there are any cycles, remove the bad node and place it in front
@@ -25,13 +34,7 @@ class Bookmark extends API{
 			else{
 				echo ",";
 			}
-			printf('{"url": "%s",', $row['url']);
-			printf('"notes": "%s",', $row['notes']);
-			printf('"title": "%s",', htmlentities($row['title']));
-			printf('"date_added": "%s",', $row['date_added']);
-			printf('"category": %d,', $row['category']);
-			printf('"id": %d,', $row['id']);
-			printf('"next": %d}', $row['next']);
+			$this->outputBookmark($row);
 		}
 		echo "]}";
 	}
@@ -44,7 +47,7 @@ class Bookmark extends API{
 
 		//save in database, return insert_id
 		$id = DB::getInstance()->insertBookmark($url, $title, $notes, $user_id);
-		echo '{"insert_id": ' . $id . '}';
+		$this->outputBookmark(DB::getInstance()->getBookmark($id, $user_id));
 	}
 
 	//should check integrity (i.e. that the category exists)
@@ -91,6 +94,5 @@ class Bookmark extends API{
 		$results = DB::getInstance()->getBookmarks($category, $user_id);
 		$this->output($results);
 	}
-
 
 }

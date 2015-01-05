@@ -43,7 +43,7 @@ var model = (function(){
 			showStatus(false);
 		}
 	}
-	function addToCache(bm, cat){
+	function addToCache(bm, cat, front){
 		if(!(cat in bookmarkCache.lookup)){
 			bookmarkCache.lookup[cat] = [];
 		}
@@ -52,7 +52,12 @@ var model = (function(){
 				return;//this check is necessary if user tries to add bookmark from all category
 			}
 		}
-		bookmarkCache.lookup[cat].push(bm);
+		if(front){
+			bookmarkCache.lookup[cat].unshift(bm);
+		} else{
+			bookmarkCache.lookup[cat].push(bm);
+		}
+
 	}
 	//TODO change to O(1) when cache is changed to object instead of array
 	function getBookmark(id, cat, deleteBm){
@@ -65,6 +70,30 @@ var model = (function(){
 				return arr[i];
 			}
 		}
+	}
+
+	that.saveBookmark = function(url,title,notes,catId, callback){
+		if(catId == C.ALL){
+			throw "Cannot add to All category";
+		}
+		addAjax({
+			url: API_ROOT + "bookmark/save",
+			data : {
+				ispost: true,
+				url: url,
+				notes: notes,
+				title: title
+			},
+			method: "post",
+			dataType: "json",
+			success : function(response){
+				addToCache(response, catId, true);
+				if(callback){
+					callback.call(window, response);
+				}
+			}
+		});
+
 	}
 
 	that.deleteCategory = function(catId){
@@ -186,7 +215,9 @@ var model = (function(){
 		}
 		return catCache[catId];
 	};
-
+	that.getUsername = function(){
+		return user.name;
+	};
 	that.tryLogin = function(username, password, callback){
 		addAjax({
 			url: API_ROOT + "user/authenticate",
@@ -247,7 +278,7 @@ var model = (function(){
 		switchCategory(C.QUEUE);
 	}
 
-	
+
 	that.init = function(allBookmarks){
 		if(!allBookmarks){
 			addAjax({
