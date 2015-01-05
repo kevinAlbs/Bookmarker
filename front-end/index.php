@@ -1,5 +1,6 @@
 <?php
-define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
+require_once("../config.php");
+define("API_ROOT", ROOT . "back-end/index.php/");
 ?>
 <!doctype html>
 <html lang="en">
@@ -15,6 +16,7 @@ define("API_ROOT", "http://localhost/bookmarks/back-end/index.php/");
   <style>
   </style>
 
+  <script src='https://www.google.com/recaptcha/api.js'></script>
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->

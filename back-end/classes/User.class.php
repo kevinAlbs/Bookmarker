@@ -20,6 +20,23 @@ class User extends API{
 	public function add(){
 		$username = $this->reqParam("username", "Username not passed");
 		$password = $this->reqParam("password", "Password not passed");
+		$captcha = $this->optParam("captcha", "");
+
+		if(CAPTCHA_ENABLED){
+			if(trim($captcha) === ""){
+				throw new Exception("Captcha required but not passed");
+			}
+			$param = [
+				"secret" => CAPTCHA_SECRET_KEY,
+				"response" => $captcha,
+				"remoteip" => $_SERVER["REMOTE_ADDR"]
+			];
+			$url = "https://www.google.com/recaptcha/api/siteverify?" . http_build_query($param);
+			$response = json_decode(file_get_contents($url));
+			if(!$response->success) {
+				throw new Exception("Captcha incorrect");
+			}
+		}
 		try{
 			DB::getInstance()->addUser($username, $password);
 			echo $this->success();

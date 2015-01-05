@@ -15,4 +15,4 @@ chrome.runtime.sendMessage({msg: "get_settings"}, function(response){
   $("#view").attr("href", response.server + "front-end");
 })
 
-$(".settings").attr("href", chrome.extension.getURL("options.html"));
+$("#settings").attr("href", chrome.extension.getURL("options.html"));

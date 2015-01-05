@@ -118,8 +118,13 @@ function userWindowInit(){
 		var u = $(this).find("[name=username]").val();
 		var p = $(this).find("[name=password]").val();
 		var r = $(this).find("[name=remember]").prop("checked");
-		model.tryRegister(u, p, null, function(success){
-			if(success){
+		var c = "";
+		var cEl =  $(this).find("[name=g-recaptcha-response]");
+		if(cEl.size() == 1){
+			c = cEl.val();
+		}
+		model.tryRegister(u, p, c, function(data){
+			if(data.results == "success"){
 				userWindowFeedback("Welcome " + u + "!");
 				userWindowLogin();
 				if(r){
@@ -127,6 +132,7 @@ function userWindowInit(){
 				}
 			} else{
 				userWindowFeedback("Could not register, try another name");
+				grecaptcha.reset();
 			}
 		});
 	});

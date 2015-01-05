@@ -219,6 +219,7 @@ div.content{
 	font-size: 14px;
 	border-bottom: 1px black solid;
 	margin-bottom: 10px;
+	padding-top: 5px;
 	position: relative;
 }
 .modal h2 .close{

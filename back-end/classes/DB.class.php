@@ -1,6 +1,4 @@
 <?php
-require_once("config.php");
-
 /*
 Default user id is 0.
 */

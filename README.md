@@ -13,11 +13,10 @@ A minimal bookmarking system. PHP back-end with chrome extension and simple inte
 - Easy installer
 - Manual bookmarking on front-end
 - In-page refresh button on front-end
+- Unit tests
 
 ##Before putting in chrome store
-- Add usage info page (shortcuts, installation, etc.) and easy way to get to front-end page!
-- Add captcha
-- Make icon
+- Add usage info page (shortcuts, installation, etc.) and initial setup on installation
 - Add https
 - Keyboard shortcuts!
 

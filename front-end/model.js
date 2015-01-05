@@ -246,6 +246,7 @@ var model = (function(){
 			data: {
 				username : username,
 				password: password,
+				captcha: captcha,
 				ispost: true
 			},
 			dataType: "json",
