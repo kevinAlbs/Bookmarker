@@ -26,6 +26,10 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 	<div id="container">
 		<aside id="sidebar">
 			<!--<input type="text" id="search" value="search"/>-->
+      <div class="userarea">
+        <span id="welcome"></span>
+        <span class='button' data-action='logout'>Logout</span>
+      </div>
 			<ul id="cats">
 				<li data-id="-2" class='fixed'>All</li>
 				<li data-id="-1" class="fixed">Queue</li>
@@ -35,19 +39,14 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 			<div class="menu">
 				<p data-action="select" class="unselection button">Select All</p>
 				<p data-action="unselect" class="selection button">Unselect All</p>
-				<p data-action="delete" class="selection button">Delete Selected</p>
+				<p data-action="delete" class="selection button">Delete Selected <span class="shortcut" title="Keyboard shortcut to delete selected bookmarks is 'd'">[d]</span></p>
 				<p id="status_wrapper"><span id="status">Loading</span><span class="dots">...</span></p>
 			</div>
 		</aside>
 		<div class="content">
 			<div id="topbar">
         <!--<a class='button' href='settings.php'>Settings</a>-->
-        <div class="userarea">
-          <span id="welcome"></span>
-          <span class='button' data-action='logout'>Logout</span>
-        </div>
-
-        <span class='button' data-action='save_bookmark'>Save Bookmark</span>
+        <span class='button' data-action='save_bookmark'>Save Bookmark <span class="shortcut" title="Keyboard shortcut to save bookmark is 's'">[s]</span></span>
         <span class='button' data-action='delete_cat'>Delete Category</span>
         <span class='button' data-action='rename_cat'>Rename Category</span>
       </div>
@@ -79,12 +78,14 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 		</div>
 	</li>
 	</script>
-	<script src="jquery.js"></script>
+	<script src="js/jquery.js"></script>
 	<!-- custom build -->
-	<script src="jquery-ui.js"></script>
-	<script src="template.js"></script>
-	<script src="main.js"></script>
-	<script src="model.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/model.js"></script>
+  <script src="js/modal/save_bookmark.js"></script>
+  <script src="js/modal/user.js"></script>
 	<script>
     <?php echo "var API_ROOT = '" . API_ROOT . "';"; ?>
 
@@ -96,9 +97,10 @@ define("API_ROOT", ROOT . "back-end/index.php/");
     tryRemember(function(resp){
       if(resp.results == "error"){
         //show user modal window
-        userWindowInit();
+        MODAL.user.show();
       } else {
-        userWindowLogin();
+        //user remembered
+        passLogin();
       }
     });
 

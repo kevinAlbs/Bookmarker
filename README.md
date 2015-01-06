@@ -14,6 +14,8 @@ A minimal bookmarking system. PHP back-end with chrome extension and simple inte
 - Manual bookmarking on front-end
 - In-page refresh button on front-end
 - Unit tests
+- Add trash
+- Add pagination if performance noticably suffers past a certain amount of bookmarks
 
 ##Before putting in chrome store
 - Add usage info page (shortcuts, installation, etc.) and initial setup on installation

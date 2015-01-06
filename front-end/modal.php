@@ -30,7 +30,7 @@
 <div id="save_bookmark" class="modal">
   <div class="bg">
     <div class="box">
-      <h2>Save Bookmark <span class="close">Close</span></h2>
+      <h2>Save Bookmark <span class="close">Close <span title="Shortcut to close is esc key" class="shortcut">[esc]</span></span></h2>
       <form class="nice">
         <div class="row"><label>URL</label><input name="url" type="text"></input></div>
         <div class="row"><label>Title</label><input name="title" type="text"></input></div>

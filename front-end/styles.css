@@ -97,6 +97,12 @@ div.content{
 	top: 7px;
 	left: 10px;
 	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .box.active .fill{
 	width: 15px;
@@ -124,11 +130,15 @@ div.content{
 #sidebar{
 	width: 175px;
 	position: fixed;
-	top: 60px;
+	top: 49px;
 	left: 20px;
 }
 .menu .button{
 	margin-bottom: 5px;
+}
+.shortcut{
+	color: #971099;
+	text-decoration: none;
 }
 #search{
 	border: 1px black solid;
@@ -171,23 +181,23 @@ div.content{
 	padding-top: 10px;
 	margin-top: 20px;
 }
+#sidebar .userarea{
+	border-bottom: 1px black solid;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	display: none;
+}
 .selection.button{
 	display: none;
 }
 .button[data-action=delete_cat]{display: none;}
 #none{display: none;}
 #topbar{
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	height: 23px;
 }
 #topbar .button{
 	margin-right: 10px;
-}
-#topbar .userarea{
-	display: none;
-	border-bottom: 1px black solid;
-	padding-bottom: 1px;
-	margin-bottom: 1px;
 }
 
 .modal{
