@@ -4,7 +4,7 @@
     <style type="text/css">
       #container{
         width: 400px;
-        margin: 10px auto;
+        margin: 50px auto;
       }
       .row{
         margin-bottom: 10px;
@@ -18,14 +18,19 @@
         padding: 5px;
         display: none;
       }
+      #link_advanced{
+        display: block;
+      }
+      #advanced{
+        display: none;
+      }
     </style>
   </head>
   <body>
   <div id="container">
     <h1>Bookmarker Options</h1>
     <p id="feedback"></p>
-    <h2>Authentication</h2>
-    <p>If this server has accounts enabled, enter in your credentials here</p>
+    <h2>Log In*</h2>
     <form name="auth">
       <div class="row">
         <label>Username</label><input type="text" name="username"/>
@@ -37,18 +42,23 @@
         <input type="submit" value="Log in" />
       </div>
     </form>
-    <p>If you do not have an account, <a id="register" href="">register here</a></p>
-
-    <h2>Server Settings</h2>
-    <p>The server URL should point to the directory containing front-end and back-end</p>
-    <form name="server">
-      <div class="row">
-        <label>Server URL</label><input type="url" name="url" />
-      </div>
-      <div class="row">
-        <input type="submit" value="Update" />
-      </div>
-    </form>
+    <small>* If you are using a custom server with accounts disabled, you may leave these fields blank.</small>
+    <p>If you don't have an account, <a id="register" href="" target="_blank">register here</a> and copy those credentials here.</p>
+    <hr/>
+    <a href="#" id="link_advanced">Show Advanced Settings</a>
+    <div id="advanced">
+      <h2>Server Settings</h2>
+      <p>If you wish to use a custom server, enter the server's URL</p>
+      <p>The URL should point to the directory containing the front-end/ and back-end/ directories</p>
+      <form name="server">
+        <div class="row">
+          <label>Server URL</label><input type="url" name="url" />
+        </div>
+        <div class="row">
+          <input type="submit" value="Update" />
+        </div>
+      </form>
+    </div><!--/advanced -->
   </div>
   <script src="jquery.js"></script>
   <script src="options.js"></script>

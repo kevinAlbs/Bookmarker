@@ -7,7 +7,7 @@
         margin: 0px;
       }
       #container{
-        width: 150px;
+        width: 190px;
       }
       .button{
         display: block;
@@ -23,12 +23,15 @@
         font-weight: bold;
         display: none;
       }
+      .shortcut{
+        color: #971099;
+      }
     </style>
   </head>
   <body>
   <div id="container">
     <p id="feedback">Cannot authenticate, check <a target="_blank" href="#" class="settings">extension settings</a></p>
-    <a class="button" href="#" id="save">Bookmark this Page</a>
+    <a class="button" href="#" id="save">Bookmark this Page <span class="shortcut">[Shift+qq]</span></a>
     <a class="button" target="_blank" href="#" id="view">View all Bookmarks</a>
     <a class="button" target="_blank" href="#" id="settings">Extension Settings</a>
   </div>

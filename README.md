@@ -24,9 +24,11 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 - Add trash
 - Add pagination if performance noticably suffers past a certain amount of bookmarks
 - Front-end cache bug fixes
+- Popup ping
+- Custom keyboard shortcuts
 
 ##Before putting in chrome store
-- Add Getting Started (basic + advanced) and hide server url in advanced options
+- Add Getting Started (basic + advanced)
 - Add https
 
 ###Notes

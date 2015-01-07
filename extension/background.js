@@ -1,6 +1,23 @@
 var drawer_html = null;
 var fetching = false, fetch_callbacks = [];
 
+/*
+Installation initialization
+*/
+chrome.runtime.onInstalled.addListener(function(details){
+	if(details.reason == "install"){
+		//initialize with default server
+		chrome.storage.sync.set({
+			server: "http://kevinalbs.com/bookmarks",
+			username : "",
+			password : ""
+		});
+		chrome.tabs.create({
+			"url" : chrome.extension.getURL("getting_started.html")
+		});
+	}
+});
+
 /* either fetches html, or if already fetching, adds callback */
 function fetchHtml(callback){
 	if (callback) {
@@ -23,7 +40,6 @@ function fetchHtml(callback){
 	    }
 	});
 }
-
 
 /* add the same methods as the PHP API for bookmarks and categories */
 chrome.runtime.onMessage.addListener(

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      #container{
+        width: 400px;
+        margin: 50px auto;
+      }
+      ol{
+        font-size: 16px;
+      }
+      ol li{
+        line-height: 150%;
+      }
+      .separator{
+        border-bottom: 1px black solid;
+        margin: 10px 0px;
+      }
+      h1{
+        padding-left: 60px;
+        padding-top: 30px;
+        background: url("img/icon_48.png") bottom left no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="container">
+    <h1> Setting up Bookmarker</h1>
+    <p>Thanks for downloading! Setup should only take a minute.</p>
+    <ol>
+      <li><a id="create" target="_blank" href="">Create an account</a> on the web interface</li>
+      <li><a id="authenticate" target="_blank" href="">Authenticate</a> the chrome extension</li>
+      <li>Refresh a page or restart Chrome and try it out!</li>
+    </ol>
+
+    <div class="separator"></div>
+    <p>If you'd like to contribute to development, check the project's <a href="https://github.com/kevinAlbs/Bookmarker" target="_blank">GitHub repository</a></p>
+    <!--
+    <p>If you'd like to set up your own bookmarker server, see the <a href="">server setup instructions</a></p>
+    -->
+  </div>
+  <script src="jquery.js"></script>
+  <script src="getting_started.js"></script>
+  </body>
+</html>
