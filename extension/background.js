@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(function(details){
 	if(details.reason == "install"){
 		//initialize with default server
 		chrome.storage.sync.set({
-			server: "http://kevinalbs.com/bookmarks",
+			server: "https://kevinalbs.com/bookmarks",
 			username : "",
 			password : ""
 		});

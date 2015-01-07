@@ -12,24 +12,19 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 
 
 ##Upcoming features/fixes
-- Bookmark importing from other services (via copy paste and file upload)
-- Possible search feature (or just use ctrl+f on All page)
-- Check if page is already bookmarked when drawer pops out
+- Easy installer and instructions
+- Popup ping + drawer ping (to let user know if cannot reach server before attempting to bookmark)
 - Ability to edit notes and titles
+- Bookmark importing from other services (via copy paste and file upload)
+- Front-end cache bug fixes
+- Possible search feature (or just use ctrl+f on All page)
 - Reordering of categories and bookmarks
-- Easy installer
 - Manual bookmarking on front-end
 - In-page refresh button on front-end
 - Unit tests
 - Add trash
 - Add pagination if performance noticably suffers past a certain amount of bookmarks
-- Front-end cache bug fixes
-- Popup ping
 - Custom keyboard shortcuts
-
-##Before putting in chrome store
-- Add Getting Started (basic + advanced)
-- Add https
 
 ###Notes
 - All = -2, Queue category = -1, General category = 0
