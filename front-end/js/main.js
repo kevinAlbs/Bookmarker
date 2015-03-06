@@ -26,6 +26,31 @@ Date.prototype.stdTimezoneOffset = function() {
     var jul = new Date(this.getFullYear(), 6, 1);
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
 }
+function niceMonth(m){
+	switch(m){
+		case 0:  return "Jan";
+		case 1:  return "Feb";
+		case 2:  return "March";
+		case 3:  return "April";
+		case 4:  return "May";
+		case 5:  return "June";
+		case 6:  return "July";
+		case 7:  return "Aug";
+		case 8:  return "Sep";
+		case 9:  return "Oct";
+		case 10: return "Nov";
+		case 11: return "Dec";
+	}
+}
+function realDate(dateStr){
+	var date = new Date(dateStr);
+	var hour = date.getHours();
+	var min = date.getMinutes();
+	var ampm = hour >= 12 ? "pm" : "am";
+	hour = (hour > 12) ? hour - 12 : hour;
+	hour = (hour == 0) ? 12 : hour;
+	return niceMonth(date.getMonth()) + " " + date.getDate() + ", " + date.getFullYear() + " " + hour + ":" + min + ampm;
+}
 function prettyDate(dateStr){
 	function pluralize(time, type){
 		if(time != 1){
@@ -162,7 +187,7 @@ function showList(json){
 		var data = {
 			title: bms[i].title,
 			url: bms[i].url,
-			time: prettyDate(bms[i].date_added),
+			time: "saved " + prettyDate(bms[i].date_added) + " on " + realDate(bms[i].date_added),
 			notes: bms[i].notes,
 			id: bms[i].id
 		};
@@ -292,6 +317,19 @@ function onButton(){
 	performUIAction($(this).attr("data-action"));
 }
 
+function onDeleteButton(e){
+	e.preventDefault();
+	var el = $(this).parents("li");
+	var id = el.attr("data-id");
+	model.deleteSelected([id], curCat);
+	el.fadeOut(500, function(){
+		el.detach();
+	})
+}
+
+function onMoreButton(e){
+	e.preventDefault();
+}
 //using model cache, refresh current list
 function refreshCategory(){
 	showList(model.getList(curCat));
@@ -366,6 +404,8 @@ $(document).ready(function(){
 	//$("#bm_list").sortable();
 	//event delegation
 	$("#bm_list").on("click", "li .box", toggleBox);
+	$("#bm_list").on("click", "li .delete-link", onDeleteButton);
+	$("#bm_list").on("click", "li .more-link", onMoreButton);
 	$("#cats").on("click", "li", catClicked);
 	$(window).on("beforeunload", function(){
 		if(model.numRequestsLingering() > 0)

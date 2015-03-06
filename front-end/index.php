@@ -72,10 +72,16 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 			<h2 data-content="catName"></h2> <h1><a data-content="title" data-template-bind='[{"attribute" : "href", "value" : "url"}]' target="_blank"></a></h1>
 			<p data-content="url">http://google.com</p>
 		</header>
-		<div class='right'>
-			<p data-content="notes"></p>
-			<time data-content="time"></time>
-		</div>
+    <div>
+      <p class="note" data-content="notes"></p>
+      <time data-content="time"></time>
+    </div>
+    <div class="controls">
+      <a href="#" class="more-link">+ More</a>
+      <a href="#" class="delete-link">Delete</a>
+    </div>
+    <div class="more-box">
+    </div>
 	</li>
 	</script>
 	<script src="js/jquery.js"></script>

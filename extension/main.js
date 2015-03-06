@@ -12,8 +12,7 @@ var data = {
 var keys = {
 	EXIT : 27,
 	SAVE: 13,
-	SHOW: 81,
-	HOLD : 16
+	SHOW: 81
 }
 
 function openDrawer(callback){
@@ -69,7 +68,7 @@ function feedback(msg, show_link){
 feedback.timer = null;
 
 $(document).on("keydown", function(e){
-	if(e.keyCode == keys.HOLD){
+	if(e.shiftKey){
 		shiftPressed = true;
 	}
 });
@@ -83,7 +82,7 @@ $(document).on("keyup", function(e){
 	}
 	else{
 		qCount = 0;
-		if(e.keyCode == keys.HOLD){
+		if(!e.shiftKey){
 			shiftPressed = false;
 		}
 		if(e.keyCode == keys.SAVE && canSave){

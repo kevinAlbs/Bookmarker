@@ -73,10 +73,26 @@ div.content{
 	top: 6px;
 	text-align: right;
 }
-#bm_list .right p{
+#bm_list .note{
 	color: #e34e4e;
 }
-#bm_list .right time{
+#bm_list .more-link, #bm_list .delete-link{
+	color: #000;
+	text-decoration: none;
+}
+#bm_list .more-link:hover, #bm_list .delete-link:hover{
+	text-decoration: underline;
+}
+#bm_list .controls{
+	position: relative;
+	border-top: 1px #EEE solid;
+	margin-top: 5px;
+}
+#bm_list .controls .delete-link{
+	position: absolute;
+	right: 10px;
+}
+#bm_list time{
 	color: #2663ff;
 }
 #bm_list header p{

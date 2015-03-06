@@ -30,6 +30,9 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 - Add trash
 - Add pagination if performance noticably suffers past a certain amount of bookmarks
 - Custom keyboard shortcuts
+- Check if page is already bookmarked and update icon (fill in transparent area with red)
+- Fix for frameset pages (i.e. http://www.box2dflash.org/docs/2.1a/reference/)
+- Unexplained crash on 1/22/2014 after running Chrome for a long time
 
 
 ###Notes
