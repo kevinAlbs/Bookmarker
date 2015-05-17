@@ -1,15 +1,51 @@
 MODAL.save_bookmark = (function(){
   var that = {};
-  var dom = $(".modal#save_bookmark");
+  var dom = {
+    root: $(".modal#save_bookmark"),
+    url: $(".modal#save_bookmark input[name=url]"),
+    title: $(".modal#save_bookmark input[name=title]"),
+    title_update : $(".modal#save_bookmark #title_update")
+  };
+  var url_fetcher; //ajax object
+  var override_autofill = false;
 
-  function updateTitle(){
-    var val = $(this).val();
+  /*
+  cancels title autofill if it is in progress
+  */
+  function abortAutofill(){
+    if(url_fetcher){
+      url_fetcher.abort();
+      url_fetcher = null;
+    }
+  }
+  
+  function autofillTitle(){
+    if(override_autofill){
+      return;
+    }
+    var val = dom.url.val();
     //check if valid url
     if(val.match(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i)){
-      /*
-      TODO: fetch page and get title
-      */
+      abortAutofill();
+      url_fetcher = $.ajax({
+        url : API_ROOT + "util/fetchTitle?url=" + val,
+        dataType : "json",
+        success: function(json){
+          if(override_autofill){
+            return;
+          }
+          if(json.valid){
+            dom.title.val(json.title);
+          }
+          url_fetcher = null;
+        }
+      });
     }
+  }
+
+  function cancelAutofillTitle(){
+    abortAutofill();
+    override_autofill = true;
   }
 
   function submit(e){
@@ -47,21 +83,30 @@ MODAL.save_bookmark = (function(){
     }
   }
 
-  that.show = function(){
-    dom.fadeIn();
+  that.show = function(edit_id){
+    dom.url.val("");
+    dom.title.val("");
+    override_autofill = false;
+    dom.root.fadeIn();
     $(document).on("keyup", onKeyUp);
-    //TODO listen for changes in URL and update title field by sending ajax request
     setCurrentModal(that);
   }
 
   that.hide = function(){
+    abortAutofill();
     $(document).off("keyup", onKeyUp);
-    dom.fadeOut();
+    dom.root.fadeOut();
     unsetCurrentModal(that);
   }
 
-  dom.find("form").on("submit", submit);
-  dom.find("form [name=url]").on("keyup", updateTitle);
-  dom.find(".close").on("click", that.hide);
+  dom.root.find("form").on("submit", submit);
+  dom.url.on("keyup", autofillTitle);
+  dom.title.on("keydown", cancelAutofillTitle);
+  dom.root.find(".close").on("click", that.hide);
+  dom.title_update.on("click", function(e){
+    e.preventDefault();
+    override_autofill = false;
+    autofillTitle();
+  });
   return that;
 }());

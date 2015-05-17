@@ -50,6 +50,15 @@ class Bookmark extends API{
 		$this->outputBookmark(DB::getInstance()->getBookmark($id, $user_id));
 	}
 
+	public function update(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
+		$bookmark_id = $this->reqParam("id", "Bookmark id not passed");
+		$title = $this->optParam("title", NULL);
+		$url = $this->optParam("url", NULL);
+		$notes = $this->optParam("notes", NULL);
+		DB::getInstance()->updateBookmark($id, $url, $title, $notes, NULL, $user_id);
+	}
+
 	//should check integrity (i.e. that the category exists)
 	public function archive(){
 		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;

@@ -76,11 +76,11 @@ div.content{
 #bm_list .note{
 	color: #e34e4e;
 }
-#bm_list .more-link, #bm_list .delete-link{
+#bm_list .edit-link, #bm_list .delete-link{
 	color: #000;
 	text-decoration: none;
 }
-#bm_list .more-link:hover, #bm_list .delete-link:hover{
+#bm_list .edit-link:hover, #bm_list .delete-link:hover{
 	text-decoration: underline;
 }
 #bm_list .controls{
@@ -265,12 +265,14 @@ form.nice .row{
 	margin-bottom: 10px;
 }
 form.nice .row label{
-	width: 100px;
+	width: 60px;
 	display: inline-block;
 }
 form.nice input[type=text], form.nice input[type=password]{
 	border: 1px black solid;
-	padding: 3px;
+	padding: 3px 5px;
+	font-size: 12px;
+	width: 225px;
 }
 
 form.nice input[type=submit]{
@@ -281,4 +283,15 @@ form.nice input[type=submit]{
 }
 form.nice input[type=submit]:hover{
 	background: #FFF;
+}
+
+form.nice label.remember_label{
+	width: 200px;
+	position: relative;
+	top: -3px;
+	cursor: pointer;
+}
+
+form.nice #title_update{
+	margin-left: 60px;
 }

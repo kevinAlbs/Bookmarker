@@ -77,7 +77,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
       <time data-content="time"></time>
     </div>
     <div class="controls">
-      <a href="#" class="more-link">+ More</a>
+      <a href="#" class="edit-link">Edit</a>
       <a href="#" class="delete-link">Delete</a>
     </div>
     <div class="more-box">

@@ -9,7 +9,7 @@ The main purpose of this bookmarker is to make it as painless as possible to hos
 
 ![Architecture diagram](/extension/img/diagram.png?raw=true)
 
-In addition, the main interface to review and modify bookmarks is it's own website located alongside the back-end service. So you can access this from any computer. Finally, the back-end service has a simple API which can be easily extended or used (e.g. potential to make an easy mobile app).
+In addition, the main interface to review and modify bookmarks is it's own website located alongside the back-end service. So you can access this from any computer. Finally, the back-end service has a simple API which can be easily extended or used (e.g. by a mobile app).
 
 [more info coming soon]
 
@@ -24,19 +24,18 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 - Front-end cache bug fixes
 - Possible search feature (or just use ctrl+f on All page)
 - Reordering of categories and bookmarks
-- Manual bookmarking on front-end
 - In-page refresh button on front-end
 - Unit tests
 - Add trash
-- Add pagination if performance noticably suffers past a certain amount of bookmarks
+- Add pagination (for very large amounts of bookmarks)
 - Custom keyboard shortcuts
 - Check if page is already bookmarked and update icon (fill in transparent area with red)
 - Fix for frameset pages (i.e. http://www.box2dflash.org/docs/2.1a/reference/)
-- Unexplained crash on 1/22/2014 after running Chrome for a long time
+- Have default popup use the options page instead of an injection (saves load time, fixes frameset bug)
+- Nicer loading bar
 
 
 ###Notes
 - All = -2, Queue category = -1, General category = 0
 - Default user has ID 0.
 - Doing a dynamic sorting with both manual sorting and sorting by date may be very difficult. Perhaps the simplest way is to make everything manual, and on insert, set the next to the root, etc.
-- Use PDO
