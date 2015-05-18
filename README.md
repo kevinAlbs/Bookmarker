@@ -19,12 +19,11 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 ##Upcoming features/fixes
 - Easy installer and instructions
 - Popup ping + drawer ping (to let user know if cannot reach server before attempting to bookmark)
-- Ability to edit notes and titles
+- Ability to edit notes and titles [done 5/18/2015]
 - Bookmark importing from other services (via copy paste and file upload)
-- Front-end cache bug fixes
+- Front-end cache bug fixes [in progress 5/18/2015], still need to address category deletion bugs
 - Possible search feature (or just use ctrl+f on All page)
 - Reordering of categories and bookmarks
-- In-page refresh button on front-end
 - Unit tests
 - Add trash
 - Add pagination (for very large amounts of bookmarks)

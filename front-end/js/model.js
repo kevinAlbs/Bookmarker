@@ -25,12 +25,14 @@ var model = (function(){
 		$.ajax(param);
 		ajaxRequests++;
 		showStatus("Background requests in progress");
+		toggleLoader(true);
 	}
 
 	function ajaxComplete(){
 		ajaxRequests--;
 		if(ajaxRequests == 0){
 			showStatus(false);
+			toggleLoader(false);
 		}
 	}
 

@@ -11,6 +11,14 @@ var CACHE = (function(){
     , category_names = {}
     ;
 
+  category_names[C.ALL] = "All";
+  category_names[C.QUEUE] = "Queue";
+  category_names[C.GENERAL] = "General";
+
+  category_ordering[C.ALL] = [];
+  category_ordering[C.QUEUE] = [];
+  category_ordering[C.GENERAL] = [];
+
   /*
   If to_cat omitted, this just removes it from from_cat
   */
@@ -85,7 +93,7 @@ var CACHE = (function(){
     if(category_names.hasOwnProperty(category_id)){
       return category_names[category_id];
     }
-    console.log("request for invalid catgory id " + category_id);
+    throw "request for invalid catgory id " + category_id;
   }
 
   that.getList = function(category_id){
@@ -97,9 +105,6 @@ var CACHE = (function(){
     return bookmark_list;
   }
   that.initCategories = function(allCategories){
-    category_names[C.ALL] = "All";
-    category_names[C.QUEUE] = "Queue";
-    category_names[C.GENERAL] = "General";
     for(var i = 0; i < allCategories.length; i++){
       var cat = allCategories[i];
       category_names[cat.id] = cat.name;
@@ -109,10 +114,6 @@ var CACHE = (function(){
     }
   }
   that.initBookmarks = function(allBookmarks){
-    category_ordering[C.ALL] = [];
-    category_ordering[C.QUEUE] = [];
-    category_ordering[C.GENERAL] = [];
-
     for(var i = 0; i < allBookmarks.length; i++){
       var bm = allBookmarks[i];
       if(!category_ordering.hasOwnProperty(bm.category)){

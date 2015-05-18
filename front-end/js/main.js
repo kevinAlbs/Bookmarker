@@ -157,6 +157,38 @@ function showStatus(msg){
 	}
 }
 
+var loader_active = false;
+function toggleLoader(val){
+	var loader_state = false;
+
+	function iterate(){
+		$("#bar_loader").css({
+			"background-color" : loader_state ? "#000" : "rgb(98,98,98)"
+		});
+		$("#bar_loader .fill").css({
+			"background-color" : loader_state ? "rgb(98,98,98)" : "#000",
+			"width" : "0%"
+		});
+		$("#bar_loader .fill").animate({
+			"width" : "100%"
+		}, 1000, "linear", function(){
+			console.log("yep");
+			if(loader_active){
+				loader_state = !loader_state;
+				iterate();
+			}
+		});
+	};
+
+	loader_active = val;
+	if(loader_active){
+		$("#bar_loader").show();
+		iterate();
+	} else {
+		$("#bar_loader").hide();
+	}
+}
+
 function showCategories(json){
 	var cats = json.results;
 	var cat_list = $("#cats");
@@ -384,7 +416,7 @@ function catClicked(){
 		refreshSelected();
 		model.archiveSelected(selectedList, curCat, catId);
 		//Reshow current list
-
+		refreshCategory();
 		if(curCat != C.ALL){
 			selected.detach();//should not remove if viewing everything anyway
 		}

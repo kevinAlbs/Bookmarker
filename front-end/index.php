@@ -14,6 +14,19 @@ define("API_ROOT", ROOT . "back-end/index.php/");
   <meta name="author" content="Kevin Albertson">
 
   <style>
+  #bar_loader{
+    position: fixed;
+    top: 0px;
+    height: 4px;
+    background: #000;
+    width: 100%;
+  }
+  #bar_loader .fill{
+    width: 10%;
+    height: 100%;
+    margin: 0px auto;
+    background: rgb(98,98,98);
+  }
   </style>
 
   <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -23,6 +36,9 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 </head>
 <body>
   <?php require_once("modal.php"); ?>
+  <div id="bar_loader">
+    <div class="fill"></div>
+  </div>
 	<div id="container">
 		<aside id="sidebar">
 			<!--<input type="text" id="search" value="search"/>-->
