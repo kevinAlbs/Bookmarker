@@ -36,7 +36,7 @@
         <div class="row"><label>URL</label><input name="url" type="text"></input></div>
         <div class="row"><label>Title</label><input name="title" type="text"></input><br/><a href="#" id="title_update">Refresh</a></div>
         <div class="row"><label>Notes</label><input name="notes" type="text"></input></div>
-        <div class="row">Saves to the Queue</div>
+        <div class="row message">Saves to the Queue</div>
         <div class="row"><input type="submit" value="Save"></input></div>
       </form>
     </div>

@@ -198,7 +198,7 @@ function showCategories(json){
 	cat_list.find("li").not(".fixed").detach();//remove non-fixed categories
 	for(var i = 0; i < cats.length; i++){
 		cat_list.loadTemplate($("#category-template"),{
-			catname: cats[i].name,
+			catname: cats[i].name + " <span class='add'>(+)</span>",
 			catid: cats[i].id
 		}, {append: true})
 	}

@@ -20,6 +20,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
     height: 4px;
     background: #000;
     width: 100%;
+    z-index: 10;
   }
   #bar_loader .fill{
     width: 10%;
@@ -49,9 +50,9 @@ define("API_ROOT", ROOT . "back-end/index.php/");
         <span class='button' data-action='import'>Import Bookmarks</span>
       </div>
 			<ul id="cats">
-				<li data-id="-2" class='fixed'>All</li>
-				<li data-id="-1" class="fixed">Queue</li>
-				<li data-id="0" class="fixed">General</li>
+				<li data-id="-2" class='fixed all'>All</li>
+				<li data-id="-1" class="fixed">Queue <span class="add">(+)</span></li>
+				<li data-id="0" class="fixed">General <span class="add">(+)</span></li>
 			</ul>
 			<p class='button fixed' data-action='add_cat'>+ add new</p>
 			<div class="menu">

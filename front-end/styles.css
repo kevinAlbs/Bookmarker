@@ -169,8 +169,17 @@ div.content{
 #cats{
 	list-style-type: none;
 }
+#cats li .add{
+	display: none;
+}
 #cats.selection li{
 	font-weight: bold;
+}
+#cats.selection li .add{
+	display: inline;
+}
+#cats.selection li.all{
+	font-weight: normal;
 }
 #cats li{
 	padding: 5px 0px;

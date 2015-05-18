@@ -8,7 +8,8 @@ MODAL.save_bookmark = (function(){
     url: $(".modal#save_bookmark input[name=url]"),
     title: $(".modal#save_bookmark input[name=title]"),
     notes: $(".modal#save_bookmark input[name=notes]"),
-    title_update : $(".modal#save_bookmark #title_update")
+    title_update : $(".modal#save_bookmark #title_update"),
+    message: $(".modal#save_bookmark .message")
   };
   var url_fetcher; //ajax object
   var override_autofill = false;
@@ -102,6 +103,7 @@ MODAL.save_bookmark = (function(){
       dom.url.val(bm.url);
       dom.title.val(bm.title);
       dom.notes.val(bm.notes);
+      dom.message.hide();
     } else {
       //new bookmark
       current_id = -1;
@@ -109,6 +111,7 @@ MODAL.save_bookmark = (function(){
       dom.title.val("");
       dom.notes.val("");
       override_autofill = false;
+      dom.message.show();
     }
     dom.root.fadeIn();
     $(document).on("keyup", onKeyUp);
