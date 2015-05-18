@@ -42,6 +42,7 @@ div.content{
 	padding-bottom: 6px;
 	background: #FFF;
 	cursor: pointer;
+	word-break: break-all;
 }
 
 #bm_list li.ui-sortable-helper{
@@ -84,8 +85,9 @@ div.content{
 }
 #bm_list .controls{
 	position: relative;
-	border-top: 1px #EEE solid;
-	margin-top: 5px;
+	border-top: 1px #CCC solid;
+	margin-top: 4px;
+	padding-top: 3px;
 }
 #bm_list .controls .delete-link{
 	position: absolute;

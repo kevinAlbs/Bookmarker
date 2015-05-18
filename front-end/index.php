@@ -69,7 +69,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
         <span class='button' data-action='rename_cat'>Rename Category</span>
       </div>
 			<h1 id="category">Queue</h1>
-			<p id="none">You can save bookmarks here by pressing <span class='shortcut'>[s]</span> or grab the <a target="_blank" href="https://chrome.google.com/webstore/detail/simple-bookmarker/epecificbpajmadjnlglfhdhccdeceha?utm_source=chrome-app-launcher-info-dialog">Chrome extension</a> to save pages while browsing</p>
+			<p id="none">You can save bookmarks to the <b>Queue</b> by pressing <span class='shortcut'>[s]</span> or grab the <a target="_blank" href="https://chrome.google.com/webstore/detail/simple-bookmarker/epecificbpajmadjnlglfhdhccdeceha?utm_source=chrome-app-launcher-info-dialog">Chrome extension</a> to save pages while browsing.</p>
 			<ul id="bm_list">
 			</ul>
 		</div>
@@ -87,7 +87,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 			<div class='box'><div class="fill"></div></div>
 		</div>
 		<header>
-			<h2 data-content="catName"></h2> <h1><a data-content="title" data-template-bind='[{"attribute" : "href", "value" : "url"}]' target="_blank"></a></h1>
+			<h2 data-content="catName"></h2><h1><a data-content="title" data-template-bind='[{"attribute" : "href", "value" : "url"}]' target="_blank"></a></h1>
 			<p data-content="url">http://google.com</p>
 		</header>
     <div>

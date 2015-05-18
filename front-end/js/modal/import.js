@@ -22,6 +22,7 @@ MODAL.import = (function(){
     }
     updatePreview(data);
     model.importBookmarks(data, function(){
+      switchCategory(C.QUEUE);
       refreshCategory();
       that.hide();
     });
@@ -64,7 +65,6 @@ MODAL.import = (function(){
   }
 
   function reveal(){
-    console.log("reveal");
     //shows right half
     dom.right_half.show().animate({
       "width" : "48%",

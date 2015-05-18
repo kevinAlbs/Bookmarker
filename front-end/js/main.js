@@ -227,7 +227,7 @@ function showList(json){
 			id: bms[i].id
 		};
 		if(curCat == C.ALL){
-			data.catName = "[" + model.getCatName(bms[i].category) + "]";
+			data.catName = "[" + model.getCatName(bms[i].category) + "]&nbsp;";
 		}
 		bm_list.loadTemplate($("#bookmark-template"), data, {append: true});
 	}

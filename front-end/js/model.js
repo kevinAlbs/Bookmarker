@@ -96,8 +96,6 @@ var model = (function(){
 			method: "post",
 			dataType: "json",
 			success : function(response){
-				console.log("comlete");
-				console.log(response);
 				if(!response.hasOwnProperty("results")){
 					alert("Server error has occured");
 				}
