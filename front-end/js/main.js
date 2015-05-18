@@ -171,8 +171,7 @@ function toggleLoader(val){
 		});
 		$("#bar_loader .fill").animate({
 			"width" : "100%"
-		}, 1000, "linear", function(){
-			console.log("yep");
+		}, 500, "linear", function(){
 			if(loader_active){
 				loader_state = !loader_state;
 				iterate();
@@ -185,7 +184,7 @@ function toggleLoader(val){
 		$("#bar_loader").show();
 		iterate();
 	} else {
-		$("#bar_loader").hide();
+		$("#bar_loader").fadeOut();
 	}
 }
 
@@ -346,6 +345,9 @@ function performUIAction(action){
 		case "save_bookmark":
 			MODAL.save_bookmark.show();
 			break;
+		case "import":
+			MODAL.import.show();
+			break;
 	}
 }
 
@@ -456,4 +458,5 @@ $(document).ready(function(){
 	})
 	$(document).on("keydown", onKeyDown);
 	$(document).on("keyup", onKeyUp);
+
 });

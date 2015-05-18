@@ -50,6 +50,23 @@ class Bookmark extends API{
 		$this->outputBookmark(DB::getInstance()->getBookmark($id, $user_id));
 	}
 
+	public function import(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
+		$bookmarks = $this->reqParam("bookmark_data", "Bookmark data not passed");
+		foreach($bookmarks as $bookmark){
+			if(!array_key_exists("title", $bookmark)){
+				throw new Exception("Title missing from a bookmark");
+			}
+			if(!array_key_exists("url", $bookmark)){
+				throw new Exception("URL missing from a bookmark");
+			}
+		}
+
+		//save in database, return insert_id
+		$ids = DB::getInstance()->insertBookmarks($bookmarks, $user_id);
+		$this->output(DB::getInstance()->getBookmarksFromIds($ids, $user_id));
+	}
+
 	public function update(){
 		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
 		$bookmark_id = $this->reqParam("id", "Bookmark id not passed");

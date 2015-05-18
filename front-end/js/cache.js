@@ -81,18 +81,20 @@ var CACHE = (function(){
   }
 
   that.addCategory = function(category_id, category_name){
-    category_name[category_id] = category_name;
+    category_names[category_id] = category_name;
     category_ordering[category_id] = [];
+    console.log("adding category to cache");
   }
 
   that.renameCategory = function(category_id, category_name){
-    category_name[category_id] = category_name;
+    category_names[category_id] = category_name;
   }
 
   that.getCatName = function(category_id){
     if(category_names.hasOwnProperty(category_id)){
       return category_names[category_id];
     }
+    console.log(category_names);
     throw "request for invalid catgory id " + category_id;
   }
 

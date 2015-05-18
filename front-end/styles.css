@@ -3,7 +3,6 @@
 	padding: 0px;
 	font-family: "Open Sans", "Arial";
 	font-size: 12px;
-	font-weight: normal;
 }
 b{
 	font-weight: bold;
@@ -256,6 +255,32 @@ div.content{
 .modal h2 .close:hover{
 	text-decoration: underline;
 }
+.modal#import .left-half{
+	float: left;
+	width: 100%;
+}
+.modal#import .right-half{
+	float: right;
+	display: none;
+}
+.modal#import .right-half{
+	width: 0%;
+	overflow: hidden;
+}
+.modal#import .box {
+	width: 600px;
+}
+.modal#import .fixer{
+ width: 288px;
+}
+.modal#import textarea{
+	width: 98%;
+	padding: 1%;
+	height: 6em;
+}
+.modal#import .preview .list a{
+	display: block;
+}
 #user .feedback{
 	background: #EEE;
 	padding: 5px 10px;
@@ -275,13 +300,13 @@ form.nice input[type=text], form.nice input[type=password]{
 	width: 225px;
 }
 
-form.nice input[type=submit]{
+form.nice input[type=submit], .nice-button{
 	padding: 4px 8px;
 	border: 1px black solid;
 	background: #EEE;
 	cursor: pointer;
 }
-form.nice input[type=submit]:hover{
+form.nice input[type=submit]:hover,.nice-button:hover{
 	background: #FFF;
 }
 

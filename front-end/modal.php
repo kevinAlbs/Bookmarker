@@ -40,3 +40,30 @@
     </div>
   </div>
 </div>
+
+<div id="import" class="modal">
+  <div class="bg">
+    <div class="box">
+      <h2>Import Bookmarks <span class="close">Close <span title="Shortcut to close is esc key" class="shortcut">[esc]</span></span></h2>
+      <div class="left-half">
+          <p>Copy-paste bookmark data in <a href="https://msdn.microsoft.com/en-us/library/aa753582(v=vs.85).aspx" target="_blank">Netscape HTML Format</a>. This is the default format of exported bookmarks from Chrome, Kippt, and Delicious.</p>
+          <div class="row"><textarea name="bookmark_data" placeholder="Paste bookmark HTML data"></textarea></div>
+          <!--<p>Or upload the file directoy</p>-->
+          <div class="row"><button class="parse nice-button">Parse</button></div>
+      </div><!--/.left-half -->
+      <div class="right-half">
+        <div class="fixer">
+          <p>Imported bookmarks will be saved to your Queue</p>
+          <div class="preview">
+            <h4>Bookmarks to be Imported</h4>
+            <div class="list"></div>
+          </div>
+          <form class="nice">
+            <div class="row"><input type="submit" value="Import"></input></div>
+          </form>
+        </div><!--/.fixer -->
+      </div><!--/.right-half -->
+      <br style="clear:both" />
+    </div>
+  </div>
+</div>

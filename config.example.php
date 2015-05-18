@@ -9,7 +9,7 @@ define('CAPTCHA_ENABLED', false);
 
 $API_CLASSES =  array("bookmark", "user", "category", "util");
 $API_FUNCTIONS = array(
-  "bookmark" => array("save", "archive", "archiveMultiple", "delete", "deleteMultiple", "fetch", "update"),
+  "bookmark" => array("save", "archive", "archiveMultiple", "delete", "deleteMultiple", "fetch", "update", "import"),
   "category" => array("rename", "delete", "fetch", "add"),
   "user" => array("add", "authenticate", "isEnabled"),
   "util" => array("fetchTitle")

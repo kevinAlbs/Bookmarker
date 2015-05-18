@@ -7,7 +7,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 <head>
   <meta charset="utf-8">
   <title>Bookmarks</title>
-  <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link href='styles.css' rel='stylesheet' type='text/css'>
   <link rel="icon" type="image/png" href="favicon.png" />
   <meta name="description" content="Bookmarker front-end">
@@ -45,6 +45,8 @@ define("API_ROOT", ROOT . "back-end/index.php/");
       <div class="userarea">
         <span id="welcome"></span>
         <span class='button' data-action='logout'>Logout</span>
+        <br/>
+        <span class='button' data-action='import'>Import Bookmarks</span>
       </div>
 			<ul id="cats">
 				<li data-id="-2" class='fixed'>All</li>
@@ -108,6 +110,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
   <script src="js/cache.js"></script>
 	<script src="js/model.js"></script>
   <script src="js/modal/save_bookmark.js"></script>
+  <script src="js/modal/import.js"></script>
   <script src="js/modal/user.js"></script>
 	<script>
     <?php echo "var API_ROOT = '" . API_ROOT . "';"; ?>

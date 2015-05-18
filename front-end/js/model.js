@@ -61,6 +61,7 @@ var model = (function(){
 			}
 		});
 	}
+
 	that.saveBookmark = function(url,title,notes,catId, callback){
 		if(catId == C.ALL){
 			throw "Cannot add to All category";
@@ -82,7 +83,37 @@ var model = (function(){
 				}
 			}
 		});
+	}
 
+	that.importBookmarks = function(bookmarks, callback){
+		//get imported to Queue
+		addAjax({
+			url: API_ROOT + "bookmark/import",
+			data : {
+				ispost: true,
+				bookmark_data : bookmarks
+			},
+			method: "post",
+			dataType: "json",
+			success : function(response){
+				console.log("comlete");
+				console.log(response);
+				if(!response.hasOwnProperty("results")){
+					alert("Server error has occured");
+				}
+				if(response["results"] == "error"){
+					alert("Error importing: " + response["message"]);
+					return;
+				}
+				var bookmarks = response.results;
+				for(var i = 0; i < bookmarks.length; i++){
+					CACHE.addBookmark(bookmarks[i]);
+				}
+				if(callback){
+					callback.call(window, response);
+				}
+			}
+		});
 	}
 
 	that.deleteCategory = function(catId){

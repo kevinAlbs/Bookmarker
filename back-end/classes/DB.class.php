@@ -32,6 +32,26 @@ class DB{
 		return mysqli_insert_id($this->cxn);
 	}
 
+	public function insertBookmarks($bookmarks, $user_id=0){
+		$q = "INSERT INTO bookmark (`url`, `title`, `date_added`, `user_id`) VALUES ";
+		$first = true;
+		foreach($bookmarks as $bookmark){
+			if($first){$first = false;}
+			else{$q .= ",";}
+			$q .= sprintf("('%s', '%s', NOW(), %d)", $this->esc($bookmark["url"]), $this->esc($bookmark["title"]), intval($user_id));
+		}
+		if(!mysqli_query($this->cxn, $q)){
+			$this->dbErr();
+		}
+		$first_id = mysqli_insert_id($this->cxn);
+		//because of auto-increment, the rest of the id's are incremented from $first_id
+		$ids = [];
+		for($i = 0; $i < count($bookmarks); $i++){
+			array_push($ids, $first_id + $i);
+		}
+		return $ids;
+	}
+
 	public function updateBookmark($id, $url=NULL, $title=NULL, $notes=NULL, $category=NULL, $user_id=0){
 		$qStr = "UPDATE bookmark SET ";
 		if($url != NULL){
@@ -129,6 +149,17 @@ class DB{
 			throw new Exception("Bookmark with specified id not found");
 		}
 		return mysqli_fetch_assoc($results);
+	}
+
+	public function getBookmarksFromIds($ids=[], $user_id=0){
+		$qStr = "SELECT * FROM bookmark WHERE `id` IN (" . implode(",", $ids) . ") AND `user_id`=" . intval($user_id);
+		if(!$results = mysqli_query($this->cxn, $qStr)){
+			$this->dbErr();
+		}
+		if(mysqli_num_rows($results) == 0){
+			throw new Exception("Bookmark with specified id not found");
+		}
+		return $results;
 	}
 
 	public function addCategory($name, $user_id=0){
