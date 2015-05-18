@@ -255,6 +255,9 @@ div.content{
 .modal h2 .close:hover{
 	text-decoration: underline;
 }
+.modal#user .register{
+	display: none;
+}
 .modal#import .left-half{
 	float: left;
 	width: 100%;

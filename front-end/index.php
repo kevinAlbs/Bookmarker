@@ -69,7 +69,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
         <span class='button' data-action='rename_cat'>Rename Category</span>
       </div>
 			<h1 id="category">Queue</h1>
-			<p id="none">No bookmarks found in category</p>
+			<p id="none">You can save bookmarks here by pressing <span class='shortcut'>[s]</span> or grab the <a target="_blank" href="https://chrome.google.com/webstore/detail/simple-bookmarker/epecificbpajmadjnlglfhdhccdeceha?utm_source=chrome-app-launcher-info-dialog">Chrome extension</a> to save pages while browsing</p>
 			<ul id="bm_list">
 			</ul>
 		</div>

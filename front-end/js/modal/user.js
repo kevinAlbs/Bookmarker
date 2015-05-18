@@ -20,6 +20,8 @@ MODAL.user = (function(){
 
   that.show = function(){
     dom.show();
+    dom.find(".register").hide();
+    dom.find(".login").show();
     setCurrentModal(that);
     /*
     do not allow user to get past login window
@@ -68,6 +70,11 @@ MODAL.user = (function(){
         }
       });
     });
+
+    dom.find(".register-link").on("click", function(){
+      dom.find(".register").show();
+      dom.find(".login").hide();
+    })
   }
 
   return that;

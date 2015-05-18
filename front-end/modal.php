@@ -10,6 +10,7 @@
           <div class="row"><input name="remember" type="checkbox" id="remember1" checked/>&nbsp;<label for="remember1" class="remember_label">Remember me</label></div>
           <div class="row"><input type="submit" value="Log in"/></div>
         </form>
+        <p>Don't have an account? <a href="#" class="register-link">Register</a><p>
       </div>
       <div class="register">
         <h2>Register</h2>
