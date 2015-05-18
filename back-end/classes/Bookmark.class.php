@@ -56,7 +56,8 @@ class Bookmark extends API{
 		$title = $this->optParam("title", NULL);
 		$url = $this->optParam("url", NULL);
 		$notes = $this->optParam("notes", NULL);
-		DB::getInstance()->updateBookmark($id, $url, $title, $notes, NULL, $user_id);
+		DB::getInstance()->updateBookmark($bookmark_id, $url, $title, $notes, NULL, $user_id);
+		echo "{}";
 	}
 
 	//should check integrity (i.e. that the category exists)

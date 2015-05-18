@@ -1,13 +1,18 @@
+/*
+Modal for both saving new bookmarks and editing existing ones
+*/
 MODAL.save_bookmark = (function(){
   var that = {};
   var dom = {
     root: $(".modal#save_bookmark"),
     url: $(".modal#save_bookmark input[name=url]"),
     title: $(".modal#save_bookmark input[name=title]"),
+    notes: $(".modal#save_bookmark input[name=notes]"),
     title_update : $(".modal#save_bookmark #title_update")
   };
   var url_fetcher; //ajax object
   var override_autofill = false;
+  var current_id = -1; //if this is editing, set to something other than -1
 
   /*
   cancels title autofill if it is in progress
@@ -18,7 +23,7 @@ MODAL.save_bookmark = (function(){
       url_fetcher = null;
     }
   }
-  
+
   function autofillTitle(){
     if(override_autofill){
       return;
@@ -57,24 +62,30 @@ MODAL.save_bookmark = (function(){
     var url = in_url.val();
     var title = in_title.val();
     var notes = in_notes.val();
+    if(current_id != -1){
+      model.updateBookmark(current_id, url, title, notes, function(resp){
+        if("results" in resp && resp.results == "error"){
+          alert("Error adding bookmark: " + resp.message);
+        } else {
+          //refresh list
+          refreshCategory();
+          that.hide();
+        }
+      });
+    } else {
+      //saving new
+      var cat = (curCat == C.ALL) ? C.QUEUE : curCat; //cannot add to All
+      model.saveBookmark(url, title, notes, cat, function(resp){
+        if("results" in resp && resp.results == "error"){
+          alert("Error adding bookmark: " + resp.message);
+        } else {
+          //refresh list
+          refreshCategory();
+          that.hide();
+        }
+      });
+    }
 
-    var cat = (curCat == C.ALL) ? C.QUEUE : curCat; //cannot add to All
-    model.saveBookmark(url, title, notes, cat, function(resp){
-      if("results" in resp && resp.results == "error"){
-        alert("Error adding bookmark: " + resp.message);
-      } else {
-        //refresh list
-        refreshCategory();
-
-        //clear inputs
-        in_url.val("");
-        in_title.val("");
-        in_notes.val("");
-
-        that.hide();
-
-      }
-    });
   }
 
   function onKeyUp(e){
@@ -84,9 +95,21 @@ MODAL.save_bookmark = (function(){
   }
 
   that.show = function(edit_id){
-    dom.url.val("");
-    dom.title.val("");
-    override_autofill = false;
+    if(edit_id !== undefined){
+      current_id = edit_id;
+      override_autofill = true;
+      var bm = model.getBookmark(edit_id, false);
+      dom.url.val(bm.url);
+      dom.title.val(bm.title);
+      dom.notes.val(bm.notes);
+    } else {
+      //new bookmark
+      current_id = -1;
+      dom.url.val("");
+      dom.title.val("");
+      dom.notes.val("");
+      override_autofill = false;
+    }
     dom.root.fadeIn();
     $(document).on("keyup", onKeyUp);
     setCurrentModal(that);

@@ -1,19 +1,8 @@
-//handles local storage and ajax requests
-//periodically pings server to check if any other bookmarks have been added since last refreshed. If so, refresh everything. [not so sure about best way to handle this]
+/*
+Interfaces API
+*/
 var model = (function(){
 	var that = {};
-	var bookmarkCache = {
-		lookup : {//maps category (including 'all') to bookmark list
-			'-2' : [],
-			'-1' : [],
-			'0' : []
-		}
-	};
-	var catCache = {
-		'-2' : 'All',
-		'-1' : 'Queue',
-		'0' : 'General'
-	};
 	var ajaxRequests = 0;//semaphore type
 	var user = {
 		name : "",
@@ -37,41 +26,39 @@ var model = (function(){
 		ajaxRequests++;
 		showStatus("Background requests in progress");
 	}
+
 	function ajaxComplete(){
 		ajaxRequests--;
 		if(ajaxRequests == 0){
 			showStatus(false);
 		}
 	}
-	function addToCache(bm, cat, front){
-		if(!(cat in bookmarkCache.lookup)){
-			bookmarkCache.lookup[cat] = [];
-		}
-		for(var i = 0; i < bookmarkCache.lookup.length; i++){
-			if(bookmarkCache.lookup[i] == bm){
-				return;//this check is necessary if user tries to add bookmark from all category
-			}
-		}
-		if(front){
-			bookmarkCache.lookup[cat].unshift(bm);
-		} else{
-			bookmarkCache.lookup[cat].push(bm);
-		}
 
+	that.getBookmark = function(bookmark_id){
+		return CACHE.getBookmark(bookmark_id);
 	}
-	//TODO change to O(1) when cache is changed to object instead of array
-	function getBookmark(id, cat, deleteBm){
-		var arr = bookmarkCache.lookup[cat + ''];
-		for(var i = 0; i < arr.length; i++){
-			if(id == arr[i].id){
-				if(deleteBm){
-					return arr.splice(i, 1)[0];
+
+	that.updateBookmark = function(bookmark_id, url, title, notes, callback){
+		addAjax({
+			url: API_ROOT + "bookmark/update",
+			data : {
+				ispost: true,
+				id: bookmark_id,
+				url: url,
+				notes: notes,
+				title: title
+			},
+			method: "post",
+			dataType: "json",
+			success : function(response){
+				console.log("success?");
+				CACHE.updateBookmark(bookmark_id, url, title, notes);
+				if(callback){
+					callback.call(window, response);
 				}
-				return arr[i];
 			}
-		}
+		});
 	}
-
 	that.saveBookmark = function(url,title,notes,catId, callback){
 		if(catId == C.ALL){
 			throw "Cannot add to All category";
@@ -87,7 +74,7 @@ var model = (function(){
 			method: "post",
 			dataType: "json",
 			success : function(response){
-				addToCache(response, catId, true);
+				CACHE.addBookmark(response);
 				if(callback){
 					callback.call(window, response);
 				}
@@ -121,11 +108,12 @@ var model = (function(){
 				dataType: 'json',
 				success: function(data){
 					UIAddCategory(catName, data.insert_id);//ui
-					catCache[data.insert_id + ""] = catName;
+					CACHE.addCategory(data.insert_id, catName);
 				}
 		})
 	};
 	that.renameCategory = function(catName, catId){
+		CACHE.renameCategory(catId, catName);
 		addAjax({
 			url: API_ROOT + "category/rename",
 			data: {
@@ -139,24 +127,16 @@ var model = (function(){
 	that.numRequestsLingering = function(){
 		return ajaxRequests;
 	}
-	that.updateNote = function(bm_id, newNote){}
 	that.getList = function(catId){
 		//ajax call, update cache
-		return (catId in bookmarkCache.lookup) ? bookmarkCache.lookup[catId] : [];
+		return CACHE.getList(catId);
+	}
+	that.getCatName = function(catId){
+		return CACHE.getCatName(catId);
 	}
 	//idList is array of id values
 	that.deleteSelected = function(idList, curCat){
-		for(var i = 0; i < idList.length; i++){
-			var bm = null;
-			if(curCat == C.ALL){
-				//delete from individual category, not all, update cat in title
-				bm = getBookmark(idList[i], curCat, true);//delete from all
-				getBookmark(bm.id, bm.category, true);//delete from individual category
-			}
-			else{
-				bm = getBookmark(idList[i], curCat, true);
-			}
-		}
+		CACHE.deleteBookmarks(idList);
 		var selectedString = "";
 		var first = true;
 		for(var i = 0; i < idList.length; i++){
@@ -174,24 +154,9 @@ var model = (function(){
 			}
 		});
 	}
+
 	that.archiveSelected = function(idList, curCat, toCat){
-		if(curCat == toCat){
-			return;
-		}
-		for(var i = 0; i < idList.length; i++){
-			var bm = null;
-			if(curCat == C.ALL){
-				//delete from individual category, not all, update cat in title
-				bm = getBookmark(idList[i], curCat, false);//don't delete
-				getBookmark(bm.id, bm.category, true);//delete from individual category
-			}
-			else{
-				bm = getBookmark(idList[i], curCat, true);
-			}
-			addToCache(bm, toCat);
-			bm.category = toCat;
-			//update category in ALL list
-		}
+		CACHE.archiveBookmarks(idList, curCat, toCat);
 		var selectedString = "";
 		var first = true;
 		for(var i = 0; i < idList.length; i++){
@@ -209,12 +174,6 @@ var model = (function(){
 			}
 		});
 	}
-	that.getCatName = function(catId){
-		if(!(catId in catCache)){
-			return "Not loaded";
-		}
-		return catCache[catId];
-	};
 	that.getUsername = function(){
 		return user.name;
 	};
@@ -262,33 +221,25 @@ var model = (function(){
 		});
 	};
 
-	function initHelper(allBookmarks){
-		//populate cache
-		var bms = allBookmarks.results;
-		bookmarkCache.lookup = [];
-		bookmarkCache.lookup[C.ALL] = bms; //since this is by reference, changes to other categories, notes, etc. need not be repeated
-		for(var i = 0; i < bms.length; i++){
-			var cat = bms[i].category;
-			if(cat == C.ALL){
-				console.log("Error: Something categorized to all");
-				return;
-			}
-			addToCache(bms[i], cat);
-		}
+	function initHelper(bookmarkData){
+		CACHE.initBookmarks(bookmarkData.results);
 		//switch category to QUEUE
 		switchCategory(C.QUEUE);
 	}
 
 
-	that.init = function(allBookmarks){
-		if(!allBookmarks){
+	that.init = function(bookmarkData, bookmarkCallback){
+		if(!bookmarkData){
 			addAjax({
 				url : API_ROOT + "bookmark/fetch",
 				dataType : "json",
 				success : initHelper
 			});
 		} else {
-			initHelper(allBookmarks);
+			initHelper(bookmarkData);
+			if(bookmarkCallback){
+				bookmarkCallback.call();
+			}
 		}
 
 		//initialize category list
@@ -297,9 +248,7 @@ var model = (function(){
 			dataType: "json",
 			success: function(data){
 				var cats = data.results;
-				for(var i = 0; i < cats.length; i++){
-					catCache[cats[i].id] = cats[i].name;
-				}
+				CACHE.initCategories(cats);
 				showCategories(data);
 			}
 		});

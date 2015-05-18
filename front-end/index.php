@@ -89,6 +89,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 	<script src="js/jquery-ui.js"></script>
 	<script src="js/template.js"></script>
 	<script src="js/main.js"></script>
+  <script src="js/cache.js"></script>
 	<script src="js/model.js"></script>
   <script src="js/modal/save_bookmark.js"></script>
   <script src="js/modal/user.js"></script>

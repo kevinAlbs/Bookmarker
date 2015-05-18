@@ -46,6 +46,9 @@ function realDate(dateStr){
 	var date = new Date(dateStr);
 	var hour = date.getHours();
 	var min = date.getMinutes();
+	if(min < 10){
+		min = "0" + min;
+	}
 	var ampm = hour >= 12 ? "pm" : "am";
 	hour = (hour > 12) ? hour - 12 : hour;
 	hour = (hour == 0) ? 12 : hour;
@@ -139,8 +142,9 @@ function tryRemember(callback){
 function passLogin(){
 	$(".userarea").show();
 	$("#welcome").html("Hello " + model.getUsername() + ".");
-	model.init();
-	switchCategory(C.QUEUE);
+	model.init(null, function(){
+		switchCategory(C.QUEUE);
+	});
 }
 
 function showStatus(msg){
@@ -324,9 +328,15 @@ function onDeleteButton(e){
 	model.deleteSelected([id], curCat);
 	el.fadeOut(500, function(){
 		el.detach();
-	})
+	});
 }
 
+function onEditButton(e){
+	e.preventDefault();
+	var el = $(this).parents("li");
+	var id = el.attr("data-id");
+	MODAL.save_bookmark.show(id);
+}
 function onMoreButton(e){
 	e.preventDefault();
 }
@@ -405,6 +415,7 @@ $(document).ready(function(){
 	//event delegation
 	$("#bm_list").on("click", "li .box", toggleBox);
 	$("#bm_list").on("click", "li .delete-link", onDeleteButton);
+	$("#bm_list").on("click", "li .edit-link", onEditButton);
 	$("#bm_list").on("click", "li .more-link", onMoreButton);
 	$("#cats").on("click", "li", catClicked);
 	$(window).on("beforeunload", function(){
