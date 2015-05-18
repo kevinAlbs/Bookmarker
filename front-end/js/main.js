@@ -43,7 +43,9 @@ function niceMonth(m){
 	}
 }
 function realDate(dateStr){
+	dateStr = dateStr.replace(" ", "T") + "Z";
 	var date = new Date(dateStr);
+	date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 	var hour = date.getHours();
 	var min = date.getMinutes();
 	if(min < 10){
@@ -55,6 +57,7 @@ function realDate(dateStr){
 	return niceMonth(date.getMonth()) + " " + date.getDate() + ", " + date.getFullYear() + " " + hour + ":" + min + ampm;
 }
 function prettyDate(dateStr){
+	dateStr = dateStr.replace(" ", "T") + "Z";
 	function pluralize(time, type){
 		if(time != 1){
 			return time + " " + type + "s" + " ago";
@@ -65,6 +68,7 @@ function prettyDate(dateStr){
 	}
 	var pretty = "just now";
 	var date = new Date(dateStr);
+	date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 	var now = new Date();
 	var hourOff = now.stdTimezoneOffset()/60;
 	//hourOff is positive if the UTC offset is negative...ok...
