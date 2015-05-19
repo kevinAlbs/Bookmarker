@@ -34,5 +34,15 @@
 		"19" : "img/icon_19.png",
 		"128" : "img/icon_128.png"
 	},
-	"minimum_chrome_version" : "35"
+	"minimum_chrome_version" : "35",
+	"commands" : {
+		"_execute_browser_action": {
+	      "suggested_key": {
+	        "windows": "Ctrl+Shift+S",
+	        "mac": "Ctrl+Shift+S",
+	        "chromeos": "Ctrl+Shift+S",
+	        "linux": "Ctrl+Shift+S"
+	      }
+	    }
+	}
 }

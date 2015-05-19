@@ -1,6 +1,6 @@
-A minimal bookmarking system. PHP back-end with [chrome extension](https://chrome.google.com/webstore/detail/simple-bookmarker/epecificbpajmadjnlglfhdhccdeceha) and [simple interface](http://kevinalbs.com/bookmarks/front-end/).
+A minimal bookmarking system which can be easily set up on an "AMP" server. Consists of a simple API with [chrome extension](https://chrome.google.com/webstore/detail/simple-bookmarker/epecificbpajmadjnlglfhdhccdeceha) and [front-end interface](http://kevinalbs.com/bookmarks/front-end/).
 
-Pages can be saved quickly with keyboard shortcuts. Saved bookmarks are initially put in a <i>Queue</i> category. The intended workflow is for the user to save articles/pages he/she finds interesting but does not have time to read at the moment. This way, the user can review the <i>Queue</i> at the end of the day/week when he/she has more free time. Afterwards, bookmarks can be archived in other categories or deleted.
+Pages can be saved quickly with keyboard shortcuts. Saved bookmarks are initially put in a <i>Queue</i> category. The intended workflow is for the user to save articles/pages he/she finds interesting and review the <i>Queue</i> at the end of the day/week when he/she has more free time. Afterwards, bookmarks can be archived in other categories or deleted.
 
 If you'd like to try it, download the [chrome extension](https://chrome.google.com/webstore/detail/simple-bookmarker/epecificbpajmadjnlglfhdhccdeceha) and [create an account](http://kevinalbs.com/bookmarks/front-end/).
 
@@ -17,21 +17,22 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 [coming soon]
 
 ##Upcoming features/fixes
+In order of priority
+
+- Front-end cache bug to address category deletion bugs
 - Easy installer and instructions
-- Popup ping + drawer ping (to let user know if cannot reach server before attempting to bookmark)
-- Ability to edit notes and titles [done 5/18/2015]
-- Bookmark importing from other services (via copy paste and file upload)
-- Front-end cache bug fixes [in progress 5/18/2015], still need to address category deletion bugs
-- Possible search feature (or just use ctrl+f on All page)
+- Replace HTML injection with the Chrome extension popup to save on page load time and ensure functioning on irregular pages (e.g. pages using frameset).
+- Check if page is already bookmarked and update icon (fill in transparent area with red)
+- Custom keyboard shortcuts
+- Search bar
 - Reordering of categories and bookmarks
 - Unit tests
 - Add trash
 - Add pagination (for very large amounts of bookmarks)
-- Custom keyboard shortcuts
-- Check if page is already bookmarked and update icon (fill in transparent area with red)
-- Fix for frameset pages (i.e. http://www.box2dflash.org/docs/2.1a/reference/)
-- Have default popup use the options page instead of an injection (saves load time, fixes frameset bug)
-- Nicer loading bar
+- Add a splash page with gif on usage
+- Add sticky status text on UI
+- Add function to export bookmarks, let import use file uploads
+- Place default server on subdomain (bookmarks.kevinalbs.com)
 
 
 ###Notes

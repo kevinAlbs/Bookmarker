@@ -41,7 +41,6 @@ div.content{
 	padding-top: 6px;
 	padding-bottom: 6px;
 	background: #FFF;
-	cursor: pointer;
 	word-break: break-all;
 }
 
@@ -142,7 +141,10 @@ div.content{
 }
 #bm_list .handle{display: none;}
 #bm_list li:hover .handle{
+	/*
 	display: block;
+	Temporarily removed until this feature is completed
+	*/
 }
 #sidebar{
 	width: 175px;
