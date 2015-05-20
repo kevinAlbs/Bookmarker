@@ -7,16 +7,19 @@
         margin: 0px;
       }
       #container{
-        width: 190px;
+        width: 200px;
+        word-break: break-all;
       }
       .button{
         display: block;
         width: 100%;
-        padding: 10px;
+        padding: 5px 10px;
         text-decoration: none;
+        color: #000;
+        font-weight: bold;
       }
-      .button:hover{
-        background: #e7e7e7;
+      .button:hover, .button.active{
+        background: #e7e7e7 url("img/icon_19.png") no-repeat 180px 3px;
       }
       #feedback{
         padding: 10px;
@@ -26,14 +29,58 @@
       .shortcut{
         color: #971099;
       }
+      .save_area{
+        padding: 0px 10px 10px 10px;
+        overflow: hidden;
+        position: relative;
+      }
+      .save_area .save_message{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: #66FF7A;
+        z-index: 2;
+        text-align: center;
+        display: none;
+      }
+      .save_area .save_message p{
+        padding: 2px;
+      }
+      .url{
+        color: #AAA;
+        margin-bottom: 5px;
+      }
     </style>
   </head>
   <body>
   <div id="container">
     <p id="feedback">Cannot authenticate, check <a target="_blank" href="#" class="settings">extension settings</a></p>
-    <a class="button" href="#" id="save">Bookmark this Page <span class="shortcut">[Shift+qq]</span></a>
     <a class="button" target="_blank" href="#" id="view">View all Bookmarks</a>
-    <a class="button" target="_blank" href="#" id="settings">Extension Settings</a>
+    <a class="button" target="_blank" href="#" id="settings">Settings</a>
+    <a class="button active" href="#" id="save">Bookmark this Page</a>
+
+    <div class="save_area">
+      <p class="url"></p>
+      <label>Title</label>
+      <input type="text" name="title" />
+      <label>Notes</label>
+      <input type="text" name="notes" />
+      <p>Press <span class="shortcut">[enter]</span> to save</p>
+      <p>Press <span class="shortcut">[esc]</span> to cancel</p>
+      <div class="save_message">
+        Bookmark Saved!
+      </div>
+    </div><!-- /.save_area -->
+
+    <div class="login_area">
+    </div><!-- /.login_area -->
+
+    <div class="review_area">
+      <!-- if a bookmark is already saved, show notes on it -->
+    </div><!-- /.review_area -->
+
   </div>
   <script src="jquery.js"></script>
   <script src="popup.js"></script>
