@@ -122,4 +122,11 @@ class Bookmark extends API{
 		$this->output($results);
 	}
 
+	public function fetchByUrl(){
+		$user_id = ACCOUNTS_ENABLED ? $this->reqAuth() : 0;
+		$url = $this->reqParam("url", "Bookmark url not passed");
+		$results = DB::getInstance()->getBookmarkByUrl($url, $user_id);
+		$this->output($results);
+	}
+
 }

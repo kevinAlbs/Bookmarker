@@ -106,8 +106,28 @@ var POPUP_PROXY = (function(){
     });
   }
 
-  that.isSaved = function(){
-    //message background page
+  that.checkSaved = function(url, callback){
+    that.getInfo(function(info){
+      //try to save
+      var api_root = info.server + "back-end/index.php/";
+      var params = {
+        ispost: true,
+        url: url,
+        auth_username : info.username,
+        auth_password : info.password
+      };
+      $.ajax({
+        url: api_root + "bookmark/fetchByUrl",
+        method: "post",
+        data: params,
+        success: function(resp){
+          if(callback){
+            callback(resp);
+          }
+        }
+      });
+    });
   }
+
   return that;
 }());

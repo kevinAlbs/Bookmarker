@@ -39,7 +39,10 @@
         left: 1px;
         width: 15px;
         height: 3px;
-        background: #6ce466;
+        background: #1fc6ea;
+      }
+      .save-button .icon .fill.filled{
+        /* height: 16px; */
       }
       .feedback{
         display: none;
@@ -52,6 +55,12 @@
         overflow: hidden;
         position: relative;
         display: none;
+      }
+      .area.review_area {
+        padding: 0px;
+      }
+      .review_area .notes_section{
+        padding: 0px;
       }
       .save_area{
         display: block;
@@ -84,7 +93,7 @@
   <div id="container">
     <a class="button" target="_blank" href="#" id="view">View all Bookmarks</a>
     <a class="button settings-link" target="_blank" href="#">Settings</a>
-    <a class="button active save-button" href="#" id="save">Save this Page<div class="icon"><div class="fill"></div><img src="img/icon_19.png"></img></div></a>
+    <a class="button active save-button" href="#" id="save"><span>Save this Page</span><div class="icon"><div class="fill"></div><img src="img/icon_19.png"></img></div></a>
 
     <div class="save_area area">
       <p class="url"></p>
@@ -101,6 +110,10 @@
 
     <div class="review_area area">
       <!-- if a bookmark is already saved, show notes on it -->
+      <div class="notes_section">
+        <label>Notes</label>
+        <p class="notes"></p>
+      </div>
     </div><!-- /.review_area -->
 
     <div class="login_area area">

@@ -18,92 +18,18 @@ chrome.runtime.onInstalled.addListener(function(details){
 	}
 });
 
+
+/*
+chrome.browserAction.setIcon({
+		path: "img/icon_filled_19.png"
+});
+*/
 /* add the same methods as the PHP API for bookmarks and categories */
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		switch(request.msg){
-			case "get_current_page":
-				chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-					if(tabs.length > 0){
-						var tab = tabs[0];
-						sendResponse({
-							url: tab.url,
-							title: tab.title
-						});
-					} else {
-						sendResponse({
-							url: "",
-							title: ""
-						})
-					}
-				});
-				return true;
-				break;
-			case "save_page":
-				//get credentials and server root
-				chrome.storage.sync.get({
-					server: "",
-					username: "",
-					password: ""
-				}, function(stg){
-					//try to save
-					var api_root = stg.server + "back-end/index.php/";
-					var params = request.data;
-					params.auth_username = stg.username;
-					params.auth_password = stg.password;
-					$.ajax({
-						url: api_root + "bookmark/save",
-						method: "post",
-						data: params,
-						success: function(resp){
-							sendResponse(resp);
-						}
-					});
-				});
-				return true;
-				break;
-			case "get_settings":
-				chrome.storage.sync.get({
-					server: "",
-					username: "",
-					password: ""
-				}, function(stg){
-					sendResponse(stg);
-				});
-				return true;
-				break;
-			case "test_auth":
-				//get credentials and server root
-				chrome.storage.sync.get({
-					server: "",
-					username: "",
-					password: ""
-				}, function(stg){
-					//try to save
-					var api_root = stg.server + "back-end/index.php/";
-					var params = {
-						ispost : true,
-						username : stg.username,
-						password : stg.password
-					};
-					$.ajax({
-						url: api_root + "user/authenticate",
-						method: "post",
-						data: params,
-						success: function(resp){
-							resp["server_connection"] = true;
-							sendResponse(resp);
-						},
-						error: function(resp){
-							sendResponse({
-								"results" : "error",
-								"message" : "Cannot connect to server " + api_root,
-								"server_connection" : false
-							});
-						}
-					});
-				});
-				return true;
-				break;
+			case "is_page_saved":
+			return true;
+			break;
 		}
 });

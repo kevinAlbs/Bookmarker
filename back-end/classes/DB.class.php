@@ -162,6 +162,14 @@ class DB{
 		return $results;
 	}
 
+	public function getBookmarkByUrl($url, $user_id=0){
+		$qStr = "SELECT * FROM bookmark WHERE `url`='" . $this->esc($url) . "' AND `user_id`=" . intval($user_id);
+		if(!$results = mysqli_query($this->cxn, $qStr)){
+			$this->dbErr();
+		}
+		return $results;
+	}
+
 	public function addCategory($name, $user_id=0){
 		$q = sprintf("INSERT INTO category (`name`, `user_id`) VALUES('%s', %d)", $this->esc($name), intval($user_id));
 		if(!mysqli_query($this->cxn, $q)){
