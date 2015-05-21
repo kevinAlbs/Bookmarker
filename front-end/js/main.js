@@ -222,9 +222,9 @@ function showList(json){
 		$("#none").hide();
 	}
 	for(var i = 0; i < bms.length; i++){
-		var title = bms[i].title;
+		var title = bms[i].title.trim();
 		var data = {
-			title: bms[i].title,
+			title: title == "" ? "(Untitled)" : title,
 			url: bms[i].url,
 			time: "saved " + prettyDate(bms[i].date_added) + " on " + realDate(bms[i].date_added),
 			notes: bms[i].notes,

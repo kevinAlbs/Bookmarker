@@ -19,9 +19,11 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 ##Upcoming features/fixes
 In order of priority
 
-- Front-end cache bug to address category deletion bugs
+- Front-end cache bug to address reverse order lists when recategorizing and importing
+- Separate API functions from config so users can update directly from repo without additional edits
 - Easy installer and instructions
 - Check if page is already bookmarked and update icon (fill in transparent area with red)
+  + My main concern is bogging down load time of regular browsing for such a miniscule feature.
 - Custom keyboard shortcuts
 - Search bar
 - Reordering of categories and bookmarks

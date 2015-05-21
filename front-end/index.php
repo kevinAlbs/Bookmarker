@@ -7,7 +7,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 <head>
   <meta charset="utf-8">
   <title>Bookmarks</title>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <link href='styles.css' rel='stylesheet' type='text/css'>
   <link rel="icon" type="image/png" href="favicon.png" />
   <meta name="description" content="Bookmarker front-end">
