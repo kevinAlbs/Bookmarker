@@ -21,7 +21,6 @@ In order of priority
 
 - Front-end cache bug to address category deletion bugs
 - Easy installer and instructions
-- Replace HTML injection with the Chrome extension popup to save on page load time and ensure functioning on irregular pages (e.g. pages using frameset).
 - Check if page is already bookmarked and update icon (fill in transparent area with red)
 - Custom keyboard shortcuts
 - Search bar
@@ -33,6 +32,7 @@ In order of priority
 - Add sticky status text on UI
 - Add function to export bookmarks, let import use file uploads
 - Place default server on subdomain (bookmarks.kevinalbs.com)
+- Comment every function
 
 
 ###Notes

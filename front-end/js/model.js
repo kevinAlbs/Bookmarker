@@ -127,6 +127,7 @@ var model = (function(){
 				console.log("Category deleted");
 			}
 		});
+		CACHE.deleteCategory(catId);
 	};
 	that.addCategory = function(catName){
 		addAjax({

@@ -83,7 +83,6 @@ var CACHE = (function(){
   that.addCategory = function(category_id, category_name){
     category_names[category_id] = category_name;
     category_ordering[category_id] = [];
-    console.log("adding category to cache");
   }
 
   that.renameCategory = function(category_id, category_name){
@@ -94,8 +93,13 @@ var CACHE = (function(){
     if(category_names.hasOwnProperty(category_id)){
       return category_names[category_id];
     }
-    console.log(category_names);
     throw "request for invalid catgory id " + category_id;
+  }
+
+  that.deleteCategory = function(category_id){
+    delete category_names[category_id];
+    that.deleteBookmarks(category_ordering[category_id].slice());
+    delete category_ordering[category_id];
   }
 
   that.getList = function(category_id){
