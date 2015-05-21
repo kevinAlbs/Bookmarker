@@ -73,7 +73,37 @@ chrome.runtime.onMessage.addListener(
 				return true;
 				break;
 			case "test_auth":
-				//test authentication (TODO)
+				//get credentials and server root
+				chrome.storage.sync.get({
+					server: "",
+					username: "",
+					password: ""
+				}, function(stg){
+					//try to save
+					var api_root = stg.server + "back-end/index.php/";
+					var params = {
+						ispost : true,
+						username : stg.username,
+						password : stg.password
+					};
+					$.ajax({
+						url: api_root + "user/authenticate",
+						method: "post",
+						data: params,
+						success: function(resp){
+							resp["server_connection"] = true;
+							sendResponse(resp);
+						},
+						error: function(resp){
+							sendResponse({
+								"results" : "error",
+								"message" : "Cannot connect to server " + api_root,
+								"server_connection" : false
+							});
+						}
+					});
+				});
+				return true;
 				break;
 		}
 });

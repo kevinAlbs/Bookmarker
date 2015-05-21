@@ -39,3 +39,4 @@ In order of priority
 - All = -2, Queue category = -1, General category = 0
 - Default user has ID 0.
 - Doing a dynamic sorting with both manual sorting and sorting by date may be very difficult. Perhaps the simplest way is to make everything manual, and on insert, set the next to the root, etc.
+- Change the name of "model" to proxy, as it proxy's the API

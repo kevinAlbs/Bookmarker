@@ -54,7 +54,7 @@ class User extends API{
 			if(DB::getInstance()->authenticateUser($username, $password)){
 				echo $this->success();
 			} else {
-				echo $this->error("Could not log in");
+				echo $this->error("Incorrect username/password");
 			}
 		} catch(Exception $e){
 			echo $this->error("Database exception occured");

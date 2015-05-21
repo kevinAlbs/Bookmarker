@@ -18,50 +18,75 @@
         color: #000;
         font-weight: bold;
       }
-      .button:hover, .button.active{
-        background: #e7e7e7 url("img/icon_19.png") no-repeat 180px 3px;
+      .button:hover{
+        background: #e7e7e7;
       }
-      #feedback{
-        padding: 10px;
-        font-weight: bold;
+      .save-button{
+        position: relative;
+        background: #e7e7e7;
+      }
+      .save-button .icon{
+        position: absolute;
+        left: 175px;
+        top: 3px;
+      }
+      .save-button .icon img{
+        position: relative;
+      }
+      .save-button .icon .fill{
+        position: absolute;
+        bottom: 4px;
+        left: 1px;
+        width: 15px;
+        height: 3px;
+        background: #6ce466;
+      }
+      .feedback{
         display: none;
       }
       .shortcut{
         color: #971099;
       }
-      .save_area{
+      .area{
         padding: 0px 10px 10px 10px;
         overflow: hidden;
         position: relative;
+        display: none;
       }
-      .save_area .save_message{
+      .save_area{
+        display: block;
+      }
+      .save_area .green_overlay{
         height: 100%;
         width: 100%;
         position: absolute;
         top: 0px;
         left: 0px;
-        background: #66FF7A;
+        background: #6ce466;
         z-index: 2;
-        text-align: center;
         display: none;
-      }
-      .save_area .save_message p{
-        padding: 2px;
+        padding-top: 4px;
+        padding-left: 10px;
       }
       .url{
         color: #AAA;
         margin-bottom: 5px;
       }
+      .error {
+        color: #B51212;
+      }
+      #save-undo{
+        color: #000;
+      }
     </style>
   </head>
   <body>
   <div id="container">
-    <p id="feedback">Cannot authenticate, check <a target="_blank" href="#" class="settings">extension settings</a></p>
     <a class="button" target="_blank" href="#" id="view">View all Bookmarks</a>
-    <a class="button" target="_blank" href="#" id="settings">Settings</a>
-    <a class="button active" href="#" id="save">Bookmark this Page</a>
+    <a class="button settings-link" target="_blank" href="#">Settings</a>
+    <a class="button active save-button" href="#" id="save">Save this Page<div class="icon"><div class="fill"></div><img src="img/icon_19.png"></img></div></a>
 
-    <div class="save_area">
+    <div class="save_area area">
       <p class="url"></p>
       <label>Title</label>
       <input type="text" name="title" />
@@ -69,20 +94,38 @@
       <input type="text" name="notes" />
       <p>Press <span class="shortcut">[enter]</span> to save</p>
       <p>Press <span class="shortcut">[esc]</span> to cancel</p>
-      <div class="save_message">
-        Bookmark Saved!
+      <div class="green_overlay">
+        Page saved!
       </div>
     </div><!-- /.save_area -->
 
-    <div class="login_area">
-    </div><!-- /.login_area -->
-
-    <div class="review_area">
+    <div class="review_area area">
       <!-- if a bookmark is already saved, show notes on it -->
     </div><!-- /.review_area -->
 
+    <div class="login_area area">
+      <h4>Login</h4>
+      <p class="error feedback">Here be feedback</p>
+      <form name="login_form">
+        <label>Username</label>
+        <input type="text" name="username" />
+        <label>Password</label>
+        <input type="password" name="password" />
+        <input type="submit" value="Login" />
+      </form>
+    </div><!-- /.login_area -->
+
+    <div class="cannot_connect_area area">
+      <h4 class="error">Cannot connect to server</h4>
+      <p>If you are using a custom server, ensure that the <a target="_blank" href="#" class="settings-link">extension settings</a> are correct.</p>
+    </div>
+
+
+
   </div>
   <script src="jquery.js"></script>
+  <script src="popup_proxy.js"></script>
   <script src="popup.js"></script>
+
   </body>
 </html>
