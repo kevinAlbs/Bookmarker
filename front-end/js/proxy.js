@@ -108,7 +108,7 @@ var PROXY = (function(){
 					return;
 				}
 				var bookmarks = response.results;
-				for(var i = 0; i < bookmarks.length; i++){
+				for(var i = bookmarks.length - 1; i >= 0; i--){
 					CACHE.addBookmark(bookmarks[i]);
 				}
 				if(callback){

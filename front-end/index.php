@@ -43,12 +43,14 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 	<div id="container">
 		<aside id="sidebar">
 			<!--<input type="text" id="search" value="search"/>-->
-      <div class="userarea">
-        <span id="welcome"></span>
-        <span class='button' data-action='logout'>Logout</span>
-        <br/>
+      <div class="sidebar-top">
+        <div class="userarea">
+          <span id="welcome"></span>
+          <span class='button' data-action='logout'>Logout</span>
+        </div>
         <span class='button' data-action='import'>Import Bookmarks</span>
       </div>
+      
 			<ul id="cats">
 				<li data-id="-2" class='fixed all'>All</li>
 				<li data-id="-1" class="fixed">Queue <span class="add">(+)</span></li>

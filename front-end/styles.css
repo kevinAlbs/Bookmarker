@@ -209,10 +209,12 @@ div.content{
 	padding-top: 10px;
 	margin-top: 20px;
 }
-#sidebar .userarea{
+#sidebar .sidebar-top{
 	border-bottom: 1px black solid;
 	margin-bottom: 10px;
 	padding-bottom: 10px;
+}
+#sidebar .userarea{
 	display: none;
 }
 .selection.button{

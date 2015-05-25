@@ -21,7 +21,7 @@ MODAL.import = (function(){
       return;
     }
     updatePreview(data);
-    model.importBookmarks(data, function(){
+    PROXY.importBookmarks(data, function(){
       switchCategory(C.QUEUE);
       refreshCategory();
       that.hide();

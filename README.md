@@ -16,23 +16,26 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 ##Authentication
 [coming soon]
 
+##Cache
+For responsiveness, the front-end interface uses a local cache, initially fully populated by all saved bookmarks. When working in the front-end interface (e.g. switch categories, add/edit/delete bookmarks, rename a category) it asynchronously updates the database in the background and updates the local cache. This has the benefit of added responsiveness on the interface. However, there is also the danger that the cache may not accurately represent the actual state of your bookmarks. If a bookmark is added outside of the front-end interface (e.g. via the chrome extension), the front-end interface is not notified, and it will not appear unless you refresh the page. This isn't a big issue (only need to refresh the page) but will be fixed by having a websocket notify the front-end when any back-end data changes.
+
 ##Upcoming features/fixes
 In order of priority
 
 - Easy installer and instructions
   + Wordpress uses regular expressions to modify the sample config file on installation
+- Change DATETIME to TIMESTAMP in database
 - Custom keyboard shortcuts
-- Search bar
-- Reordering of categories and bookmarks
 - Unit tests for API and front-end
 - Add trash
+- Search bar
+- Reordering of categories and bookmarks
 - Add pagination (for very large amounts of bookmarks)
 - Add a splash page with gif on usage
 - Add sticky status text on UI
-- Add function to export bookmarks, let import use file uploads
 - Place default server on subdomain (bookmarks.kevinalbs.com)
 - Comment every function
-
+- Let import create categories, use file upload, and export. Put on separate page.
 
 ###Notes
 - All = -2, Queue category = -1, General category = 0
