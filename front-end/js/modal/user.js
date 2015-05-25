@@ -37,7 +37,7 @@ MODAL.user = (function(){
       if(cEl.size() == 1){
         c = cEl.val();
       }
-      model.tryRegister(u, p, c, function(data){
+      PROXY.tryRegister(u, p, c, function(data){
         if(data.results == "success"){
           feedback("Welcome " + u + "!");
           passLogin();
@@ -57,7 +57,7 @@ MODAL.user = (function(){
       var u = $(this).find("[name=username]").val();
       var p = $(this).find("[name=password]").val();
       var r = $(this).find("[name=remember]").prop("checked");
-      model.tryLogin(u, p, function(data){
+      PROXY.tryLogin(u, p, function(data){
         if(data.results == "success"){
           feedback("Welcome " + u + "!");
           passLogin();
