@@ -64,24 +64,24 @@ MODAL.save_bookmark = (function(){
     var title = in_title.val();
     var notes = in_notes.val();
     if(current_id != -1){
-      model.updateBookmark(current_id, url, title, notes, function(resp){
+      PROXY.updateBookmark(current_id, url, title, notes, function(resp){
         if("results" in resp && resp.results == "error"){
           alert("Error adding bookmark: " + resp.message);
         } else {
           //refresh that bookmark
-          createDomBookmark(model.getBookmark(current_id), true);
+          createDomBookmark(PROXY.getBookmark(current_id), true);
           that.hide();
         }
       });
     } else {
       //saving new
       var cat = (curCat == C.ALL) ? C.QUEUE : curCat; //cannot add to All
-      model.saveBookmark(url, title, notes, cat, function(resp){
+      PROXY.saveBookmark(url, title, notes, cat, function(resp){
         if("results" in resp && resp.results == "error"){
           alert("Error adding bookmark: " + resp.message);
         } else {
           //add that bookmark
-          createDomBookmark(model.getBookmark(resp.id), false);
+          createDomBookmark(PROXY.getBookmark(resp.id), false);
           that.hide();
         }
       });
@@ -99,7 +99,7 @@ MODAL.save_bookmark = (function(){
     if(edit_id !== undefined){
       current_id = edit_id;
       override_autofill = true;
-      var bm = model.getBookmark(edit_id, false);
+      var bm = PROXY.getBookmark(edit_id, false);
       dom.url.val(bm.url);
       dom.title.val(bm.title);
       dom.notes.val(bm.notes);

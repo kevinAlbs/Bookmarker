@@ -19,7 +19,6 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 ##Upcoming features/fixes
 In order of priority
 
-- Replace loadTemplate with micro-templating
 - Easy installer and instructions
   + Wordpress uses regular expressions to modify the sample config file on installation
 - Custom keyboard shortcuts

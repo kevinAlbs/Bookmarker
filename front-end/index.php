@@ -104,19 +104,19 @@ define("API_ROOT", ROOT . "back-end/index.php/");
     </div>
 	</li>
 	</script>
-	<script src="js/jquery.js"></script>
+	<script src="js/lib/jquery.js"></script>
 	<!-- custom build -->
-	<script src="js/jquery-ui.js"></script>
-	<script src="js/template.js"></script>
-  <script src="js/micro-template.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/lib/jquery-ui.js"></script>
+  <script src="js/lib/micro-template.js"></script>
+	<script src="js/time.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/cache.js"></script>
-	<script src="js/model.js"></script>
+	<script src="js/proxy.js"></script>
   <script src="js/modal/save_bookmark.js"></script>
   <script src="js/modal/import.js"></script>
   <script src="js/modal/user.js"></script>
 	<script>
-    <?php echo "var API_ROOT = '" . API_ROOT . "';"; ?>
+    var API_ROOT = '<?php echo API_ROOT ?>';
 
     <?php
     if(file_get_contents(API_ROOT . "user/isEnabled") == "true"):
@@ -139,7 +139,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
     else:
     ?>
 
-    model.init(<?php echo file_get_contents(API_ROOT . "bookmark/fetch"); ?>);
+    PROXY.init(<?php echo file_get_contents(API_ROOT . "bookmark/fetch"); ?>);
 
     <?php
     endif;

@@ -1,7 +1,7 @@
 /*
-Interfaces API
+A proxy for the API
 */
-var model = (function(){
+var PROXY = (function(){
 	var that = {};
 	var ajaxRequests = 0;
 	var user = {
@@ -9,7 +9,6 @@ var model = (function(){
 		password : "",
 		logged_in : false
 	};
-
 
 	function addAjax(param, msg){
 		/* Generalize this method to either send actual ajax requests or requests to the background page to update storage.sync */
@@ -36,9 +35,15 @@ var model = (function(){
 		}
 	}
 
+	function initHelper(bookmarkData){
+		CACHE.initBookmarks(bookmarkData.results);
+		//switch category to QUEUE
+		switchCategory(C.QUEUE);
+	}
+
 	that.getBookmark = function(bookmark_id){
 		return CACHE.getBookmark(bookmark_id);
-	}
+	};
 
 	that.updateBookmark = function(bookmark_id, url, title, notes, callback){
 		addAjax({
@@ -59,7 +64,7 @@ var model = (function(){
 				}
 			}
 		});
-	}
+	};
 
 	that.saveBookmark = function(url,title,notes,catId, callback){
 		if(catId == C.ALL){
@@ -82,7 +87,7 @@ var model = (function(){
 				}
 			}
 		});
-	}
+	};
 
 	that.importBookmarks = function(bookmarks, callback){
 		//get imported to Queue
@@ -111,7 +116,7 @@ var model = (function(){
 				}
 			}
 		});
-	}
+	};
 
 	that.deleteCategory = function(catId){
 		addAjax({
@@ -128,6 +133,7 @@ var model = (function(){
 		});
 		CACHE.deleteCategory(catId);
 	};
+
 	that.addCategory = function(catName){
 		addAjax({
 				url: API_ROOT + "category/add",
@@ -143,6 +149,7 @@ var model = (function(){
 				}
 		})
 	};
+
 	that.renameCategory = function(catName, catId){
 		CACHE.renameCategory(catId, catName);
 		addAjax({
@@ -154,17 +161,21 @@ var model = (function(){
 			},
 			method: "post"
 		});
-	}
+	};
+
 	that.numRequestsLingering = function(){
 		return ajaxRequests;
-	}
+	};
+
 	that.getList = function(catId){
 		//ajax call, update cache
 		return CACHE.getList(catId);
-	}
+	};
+
 	that.getCatName = function(catId){
 		return CACHE.getCatName(catId);
-	}
+	};
+
 	//idList is array of id values
 	that.deleteSelected = function(idList, curCat){
 		CACHE.deleteBookmarks(idList);
@@ -184,7 +195,7 @@ var model = (function(){
 				ispost: true
 			}
 		});
-	}
+	};
 
 	that.archiveSelected = function(idList, curCat, toCat){
 		CACHE.archiveBookmarks(idList, curCat, toCat);
@@ -204,10 +215,12 @@ var model = (function(){
 				ispost: true
 			}
 		});
-	}
+	};
+
 	that.getUsername = function(){
 		return user.name;
 	};
+
 	that.tryLogin = function(username, password, callback){
 		addAjax({
 			url: API_ROOT + "user/authenticate",
@@ -229,6 +242,7 @@ var model = (function(){
 			}
 		})
 	};
+
 	that.tryRegister = function(username, password, captcha, callback){
 		addAjax({
 			url: API_ROOT + "user/add",
@@ -251,13 +265,6 @@ var model = (function(){
 			}
 		});
 	};
-
-	function initHelper(bookmarkData){
-		CACHE.initBookmarks(bookmarkData.results);
-		//switch category to QUEUE
-		switchCategory(C.QUEUE);
-	}
-
 
 	that.init = function(bookmarkData, bookmarkCallback){
 		if(!bookmarkData){
