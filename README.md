@@ -19,15 +19,12 @@ In addition, the main interface to review and modify bookmarks is it's own websi
 ##Upcoming features/fixes
 In order of priority
 
-- Front-end cache bug to address reverse order lists when recategorizing and importing
-- Separate API functions from config so users can update directly from repo without additional edits
+- Replace loadTemplate with micro-templating
 - Easy installer and instructions
-- Check if page is already bookmarked and update icon (fill in transparent area with red)
-  + My main concern is bogging down load time of regular browsing for such a miniscule feature.
 - Custom keyboard shortcuts
 - Search bar
 - Reordering of categories and bookmarks
-- Unit tests
+- Unit tests for API and front-end
 - Add trash
 - Add pagination (for very large amounts of bookmarks)
 - Add a splash page with gif on usage
@@ -42,3 +39,5 @@ In order of priority
 - Default user has ID 0.
 - Doing a dynamic sorting with both manual sorting and sorting by date may be very difficult. Perhaps the simplest way is to make everything manual, and on insert, set the next to the root, etc.
 - Change the name of "model" to proxy, as it proxy's the API
+- Checking if a page is bookmarked while browsing could potentially bog down load time, so it may not be a good idea
+- Swap out the current jQuery.loadTemplate library for a library which just returns the element (i.e. John Resig's simple template library)

@@ -84,21 +84,20 @@ function onEnterPressed(){
     getCurrentPage(function(page){
       POPUP_PROXY.saveBookmark(page.url, page.title, function(response){
         if(response.results == "error"){
-          dom.save_message.addClass("error").html("Error occurred, please refresh");
+          alert("Error occurred, please refresh");
+        } else {
+          //show the save animation
+          dom.save_area.animate({
+            height: "15px",
+            opacity: "1"
+          });
+          dom.green_overlay.fadeIn();
+          page_status = "saved";
         }
       });
     });
 
-    //show the save animation
-    dom.save_area.animate({
-      height: "15px",
-    }, 300, "linear", function(){
-      window.setTimeout(function(){
-        dom.save_area.fadeOut()
-      }, 1000);
-    });
-    dom.green_overlay.fadeIn();
-    page_status = "saved";
+    dom.save_area.css({opacity: ".5"});
   }
 }
 
@@ -174,6 +173,7 @@ function onConnection(){
     POPUP_PROXY.checkSaved(current_url, onCheckSaved);
   }
 }
+
 /*
 Tests connection. If authentication is required, checks if it can log in with
 stored user credentials

@@ -1,6 +1,16 @@
 <?php
 header("Content-Type: application/json");
 require_once("../config.php");
+
+$API_CLASSES =  array("bookmark", "user", "category", "util");
+$API_FUNCTIONS = array(
+	"bookmark" => array("save", "archive", "archiveMultiple", "delete", "deleteMultiple", "fetch", "update", "import", "fetchByUrl"),
+	"category" => array("rename", "delete", "fetch", "add"),
+	"user" => array("add", "authenticate", "isEnabled"),
+	"util" => array("fetchTitle")
+);
+
+
 function jsonMessage($msg = "", $results = "success"){
 	echo '{"results": "' . $results . '"';
 	if($msg != ""){

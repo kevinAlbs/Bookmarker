@@ -221,21 +221,44 @@ function showList(json){
 	else{
 		$("#none").hide();
 	}
-	for(var i = 0; i < bms.length; i++){
-		var title = bms[i].title.trim();
-		var data = {
-			title: title == "" ? "(Untitled)" : title,
-			url: bms[i].url,
-			time: "saved " + prettyDate(bms[i].date_added) + " on " + realDate(bms[i].date_added),
-			notes: bms[i].notes,
-			id: bms[i].id
-		};
-		if(curCat == C.ALL){
-			data.catName = "[" + model.getCatName(bms[i].category) + "]&nbsp;";
-		}
-		bm_list.loadTemplate($("#bookmark-template"), data, {append: true});
+	for(var i = bms.length - 1; i >= 0; i--){
+		createDomBookmark(bms[i], false);
 	}
 	mostRecent = null;
+}
+
+/*
+Adds to top of the list
+*/
+function createDomBookmark(json, is_update){
+	var bm_list = $("#bm_list");
+	var title = json.title.trim();
+	var data = {
+		title: title == "" ? "(Untitled)" : title,
+		url: json.url,
+		time: "saved " + prettyDate(json.date_added) + " on " + realDate(json.date_added),
+		notes: json.notes,
+		id: json.id
+	};
+	if(curCat == C.ALL){
+		data.catName = "[" + model.getCatName(json.category) + "]&nbsp;";
+	}
+	if(!is_update){
+		bm_list.loadTemplate($("#bookmark-template"), data, {prepend: true});
+	} else {
+		var current = bm_list.find("[data-id=" + json.id + "]");
+		var current_index = bm_list.find("li").index(current) + 1;
+		current.detach();
+		bm_list.loadTemplate($("#bookmark-template"), data, {prepend: true});
+		if(bm_list.find("li").size() > 1){
+			//move to it's original position
+			var replacement = bm_list.find("[data-id=" + json.id + "]");
+			if(bm_list.find("> li").size() > 0){
+				replacement.detach();
+				replacement.insertBefore("#bm_list li:nth-child(" + current_index + ")");
+			}
+		}
+	}
 }
 
 /* called when a list item checkbox is toggled */

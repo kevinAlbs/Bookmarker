@@ -68,8 +68,8 @@ MODAL.save_bookmark = (function(){
         if("results" in resp && resp.results == "error"){
           alert("Error adding bookmark: " + resp.message);
         } else {
-          //refresh list
-          refreshCategory();
+          //refresh that bookmark
+          createDomBookmark(model.getBookmark(current_id), true);
           that.hide();
         }
       });
@@ -80,8 +80,8 @@ MODAL.save_bookmark = (function(){
         if("results" in resp && resp.results == "error"){
           alert("Error adding bookmark: " + resp.message);
         } else {
-          //refresh list
-          refreshCategory();
+          //add that bookmark
+          createDomBookmark(model.getBookmark(resp.id), false);
           that.hide();
         }
       });

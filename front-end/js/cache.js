@@ -73,7 +73,8 @@ var CACHE = (function(){
     if(from_cat == to_cat){
 			return;
 		}
-		for(var i = 0; i < bookmark_id_list.length; i++){
+    //because adding to head of the list, add in reverse order
+		for(var i = bookmark_id_list.length-1; i >= 0; i--){
 			var bm = that.getBookmark(bookmark_id_list[i]);
       moveFromCategory(bm.id, bm.category, to_cat);
       bm.category = to_cat;

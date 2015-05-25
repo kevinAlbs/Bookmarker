@@ -3,7 +3,7 @@ Interfaces API
 */
 var model = (function(){
 	var that = {};
-	var ajaxRequests = 0;//semaphore type
+	var ajaxRequests = 0;
 	var user = {
 		name : "",
 		password : "",
@@ -53,7 +53,6 @@ var model = (function(){
 			method: "post",
 			dataType: "json",
 			success : function(response){
-				console.log("success?");
 				CACHE.updateBookmark(bookmark_id, url, title, notes);
 				if(callback){
 					callback.call(window, response);

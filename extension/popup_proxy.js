@@ -88,11 +88,12 @@ var POPUP_PROXY = (function(){
       var api_root = info.server + "back-end/index.php/";
       var params = {
         ispost: true,
-        url: url,
+        url: url + "e",
         title: title,
         auth_username : info.username,
         auth_password : info.password
       };
+      window.setTimeout(function(){
       $.ajax({
         url: api_root + "bookmark/save",
         method: "post",
@@ -102,7 +103,8 @@ var POPUP_PROXY = (function(){
             callback(resp);
           }
         }
-      });
+      })
+    }, 2000);
     });
   }
 
