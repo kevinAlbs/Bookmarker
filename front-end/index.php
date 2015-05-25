@@ -76,24 +76,25 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 		</div>
 	</div>
 
-	<script type="text/html" id="category-template">
-	<li data-content="catname" data-template-bind='[{"attribute": "data-id", "value" : "catid"}]'>
+	<script type="text/html" id="category_template">
+	<li data-id="<%= catid %>">
+    <%=catname%> <span class="add">(+)</span>
 	</li>
 	</script>
 
-	<script type="text/html" id="bookmark-template">
-	<li data-template-bind='[{"attribute": "data-id", "value" : "id"}]'>
-		<div class='left'>
-			<img class='handle' src='handle.jpg' alt='Handle'/>
-			<div class='box'><div class="fill"></div></div>
+	<script type="text/html" id="bookmark_template">
+	<li data-id="<%= id %>">
+		<div class="left">
+			<img class="handle" src="handle.jpg" alt="Handle"/>
+			<div class="box"><div class="fill"></div></div>
 		</div>
-		<header>
-			<h2 data-content="catName"></h2><h1><a data-content="title" data-template-bind='[{"attribute" : "href", "value" : "url"}]' target="_blank"></a></h1>
-			<p data-content="url">http://google.com</p>
+    <header>
+			<h2><%= catName %></h2><h1><a href="<%= url %>" target="_blank"><%= title %></a></h1>
+			<p><%= url %></p>
 		</header>
     <div>
-      <p class="note" data-content="notes"></p>
-      <time data-content="time"></time>
+      <p class="note"><%= notes %></p>
+      <time><%= time %></time>
     </div>
     <div class="controls">
       <a href="#" class="edit-link">Edit</a>
@@ -107,6 +108,7 @@ define("API_ROOT", ROOT . "back-end/index.php/");
 	<!-- custom build -->
 	<script src="js/jquery-ui.js"></script>
 	<script src="js/template.js"></script>
+  <script src="js/micro-template.js"></script>
 	<script src="js/main.js"></script>
   <script src="js/cache.js"></script>
 	<script src="js/model.js"></script>

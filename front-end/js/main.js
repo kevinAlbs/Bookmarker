@@ -197,19 +197,21 @@ function showCategories(json){
 	var cat_list = $("#cats");
 	cat_list.find("li").not(".fixed").detach();//remove non-fixed categories
 	for(var i = 0; i < cats.length; i++){
-		cat_list.loadTemplate($("#category-template"),{
-			catname: cats[i].name + " <span class='add'>(+)</span>",
+		var html = tmpl("category_template", {
+			catname: cats[i].name,
 			catid: cats[i].id
-		}, {append: true})
+		});
+		cat_list.append(html);
 	}
 }
 
 function UIAddCategory(catName, catId){
 	var cat_list = $("#cats");
-	cat_list.loadTemplate($("#category-template"), {
+	var html = tmpl("category_template", {
 		catname: catName,
 		catid: catId
-	}, {append: true});
+	});
+	cat_list.append(html);
 }
 
 function showList(json){
@@ -242,22 +244,14 @@ function createDomBookmark(json, is_update){
 	};
 	if(curCat == C.ALL){
 		data.catName = "[" + model.getCatName(json.category) + "]&nbsp;";
-	}
-	if(!is_update){
-		bm_list.loadTemplate($("#bookmark-template"), data, {prepend: true});
 	} else {
-		var current = bm_list.find("[data-id=" + json.id + "]");
-		var current_index = bm_list.find("li").index(current) + 1;
-		current.detach();
-		bm_list.loadTemplate($("#bookmark-template"), data, {prepend: true});
-		if(bm_list.find("li").size() > 1){
-			//move to it's original position
-			var replacement = bm_list.find("[data-id=" + json.id + "]");
-			if(bm_list.find("> li").size() > 0){
-				replacement.detach();
-				replacement.insertBefore("#bm_list li:nth-child(" + current_index + ")");
-			}
-		}
+		data.catName = "";
+	}
+	var html = tmpl("bookmark_template", data);
+	if(!is_update){
+		bm_list.prepend(html);
+	} else {
+		bm_list.find("[data-id=" + json.id + "]").replaceWith(html);
 	}
 }
 

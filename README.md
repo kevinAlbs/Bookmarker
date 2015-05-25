@@ -21,6 +21,7 @@ In order of priority
 
 - Replace loadTemplate with micro-templating
 - Easy installer and instructions
+  + Wordpress uses regular expressions to modify the sample config file on installation
 - Custom keyboard shortcuts
 - Search bar
 - Reordering of categories and bookmarks
