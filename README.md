@@ -22,8 +22,13 @@ For responsiveness, the front-end interface uses a local cache, initially fully 
 ##Upcoming features/fixes
 In order of priority
 
+- Have the setup (registration link) contained in the popup
+	+ Restyle the popup to hide other links during login
+	+ The installation page should only show a welcome message and brief instructions for setting up your own server
 - Easy installer and instructions
   + Wordpress uses regular expressions to modify the sample config file on installation
+- Check if keyboard shortcut is actually working (Cmd+Shift+S doesn't work on Mac by default)
+- Mobile friendly
 - Change DATETIME to TIMESTAMP in database
 - Custom keyboard shortcuts
 - Unit tests for API and front-end

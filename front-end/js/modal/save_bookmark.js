@@ -114,6 +114,7 @@ MODAL.save_bookmark = (function(){
       dom.message.show();
     }
     dom.root.fadeIn();
+    dom.url.focus();
     $(document).on("keyup", onKeyUp);
     setCurrentModal(that);
   }
